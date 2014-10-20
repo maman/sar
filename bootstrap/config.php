@@ -7,6 +7,7 @@ $basedir = __DIR__ . '/../';
 /* App Config */
 Config::write('app.environment', 'development');
 Config::write('app.error_log', $basedir . 'logs/app_errors' . date('Y-m-d') . '.log');
+Config::write('app.assets_path', $basedir . 'public');
 
 /* Database Config */
 Config::write('db.dsn', 'oci://10.10.10.11:1521/orcl');

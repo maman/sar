@@ -1,15 +1,14 @@
 <?php
 
-/**
-* Silabus
-*
-*/
-
 namespace SAR\models;
 
 use SAR\lib\Core;
 use CrazyCodr\Pdo\Oci8;
 
+/**
+* Silabus
+*
+*/
 class Silabus
 {
     protected $core;
@@ -24,7 +23,7 @@ class Silabus
         $sql = "SELECT * FROM SILABUS";
         $statement = $this->core->db->prepare($sql);
         if ($statement->execute()) {
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
         } else {
             $result = 0;
         }

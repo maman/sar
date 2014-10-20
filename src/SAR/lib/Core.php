@@ -4,7 +4,12 @@ namespace SAR\lib;
 
 use SAR\lib\Config;
 use CrazyCodr\Pdo\Oci8;
+use Memcached;
 
+/**
+ * Core Library for Database & Cache
+ * Access
+ */
 class Core {
     public $db;
     public $mcc;
@@ -12,16 +17,16 @@ class Core {
 
     private function __construct() {
         $dsn = Config::read('db.dsn');
-        $user = Config::read('db.user');
+        $user = Config::read('db.username');
         $password = Config::read('db.password');
         $mccHost = Config::read('memcached.host');
         $mccPort = Config::read('memcached.port');
         $mccStub = new Memcached;
-        $this->mcc = $mccStub->connect($mccHost, $mccPort);
+        $this->mcc = $mccStub->addServer($mccHost, $mccPort);
         $this->db = new Oci8($dsn, $user, $password);
     }
 
-    public function getInstance() {
+    public static function getInstance() {
         if (!isset(self::$instance)) {
             $object = __CLASS__;
             self::$instance = new $object;

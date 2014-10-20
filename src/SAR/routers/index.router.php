@@ -1,5 +1,5 @@
 <?php
 
 $app->get('/', function () use ($app) {
-    echo "Welcome";
+    $app->render('pages/_index.twig');
 });

@@ -1,24 +1,32 @@
 <?php
 
+namespace SAR\lib;
+
+use SAR\lib\Core;
+use CrazyCodr\Pdo\Oci8;
+
 /**
 * PDO Caching Mechanism
-* @return $cache_result object
+* via Memcached & php_memcached
 */
-class cache
+class Cache
 {
+    protected $core;
 
-    function cache_query($sqlselect, $params)
+    function __construct() {
+        $this->core = Core::getInstance();
+    }
+
+    public function cache_query($sqlselect, $params)
     {
-        $db = $c['db'];
-        $db = $c['cache'];
         $cache_name = 'querycache-' . md5(serialize(array($sqlselect, $params)));
-        $cache_result = $cache->get($cache_name);
+        $cache_result = $this->core->mcc->get($cache_name);
 
         if (!$cache_result) {
-            $statement = $db->prepare($sqlselect);
+            $statement = $this->core->db->prepare($sqlselect);
             $exec = $statement->execute($params);
             $cache_result = $statement->fetchAll();
-            $cache->add($cache_name, $cache_result);
+            $this->core->mcc->add($cache_name, $cache_result);
         }
 
         return $cache_result;
