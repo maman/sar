@@ -44,4 +44,11 @@ $c['db'] = function ($c) {
     return $db;
 };
 
+$c['cache'] = function ($c) {
+    $config = $c['config'];
+    $memcached = new Memcache;
+    $instance = $memcached->connect($config['memcached.host'], $config['memcached.port']);
+    return $instance;
+};
+
 return $c;

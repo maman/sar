@@ -17,5 +17,11 @@ return array(
     'db.username'         => 'sar',
     'db.password'         => 'Blink182',
 
+    'memcached.host'      => '127.0.0.1',
+    'memcached.port'      => '11211',
+
+    'path.libs'           => $basedir . 'src/lib',
+    'path.models'         => $basedir . 'src/models',
+    'path.controllers'    => $basedir . 'src/controllers',
     'path.templates'      => $basedir . 'src/views'
 );
