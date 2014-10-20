@@ -1,6 +1,6 @@
 <?php
 
-namespace lib;
+namespace SAR\lib;
 
 /**
 * Config Class
@@ -14,6 +14,6 @@ class Config
     }
 
     public static function write($name, $value) {
-        self::$confArray;
+        self::$confArray[$name] = $value;
     }
 }

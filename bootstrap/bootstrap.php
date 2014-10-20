@@ -4,38 +4,44 @@
  * Bootstrap Application
  */
 require_once '../vendor/autoload.php';
+require_once 'config.php';
 
-$c = require 'services.php';
+/* Setup Add-Ons */
+$logger = new Flynsarmy\SlimMonolog\Log\MonologWriter(array(
+    'handlers' => array(
+        new Monolog\Handler\StreamHandler('../logs/app_errors' . date('Y-m-d') . '.log')
+    ),
+));
+$twigView = new \Slim\Views\Twig();
 
-/* Set sane runtime environment */
-$config = $c['config'];
-error_reporting($config['php.error_reporting']);
-ini_set('display_errors', $config['php.display_errors']);
-ini_set('log_errors', $config['php.log_errors']);
-ini_set('error_log', $config['php.error_log']);
-date_default_timezone_set($config['php.date.timezone']);
-session_start();
-$cache = $c['cache'];
-$db = $c['db'];
-$app = $c['app'];
+/* Setup Slim */
+$app = new \Slim\Slim(array(
+    'view' => $twigView,
+    'mode' => 'development',
+    'log.writer' => $logger,
+    'templates.path' => '../SAR/src/templates',
+));
 
-/* Load Additional Libraries */
-foreach (glob($config['path.libs'] . '*php') as $file) {
-    require_once $file;
-}
+/* Invoked if in production */
+$app->configureMode('production', function () use ($app) {
+    $app->config(array(
+        'log.enable' => true,
+        'debug' => false
+    ));
+});
 
-/* Load Models */
-foreach (glob($config['path.models'] . '*php') as $file) {
-    require_once $file;
-}
-
-/* Load Controllers */
-foreach (glob($config['path.controllers'] . '*php') as $file) {
-    require_once $file;
-}
+/* Invoked if in development */
+$app->configureMode('development', function () use ($app) {
+    $app->config(array(
+        'log.enable' => false,
+        'debug' => true
+    ));
+});
 
 /* Load Routes */
-require_once '../src/routes.php';
+foreach (glob('../src/SAR/routers/*.router.php') as $router) {
+    require $router;
+}
 
-/* Run boy, Run */
+/* Run the App */
 $app->run();
