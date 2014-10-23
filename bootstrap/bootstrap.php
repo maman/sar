@@ -36,6 +36,19 @@ $app->configureMode('development', function () use ($app) {
     ));
 });
 
+/* Enable cookie store */
+$app->add(new \Slim\Middleware\SessionCookie(array(
+    'expires'     => '15 minutes',
+    'path'        => '/',
+    'domain'      => null,
+    'secure'      => false,
+    'httponly'    => false,
+    'name'        => 'sar',
+    'secret'      => '5cff428b66d667252a181f10f022e794',
+    'cipher'      => MCRYPT_RIJNDAEL_256,
+    'cipher_mode' => MCRYPT_MODE_CBC
+)));
+
 /* Twig Options */
 $view = $app->view();
 $view->parserOptions = array(

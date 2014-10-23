@@ -3,7 +3,6 @@
 namespace SAR\models;
 
 use SAR\lib\Core;
-use CrazyCodr\Pdo\Oci8;
 
 /**
 * Silabus
