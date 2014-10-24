@@ -1,8 +1,7 @@
 <?php
-
 namespace SAR\models;
 
-use SAR\lib\Core;
+use \Slim\Slim;
 
 /**
 * Silabus
@@ -13,7 +12,7 @@ class Silabus
     protected $core;
 
     function __construct() {
-        $this->core = Core::getInstance();
+        $this->core = Slim::getInstance();
     }
 
     function selectAll()
