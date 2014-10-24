@@ -35,14 +35,21 @@ $app->post('/login', function () use ($app) {
             $_SESSION['nip'] = $auth->nip;
             $_SESSION['username'] = $auth->username;
             $_SESSION['role'] = $auth->role;
-            $_SESSION['matkul'] = $auth->matkul;
-            if (isset($_SESSION['urlRedirect'])) {
-                $tmp = $_SESSION['urlRedirect'];
-                unset($_SESSION['urlRedirect']);
-                $app->redirect($tmp);
+            $matkul = $auth->getMatkul($username);
+            if (!empty($matkul)) {
+                $_SESSION['matkul'] = $matkul;
+                if (isset($_SESSION['urlRedirect'])) {
+                    $tmp = $_SESSION['urlRedirect'];
+                    unset($_SESSION['urlRedirect']);
+                    $app->redirect($tmp);
+                } else {
+                    $app->log->info("LOGIN SUCCESS: " . $username . ":" . sha1($password) . " from " . $req->getIp());
+                    $app->redirect('/');
+                }
             } else {
-                $app->log->info("LOGIN SUCCESS: " . $username . ":" . sha1($password) . " from " . $req->getIp());
-                $app->redirect('/');
+                $app->flash('errors', "Not Yet Plotted");
+                $app->log->notice("NOT PLOTTED: " . $username . ":" . $password . " from " . $req->getIp());
+                $app->redirect('/login');
             }
         } else {
             $app->flash('errors', "Authentication Error");

@@ -36,38 +36,48 @@ class Login
     {
         $query = $this->core->db->prepare(
             "SELECT PEGAWAI.NIP,
-                PLOTTING.ID_MATAKULIAH,
-                PLOTTING.STATUS,
                 PEGAWAI.TGLKELUAR,
                 PEGAWAI.PASS_STAFF,
                 PEGAWAI.NAMA,
                 PEGAWAI.ID_JABATAN_AKAD,
                 PEGAWAI.ID_JABATAN_STRUK,
                 PEGAWAI.IDPRODI
-            FROM PEGAWAI INNER JOIN PLOTTING ON PEGAWAI.NIP = PLOTTING.NIP
+            FROM PEGAWAI
             WHERE PEGAWAI.NIP = :nip AND PEGAWAI.PASS_STAFF = :pass"
         );
         $query->bindParam(':nip', $username);
         $query->bindParam(':pass', $password);
         $query->execute();
         $results = $query->fetchAll(\alfmel\OCI8\PDO::FETCH_ASSOC);
-        var_dump($results);
         if (count($results) > 1) {
             return false;
         } else {
             foreach ($results as $result) {
                 if ($result['ID_JABATAN_AKAD'] == 1) {
-                if ($result['ID_JABATAN_STRUK'] == 1) {
-                    $this->role = "kaprodi";
-                } else {
+                    if ($result['ID_JABATAN_STRUK'] == 1) {
+                        $this->role = "kaprodi";
+                    } else {
                     $this->role = "dosen";
                 }
             }
             $this->nip = $result['NIP'];
             $this->username = $result['NAMA'];
-            $this->matkul = $result['ID_MATAKULIAH'];
             return true;
             }
         }
+    }
+
+    public function getMatkul($username) {
+        $results = array();
+        $query = $this->core->db->prepare(
+            "SELECT PLOTTING.ID_MATAKULIAH
+            FROM PLOTTING
+            WHERE PLOTTING.NIP = :nip
+            AND PLOTTING.STATUS IS NOT NULL"
+        );
+        $query->bindParam(':nip', $username);
+        $query->execute();
+        $results = $query->fetchAll(\alfmel\OCI8\PDO::FETCH_ASSOC);
+        return $results;
     }
 }

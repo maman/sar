@@ -18,7 +18,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*",
-        "maximebf/debugbar": ">=1.0.0",
         "yusukezzz/slim-debugbar": "1.*"
     },
     "autoload": {
