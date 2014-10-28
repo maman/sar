@@ -9,7 +9,7 @@ before_script:
     - composer self-update
     - composer install --prefer-source --no-interaction --dev
 
-script: phpunit
+script: ls -als
 
 matrix:
     allow_failures:

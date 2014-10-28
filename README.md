@@ -10,7 +10,6 @@
 * [Slim](http://www.slimframework.com)
 * [Pimple](http://pimple.sensiolabs.org)
 * [Monolog](https://github.com/Seldaek/monolog)
-* [PHPUnit](http://phpunit.de)
 * [Twitter Bootstrap](http://getbootstrap.com)
 * [jQuery](http://jquery.com)
 

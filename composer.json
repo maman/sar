@@ -17,7 +17,6 @@
         "alfmel/pdo-via-oci8": "dev-bugfix"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.*",
         "yusukezzz/slim-debugbar": "1.*"
     },
     "autoload": {
