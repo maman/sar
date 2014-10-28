@@ -1,6 +1,24 @@
 <?php
+
+/**
+ * Login router for SAR Application
+ *
+ * this file contains route definition and logic for `/login` and `/logout` route.
+ *
+ * PHP version 5.4
+ *
+ * LICENSE: This source file is subject to version 2 of the GNU General Public
+ * License that is avalaible in the LICENSE file on the project root directory.
+ * If you did not receive a copy of the LICENSE file, please send a note to
+ * 321110001@student.machung.ac.id so I can mail you a copy immidiately.
+ *
+ * @author Achmad Mahardi <321110001@student.machung.ac.id>
+ * @copyright 2014 Achmad Mahardi
+ * @license GNU General Public License v2
+ */
 use SAR\models\Login;
 
+/** GET request on `/login` */
 $app->get('/login', function () use ($app) {
     $errors = '';
     $urlRedirect = '/';
@@ -25,6 +43,7 @@ $app->get('/login', function () use ($app) {
     }
 });
 
+/** POST request on `/login` */
 $app->post('/login', function () use ($app) {
     $req = $app->request();
     $username = $req->post('username');
@@ -36,7 +55,7 @@ $app->post('/login', function () use ($app) {
             $_SESSION['username'] = $auth->username;
             $_SESSION['role'] = $auth->role;
             $matkul = $auth->getMatkul($username);
-            if (!empty($matkul)) {
+            if (count($matkul) >= 1) {
                 $_SESSION['matkul'] = $matkul;
                 if (isset($_SESSION['urlRedirect'])) {
                     $tmp = $_SESSION['urlRedirect'];
@@ -61,6 +80,7 @@ $app->post('/login', function () use ($app) {
     $app->redirect('/login');
 });
 
+/** GET request on `/logout` */
 $app->get('/logout', $authenticate($app), function () use ($app) {
     $req = $app->request();
     unset($_SESSION['nip']);

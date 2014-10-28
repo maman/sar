@@ -1,11 +1,29 @@
 <?php
-namespace SAR\models;
-
-use \Slim\Slim;
 
 /**
-* Login
-*/
+ * Login Class for SAR Application
+ *
+ * this file contains the data access for User login process.
+ *
+ * PHP version 5.4
+ *
+ * LICENSE: This source file is subject to version 2 of the GNU General Public
+ * License that is avalaible in the LICENSE file on the project root directory.
+ * If you did not receive a copy of the LICENSE file, please send a note to
+ * 321110001@student.machung.ac.id so I can mail you a copy immidiately.
+ *
+ * @package SAR\models
+ * @author Achmad Mahardi <321110001@student.machung.ac.id>
+ * @copyright 2014 Achmad Mahardi
+ */
+namespace SAR\models;
+use Slim\Slim;
+use alfmel\OCI8\PDO as OCI8;
+
+/**
+ * Login Class
+ * @package SAR\models
+ */
 class Login
 {
     private $nip;
@@ -32,6 +50,14 @@ class Login
         return $this;
     }
 
+    /**
+     * Authenticate Users
+     *
+     * Authenticate users based on NIP as username, and password.
+     * @param  string $username
+     * @param  string $password
+     * @return boolean
+     */
     public function authenticate($username, $password)
     {
         $query = $this->core->db->prepare(
@@ -48,7 +74,7 @@ class Login
         $query->bindParam(':nip', $username);
         $query->bindParam(':pass', $password);
         $query->execute();
-        $results = $query->fetchAll(\alfmel\OCI8\PDO::FETCH_ASSOC);
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 1) {
             return false;
         } else {
@@ -67,6 +93,13 @@ class Login
         }
     }
 
+    /**
+     * Get Matakuliah
+     *
+     * Get Mata Kuliah associated with username
+     * @param  string $username
+     * @return array
+     */
     public function getMatkul($username) {
         $results = array();
         $query = $this->core->db->prepare(
@@ -77,7 +110,7 @@ class Login
         );
         $query->bindParam(':nip', $username);
         $query->execute();
-        $results = $query->fetchAll(\alfmel\OCI8\PDO::FETCH_ASSOC);
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
     }
 }
