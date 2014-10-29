@@ -1,0 +1,35 @@
+{
+  "name": "pkl-self-assest",
+  "version": "1.0.0",
+  "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
+  "scripts": {
+    "test": "phpunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maman/sar.git"
+  },
+  "keywords": [
+    "RPP",
+    "SAR"
+  ],
+  "author": "Achmad Mahardi <321110001@student.machung.ac.id>",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/maman/sar/issues"
+  },
+  "homepage": "https://github.com/maman/sar",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-imagemin": "^0.9.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^0.12.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-newer": "^0.8.0",
+    "grunt-notify": "^0.3.1",
+    "jit-grunt": "^0.9.0"
+  }
+}
