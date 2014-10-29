@@ -61,15 +61,19 @@ class Login
     public function authenticate($username, $password)
     {
         $query = $this->core->db->prepare(
-            "SELECT PEGAWAI.NIP,
+            'SELECT
+                PEGAWAI.NIP,
                 PEGAWAI.TGLKELUAR,
                 PEGAWAI.PASS_STAFF,
                 PEGAWAI.NAMA,
                 PEGAWAI.ID_JABATAN_AKAD,
                 PEGAWAI.ID_JABATAN_STRUK,
                 PEGAWAI.IDPRODI
-            FROM PEGAWAI
-            WHERE PEGAWAI.NIP = :nip AND PEGAWAI.PASS_STAFF = :pass"
+            FROM
+                PEGAWAI
+            WHERE
+                PEGAWAI.NIP = :nip
+                AND PEGAWAI.PASS_STAFF = :pass'
         );
         $query->bindParam(':nip', $username);
         $query->bindParam(':pass', $password);
@@ -103,10 +107,16 @@ class Login
     public function getMatkul($username) {
         $results = array();
         $query = $this->core->db->prepare(
-            "SELECT PLOTTING.ID_MATAKULIAH
-            FROM PLOTTING
-            WHERE PLOTTING.NIP = :nip
-            AND PLOTTING.STATUS IS NOT NULL"
+            'SELECT
+                PLOTTING."KDMataKuliah",
+                MATAKULIAH."NamaMK"
+            FROM
+                PLOTTING INNER JOIN MATAKULIAH
+            ON
+                PLOTTING."KDMataKuliah" = MATAKULIAH."KDMataKuliah"
+            WHERE
+                PLOTTING.NIP = :nip
+                AND PLOTTING.STATUS IS NOT NULL'
         );
         $query->bindParam(':nip', $username);
         $query->execute();

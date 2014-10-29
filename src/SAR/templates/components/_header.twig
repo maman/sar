@@ -15,76 +15,36 @@
 			</a>
 		</li>
 		{% if username is not empty %}
-		{# <li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-			</a>
-			<ul class="dropdown-menu dropdown-messages">
-				<li>
-					<a href="#">
-						<div>
-							<strong>John Smith</strong>
-							<span class="pull-right text-muted">
-								<em>Yesterday</em>
-							</span>
-						</div>
-						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-					</a>
-				</li>
-				<li class="divider"></li>
-				<li>
-					<a href="#">
-						<div>
-							<strong>John Smith</strong>
-							<span class="pull-right text-muted">
-								<em>Yesterday</em>
-							</span>
-						</div>
-						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-					</a>
-				</li>
-				<li class="divider"></li>
-				<li>
-					<a href="#">
-						<div>
-							<strong>John Smith</strong>
-							<span class="pull-right text-muted">
-								<em>Yesterday</em>
-							</span>
-						</div>
-						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-					</a>
-				</li>
-				<li class="divider"></li>
-				<li>
-					<a class="text-center" href="#">
-						<strong>Read All Messages</strong>
-						<i class="fa fa-angle-right"></i>
-					</a>
-				</li>
-			</ul>
-			<!-- /.dropdown-messages -->
-		</li> #}
-		<!-- /.dropdown -->
-		{% if matkuls is not empty and matkuls|length > 1 %}
+			{% if matkuls is not empty and matkuls|length > 1 %}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-briefcase fa-fw"></i> Lessons <i class="fa fa-caret-down"></i>
 			</a>
 			<ul class="dropdown-menu dropdown-tasks">
 				{% for matkul in matkuls %}
-					<li>
-					<a href="#">
+				<li>
+					<a href="/matkul/{{ matkul.KDMataKuliah }}">
 						<div>
-							<strong>{{ matkul.ID_MATAKULIAH }}</strong>
+							<p>
+								<strong>{{ matkul.NamaMK }}</strong>
+								<span class="pull-right text-muted">x% Complete</span>
+							</p>
+							<div class="progress progress-striped active">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                      <span class="sr-only">x% Complete (success)</span>
+                  </div>
+              </div>
 						</div>
 					</a>
 				</li>
+					{% if loop.index0 is even %}
+				<li class="divider"></li>
+					{% endif %}
 				{% endfor %}
 			</ul>
 			<!-- /.dropdown-tasks -->
 		</li>
-		{% endif %}
+			{% endif %}
 		<!-- /.dropdown -->
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ username }}">
