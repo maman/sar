@@ -254,6 +254,6 @@ module.exports = (grunt) ->
     'cssmin:dist'
     'jshint:all'
     'webpack:dist'
-    'bump:git'
+    'bump:patch'
     'notify:build'
   ]
