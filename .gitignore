@@ -1,5 +1,6 @@
 composer.lock
 node_modules
 bower_components
+psysh
 
 npm-debug.log
