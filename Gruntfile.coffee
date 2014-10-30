@@ -3,7 +3,7 @@ module.exports = (grunt) ->
   # Variables
   # =========
   pkg   = require './package.json'
-  bower = './bower_components'
+  bower = './bower_components/'
 
   # Supercharge
   # ===========
@@ -59,30 +59,67 @@ module.exports = (grunt) ->
     less:
       dist:
         options:
-          paths: ['public/less']
+          paths: [
+            bower + 'bootstrap/less'
+            bower + 'font-awesome/less'
+            bower + 'morrisjs/less'
+            'public/less'
+          ]
+          compress: true
           cleancss: true
-        files: {'public/css/sb-admin-2.css': 'public/less/sb-admin-2.less'}
+          cleancssOptions:
+            keepSpecialComments: 0
+            keepBreaks: false
+          ieCompat: true
+          report: 'gzip'
+        files: {'public/css/tmp/sb-admin-2.css': 'public/less/sb-admin-2.less'}
 
       dev:
         options:
-          paths: ['public/less']
+          paths: [
+            bower + 'bootstrap/less'
+            bower + 'font-awesome/less'
+            bower + 'morrisjs/less'
+            'public/less'
+          ]
           sourceMap: true
-          sourceMapFilename: 'public/css/sb-admin-2.css.map'
+          sourceMapFilename: 'public/css/app.min.css.map'
           sourceMapBasepath: 'public/css/'
-        files: {'public/css/sb-admin-2.css': 'public/less/sb-admin-2.less'}
+          sourceMapRootPath: '/less/'
+        files: {'public/css/app.min.css': 'public/less/sb-admin-2.less'}
 
     # Concat
     # ======
-    # concat:
-    #   css:
+    concat:
+      css:
+        src: [
+          bower + 'datatables-bootstrap3/BS3/assets/css/datatables.css'
+          'public/css/plugins/*.css'
+          'public/css/tmp/sb-admin-2.css'
+        ]
+        dest: 'public/css/tmp/app.css'
 
     # CSSMin
     # ======
     cssmin:
-      banner: 'Generated on ' + grunt.template.today('mm-dd-yyyy:hhMMss')
-      files:
-        'public/css/app.min.css': [
-          ''
+      dist:
+        options:
+          banner: '/* Style definition for ' + pkg.name + '#' + pkg.version + '\n Generated on ' + grunt.template.today('mm-dd-yyyy:hhMMss') + ' */'
+          keepSpecialComments: '0'
+          report: 'gzip'
+        files:
+          'public/css/app.min.css': 'public/css/tmp/app.css'
+
+    # Clean
+    # =====
+    clean:
+      dist:
+        files: [
+          dot: true
+          src: [
+            'public/css/tmp'
+            '!public/css/tmp/.git*'
+          ]
         ]
 
   grunt.registerTask 'default', ['less:dev']
