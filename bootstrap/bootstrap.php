@@ -82,8 +82,8 @@ $app->configureMode('production', function () use ($app) {
 });
 
 $app->configureMode('development', function () use ($app) {
-    // $debugbar = new \Slim\Middleware\DebugBar();
-    // $app->add($debugbar);
+    $debugbar = new \Slim\Middleware\DebugBar();
+    $app->add($debugbar);
     $app->config(array(
         'log.enable' => false,
         'debug' => true
