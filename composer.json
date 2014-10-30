@@ -1,33 +1,34 @@
 {
-    "name": "pkl-self-assest",
-    "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
-    "repositories": [
-        {
-            "url": "https://github.com/maman/pdo-via-oci8.git",
-            "type": "git"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "slim/slim": "2.*",
-        "pimple/pimple": "~3.0",
-        "slim/views": "0.1.*",
-        "flynsarmy/slim-monolog": "1.*",
-        "twig/twig": "1.*",
-        "alfmel/pdo-via-oci8": "dev-bugfix"
-    },
-    "require-dev": {
-        "yusukezzz/slim-debugbar": "1.*"
-    },
-    "autoload": {
-        "psr-0": {
-            "SAR\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Achmad Mahardi",
-            "email": "321110001@student.machung.ac.id"
-        }
-    ]
+  "name": "pkl-self-assest",
+  "version": "0.0.2",
+  "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
+  "repositories": [
+    {
+      "url": "https://github.com/maman/pdo-via-oci8.git",
+      "type": "git"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "slim/slim": "2.*",
+    "pimple/pimple": "~3.0",
+    "slim/views": "0.1.*",
+    "flynsarmy/slim-monolog": "1.*",
+    "twig/twig": "1.*",
+    "alfmel/pdo-via-oci8": "dev-bugfix"
+  },
+  "require-dev": {
+    "yusukezzz/slim-debugbar": "1.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "SAR\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Achmad Mahardi",
+      "email": "321110001@student.machung.ac.id"
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "pkl-self-assest",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
   "scripts": {
     "test": "phpunit"
@@ -22,6 +22,7 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-bower-install-simple": "^1.0.3",
+    "grunt-bump": "0.0.16",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-copy": "^0.7.0",
@@ -33,8 +34,11 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-newer": "^0.8.0",
     "grunt-notify": "^0.3.1",
+    "grunt-webpack": "^1.0.8",
     "jit-grunt": "^0.9.0",
-    "webpack": "^1.4.9"
+    "jshint-stylish": "^1.0.0",
+    "webpack": "^1.4.9",
+    "webpack-dev-server": "^1.6.5"
   },
   "dependencies": {
     "bootstrap": "^3.3.0",

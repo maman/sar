@@ -2,9 +2,10 @@ module.exports = (grunt) ->
 
   # Variables
   # =========
-  pkg   = require './package.json'
-  bower = './bower_components/'
-  namespace = './src/SAR/'
+  pkg         = require './package.json'
+  webpack     = require('webpack')
+  bower       = './bower_components/'
+  namespace   = './src/SAR/'
 
   # Supercharge
   # ===========
@@ -23,8 +24,8 @@ module.exports = (grunt) ->
     notify:
       build:
         options:
-          title: 'Build Completed'
-          message: pkg.name + 'build finished successfully'
+          title: pkg.name + '#' + pkg.version
+          message: 'Build finished successfully'
 
     # Watch
     # =====
@@ -41,8 +42,8 @@ module.exports = (grunt) ->
           livereload: true
 
       js:
-        files: ['public/js/{,*/}*.js']
-        tasks: ['jshint']
+        files: ['public/js/main.js']
+        tasks: ['jshint', 'webpack:dev']
         options:
           livereload: true
 
@@ -87,6 +88,62 @@ module.exports = (grunt) ->
           ]
         files: {'public/css/tmp/app.dev.css': 'public/less/sb-admin-2.less'}
 
+    # JSHint
+    # ======
+    jshint:
+      options:
+        maxerr: 15
+        indent: 2
+        quotmark: true
+        globalstrict: true
+        browser: true
+        browserify: true
+        jquery: true
+        reporter: require('jshint-stylish')
+      all: [
+        'public/js/**/*.js'
+        '!public/js/bundle.js'
+      ]
+
+    # Webpack
+    # =======
+    webpack:
+      options:
+        entry: './public/js/main.js'
+        output:
+          path: './public/js/'
+          filename: 'bundle.js'
+        resolve:
+          root: './bower_components'
+        plugins: [
+          new webpack.ProvidePlugin(
+            $: 'jquery'
+            jquery: 'jquery'
+            jQuery: 'jquery'
+            'windows.jquery': 'jquery'
+            'windows.jQuery': 'jquery'
+          )
+        ]
+      stats: false
+      dist:
+        plugins: [
+          new webpack.ProvidePlugin(
+            $: 'jquery'
+            jquery: 'jquery'
+            jQuery: 'jquery'
+            'windows.jquery': 'jquery'
+            'windows.jQuery': 'jquery'
+          )
+          new webpack.DefinePlugin(
+            'process.env': NODE_ENV: JSON.stringify('production')
+          )
+          new webpack.optimize.DedupePlugin()
+          new webpack.optimize.UglifyJsPlugin()
+        ]
+      dev:
+        devtool: 'sourcemap'
+        debug: true
+
     # Concat
     # ======
     concat:
@@ -129,6 +186,10 @@ module.exports = (grunt) ->
             'public/css/tmp'
             '!public/css/tmp/.git*'
             'public/css/app.min.css'
+            'public/js/*.js'
+            'public/js/*.js.map'
+            '!public/js/main.js'
+            '!public/js/.git*'
           ]
         ]
 
@@ -158,6 +219,20 @@ module.exports = (grunt) ->
           filter: 'isFile'
         ]
 
+    # Bump
+    # ====
+    bump:
+      options:
+        files: [
+          'package.json'
+          'composer.json'
+          'bower.json'
+        ]
+        commit: true
+        commitMessage: 'Release v%VERSION%'
+        commitFiles: ['-a']
+        push: false
+
   # Register tasks
   # ==============
   grunt.registerTask 'default', ['work']
@@ -177,4 +252,8 @@ module.exports = (grunt) ->
     'less:dist'
     'concat:dist'
     'cssmin:dist'
+    'jshint:all'
+    'webpack:dist'
+    'bump:git'
+    'notify:build'
   ]
