@@ -114,7 +114,10 @@ module.exports = (grunt) ->
           path: './public/js/'
           filename: 'bundle.js'
         resolve:
-          root: './bower_components'
+          modulesDirectories: [
+            './node_modules'
+            './bower_components'
+          ]
         plugins: [
           new webpack.ProvidePlugin(
             $: 'jquery'
@@ -245,6 +248,7 @@ module.exports = (grunt) ->
     'clean:dist'
     'less:dev'
     'concat:dev'
+    'webpack:dev'
     'watch'
   ]
   grunt.registerTask 'build', [

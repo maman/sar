@@ -4,6 +4,7 @@
 'use strict';
 
 require('bootstrap');
+require('metisMenu');
 
 $(function() {
     $(window).bind('load resize', function() {
