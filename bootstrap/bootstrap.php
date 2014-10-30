@@ -29,11 +29,19 @@ session_start();
 
 /* Load Settings */
 $c['config'] = require 'config.php';
+$config = $c['config'];
+
+/* Sensible PHP Settings */
+error_reporting($config['php.error_reporting']);
+ini_set('display_errors', $config['php.display_errors']);
+ini_set('log_errors', $config['php.log_errors']);
+ini_set('error_log', $config['php.error_log']);
+date_default_timezone_set($config['php.date.timezone']);
 
 /* Setup Slim Add-Ons */
 $logger = new Flynsarmy\SlimMonolog\Log\MonologWriter(array(
     'handlers' => array(
-        new Monolog\Handler\StreamHandler($c['config']['app.log'])
+        new Monolog\Handler\StreamHandler($config['app.log'])
     ),
 ));
 $twigView = new \Slim\Views\Twig();
@@ -43,7 +51,7 @@ $app = new \Slim\Slim(array(
     'view' => $twigView,
     'mode' => $c['config']['app.environment'],
     'log.writer' => $logger,
-    'templates.path' => $c['config']['path.templates'],
+    'templates.path' => $config['path.templates'],
 ));
 
 /* Setup Auth Middleware */
@@ -90,9 +98,9 @@ $app->configureMode('development', function () use ($app) {
 
 /* Load Database */
 $app->container->singleton('db', function() use ($c) {
-    $dsn = $c['config']['db.dsn'];
-    $user = $c['config']['db.username'];
-    $password = $c['config']['db.password'];
+    $dsn = $config['db.dsn'];
+    $user = $config['db.username'];
+    $password = $config['db.password'];
     return new \alfmel\OCI8\PDO($dsn, $user, $password);
 });
 
@@ -100,11 +108,11 @@ $app->container->singleton('db', function() use ($c) {
 $view = $app->view();
 $view->parserOptions = array(
     'debug' => true,
-    'cache' => $c['config']['path.templates.cache']
+    'cache' => $config['path.templates.cache']
 );
 
 /* Load Routes */
-foreach (glob($c['config']['path.routes'] . '*.router.php') as $router) {
+foreach (glob($config['path.routes'] . '*.router.php') as $router) {
     require $router;
 }
 

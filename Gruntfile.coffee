@@ -49,6 +49,7 @@ module.exports = (grunt) ->
       staticFiles:
         files: [
           'public/assets/{,*/}*.{png, jpg, jpeg, gif, svg}'
+          'bootstrap/*.php'
           namespace + '**/*.{php, router.php}'
           namespace + '**/*.twig'
           '!' + namespace + 'templates/cache/**/*.php'
@@ -84,10 +85,6 @@ module.exports = (grunt) ->
             bower + 'morrisjs/less'
             'public/less'
           ]
-          sourceMap: true
-          sourceMapFilename: 'public/css/tmp/app.dev.css.map'
-          sourceMapBasepath: 'public/css/tmp/'
-          sourceMapRootPath: '/less/'
         files: {'public/css/tmp/app.dev.css': 'public/less/sb-admin-2.less'}
 
     # Concat
@@ -131,10 +128,44 @@ module.exports = (grunt) ->
           src: [
             'public/css/tmp'
             '!public/css/tmp/.git*'
+            'public/css/app.min.css'
           ]
         ]
 
-  grunt.registerTask 'default', ['less:dev']
+    # Bower
+    # =====
+    'bower-install-simple':
+      options:
+        color: true
+
+      dist:
+        options:
+          production: true
+
+      dev:
+        options:
+          production: false
+
+    # Copy
+    # ====
+    copy:
+      font:
+        files: [
+          expand: true
+          flatten: true
+          src: bower + 'font-awesome/fonts/*'
+          dest: 'public/fonts/'
+          filter: 'isFile'
+        ]
+
+  # Register tasks
+  # ==============
+  grunt.registerTask 'default', ['work']
+  grunt.registerTask 'prepare', [
+    'clean:dist'
+    'bower-install-simple'
+    'copy:font'
+  ]
   grunt.registerTask 'work', [
     'clean:dist'
     'less:dev'

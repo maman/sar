@@ -3,7 +3,7 @@
 /**
  * Silabus Management & SAR Application
  *
- * This file runs the bootstrapping code required to run the Application
+ * This file references the bootstrapping code required to boot and run the Application
  *
  * PHP version 5.4
  *
