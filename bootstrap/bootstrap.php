@@ -57,7 +57,7 @@ $authenticate = function ($app) {
     };
 };
 
-$app->hook('slim.before.dispatch', function() use ($app) {
+$app->hook('slim.before.dispatch', function () use ($app) {
     $user = null;
     if (isset($_SESSION['username'])) {
         $user = $_SESSION['username'];
@@ -80,6 +80,12 @@ $app->configureMode('development', function () use ($app) {
         'log.enable' => false,
         'debug' => true
     ));
+    $app->hook('slim.before', function () use ($app) {
+        $debug = true;
+        $app->view()->appendData(array(
+            'debug' => $debug
+        ));
+    });
 });
 
 /* Load Database */

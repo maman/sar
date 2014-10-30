@@ -4,6 +4,7 @@ module.exports = (grunt) ->
   # =========
   pkg   = require './package.json'
   bower = './bower_components/'
+  namespace = './src/SAR/'
 
   # Supercharge
   # ===========
@@ -30,7 +31,7 @@ module.exports = (grunt) ->
     watch:
       less:
         files: ['public/less/{,*/}*.less']
-        tasks: ['less:dev']
+        tasks: ['less:dev', 'concat:dev']
         options:
           livereload: false
 
@@ -48,8 +49,9 @@ module.exports = (grunt) ->
       staticFiles:
         files: [
           'public/assets/{,*/}*.{png, jpg, jpeg, gif, svg}'
-          'public/{fonts, font-awesome-*}/{,*/}*.{eot, svg, ttf, woff}'
-          'src/SAR/{,*/}*.{twig, php}'
+          namespace + '**/*.{php, router.php}'
+          namespace + '**/*.twig'
+          '!' + namespace + 'templates/cache/**/*.php'
         ]
         options:
           livereload: true
@@ -72,7 +74,7 @@ module.exports = (grunt) ->
             keepBreaks: false
           ieCompat: true
           report: 'gzip'
-        files: {'public/css/tmp/sb-admin-2.css': 'public/less/sb-admin-2.less'}
+        files: {'public/css/tmp/app.dist.css': 'public/less/sb-admin-2.less'}
 
       dev:
         options:
@@ -83,21 +85,31 @@ module.exports = (grunt) ->
             'public/less'
           ]
           sourceMap: true
-          sourceMapFilename: 'public/css/app.min.css.map'
-          sourceMapBasepath: 'public/css/'
+          sourceMapFilename: 'public/css/tmp/app.dev.css.map'
+          sourceMapBasepath: 'public/css/tmp/'
           sourceMapRootPath: '/less/'
-        files: {'public/css/app.min.css': 'public/less/sb-admin-2.less'}
+        files: {'public/css/tmp/app.dev.css': 'public/less/sb-admin-2.less'}
 
     # Concat
     # ======
     concat:
-      css:
+      dist:
         src: [
+          'public/css/tmp/app.dist.css'
           bower + 'datatables-bootstrap3/BS3/assets/css/datatables.css'
+          bower + 'metisMenu/dist/metisMenu.min.css'
           'public/css/plugins/*.css'
-          'public/css/tmp/sb-admin-2.css'
         ]
-        dest: 'public/css/tmp/app.css'
+        dest: 'public/css/tmp/app.dist.css'
+
+      dev:
+        src: [
+          'public/css/tmp/app.dev.css'
+          bower + 'datatables-bootstrap3/BS3/assets/css/datatables.css'
+          bower + 'metisMenu/dist/metisMenu.min.css'
+          'public/css/plugins/*.css'
+        ]
+        dest: 'public/css/app.min.css'
 
     # CSSMin
     # ======
@@ -108,7 +120,7 @@ module.exports = (grunt) ->
           keepSpecialComments: '0'
           report: 'gzip'
         files:
-          'public/css/app.min.css': 'public/css/tmp/app.css'
+          'public/css/app.min.css': 'public/css/tmp/app.dist.css'
 
     # Clean
     # =====
@@ -123,3 +135,15 @@ module.exports = (grunt) ->
         ]
 
   grunt.registerTask 'default', ['less:dev']
+  grunt.registerTask 'work', [
+    'clean:dist'
+    'less:dev'
+    'concat:dev'
+    'watch'
+  ]
+  grunt.registerTask 'build', [
+    'clean:dist'
+    'less:dist'
+    'concat:dist'
+    'cssmin:dist'
+  ]

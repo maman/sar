@@ -26,6 +26,7 @@
     "morrisjs": "~0.5.1",
     "flot": "~0.8.3",
     "jquery": "1.11.0",
-    "moment": "~2.8.3"
+    "moment": "~2.8.3",
+    "metisMenu": "~1.1.2"
   }
 }

@@ -15,5 +15,8 @@
 	{% block content %}{% endblock %}
 	{% include 'components/_script.twig' %}
 	</div>
+	{% if debug %}
+	<script src="//localhost:35729/livereload.js"></script>
+	{% endif %}
 </body>
 </html>
