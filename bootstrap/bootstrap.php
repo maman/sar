@@ -82,8 +82,8 @@ $app->configureMode('production', function () use ($app) {
 });
 
 $app->configureMode('development', function () use ($app) {
-    $debugbar = new \Slim\Middleware\DebugBar();
-    $app->add($debugbar);
+    // $debugbar = new \Slim\Middleware\DebugBar();
+    // $app->add($debugbar);
     $app->config(array(
         'log.enable' => false,
         'debug' => true
@@ -97,7 +97,7 @@ $app->configureMode('development', function () use ($app) {
 });
 
 /* Load Database */
-$app->container->singleton('db', function() use ($c) {
+$app->container->singleton('db', function() use ($config) {
     $dsn = $config['db.dsn'];
     $user = $config['db.username'];
     $password = $config['db.password'];

@@ -1,6 +1,8 @@
 /* jslint node: true */
 'use strict';
 
+require('bootstrap');
+
 $(function() {
     $(window).bind("load resize", function() {
         var topOffset = 50;
