@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Main router for SAR Application
+ * User router for SAR Application
  *
- * this file contains route definition and logic for `/` route or the homepage.
+ * this file contains route definition and logic for `/login` and `/logout` route.
  *
  * PHP version 5.4
  *
@@ -17,19 +17,14 @@
  * @license GNU General Public License v2
  */
 
-/** GET request on `/` */
-$app->get('/', function () use ($app) {
-    $username = '';
-    $role     = '';
-    $matkul   = '';
-    if (isset($_SESSION['username'])) {
-        $username = $_SESSION['username'];
-        $role = $_SESSION['role'];
-        if (isset($_SESSION['matkul'])) {
-            $matkul = $_SESSION['matkul'];
-        }
+/** GET request on `/user` */
+$app->get('/user', $authenticate($app), function () use ($app) {
+    $username = $_SESSION['username'];
+    $role     = $_SESSION['role'];
+    if (isset($_SESSION['matkul'])) {
+        $matkul = $_SESSION['matkul'];
     }
-    $app->render('pages/_dashboard.twig', array(
+    $app->render('pages/_user.twig', array(
         'username' => $username,
         'role'     => $role,
         'matkuls'  => $matkul

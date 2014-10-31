@@ -52,6 +52,15 @@ $app = new \Slim\Slim(array(
     'mode' => $c['config']['app.environment'],
     'log.writer' => $logger,
     'templates.path' => $config['path.templates'],
+    'cookies.encrypt' => true,
+    'cookies.lifetime' => $config['app.cookie.lifetime'],
+    'cookies.path' => $config['app.cookie.path'],
+    'cookies.domain' => $config['app.cookie.domain'],
+    'cookies.secure' => $config['app.cookie.secure'],
+    'cookies.httponly' => $config['app.cookie.httponly'],
+    'cookies.secret_key' => $config['app.cookie.secretkey'],
+    'cookies.cipher' => MCRYPT_RIJNDAEL_256,
+    'cookies.cipher_mode' => MCRYPT_MODE_CBC
 ));
 
 /* Setup Auth Middleware */
@@ -67,18 +76,10 @@ $authenticate = function ($app) {
 
 $app->hook('slim.before.dispatch', function () use ($app) {
     $user = null;
-    $pjax = false;
     if (isset($_SESSION['username'])) {
         $user = $_SESSION['username'];
     }
-    if (isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == true) {
-        $pjax = true;
-    }
-    // $app->view()->setData('username', $user);
-    $app->view()->appendData(array(
-        'username' => $user,
-        'pjax' => $pjax
-    ));
+    $app->view()->setData('username', $user);
 });
 
 /* Setup App Env */

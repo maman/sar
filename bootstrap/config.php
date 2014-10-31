@@ -30,6 +30,12 @@ return array(
     /** Application Settings */
     'app.environment'      => 'development',
     'app.log'              => $basedir . 'logs/app-' . date('Y-m-d') . '.log',
+    'app.cookie.lifetime'  => '20 minutes',
+    'app.cookie.path'      => '/',
+    'app.cookie.domain'    => null,
+    'app.cookie.secure'    => false,
+    'app.cookie.httponly'  => false,
+    'app.cookie.secretkey' => '0f3f86a8f06ea64ae3f388c65c35a53d',
 
     /** PHP Additional Settings */
     'php.error_reporting'  => E_ALL,

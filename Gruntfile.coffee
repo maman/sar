@@ -47,6 +47,7 @@ module.exports = (grunt) ->
         tasks: ['jshint', 'webpack:dev']
         options:
           livereload: true
+          spawn: false
 
       staticFiles:
         files: [
@@ -124,6 +125,7 @@ module.exports = (grunt) ->
             jQuery: 'jquery'
             'windows.jquery': 'jquery'
             'windows.jQuery': 'jquery'
+            # Pjax: 'Pjax'
           )
         ]
       stats: false
