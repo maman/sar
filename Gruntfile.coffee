@@ -125,7 +125,6 @@ module.exports = (grunt) ->
             jQuery: 'jquery'
             'windows.jquery': 'jquery'
             'windows.jQuery': 'jquery'
-            # Pjax: 'Pjax'
           )
         ]
       stats: false
