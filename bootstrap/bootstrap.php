@@ -67,10 +67,18 @@ $authenticate = function ($app) {
 
 $app->hook('slim.before.dispatch', function () use ($app) {
     $user = null;
+    $pjax = false;
     if (isset($_SESSION['username'])) {
         $user = $_SESSION['username'];
     }
-    $app->view()->setData('username', $user);
+    if (isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == true) {
+        $pjax = true;
+    }
+    // $app->view()->setData('username', $user);
+    $app->view()->appendData(array(
+        'username' => $user,
+        'pjax' => $pjax
+    ));
 });
 
 /* Setup App Env */

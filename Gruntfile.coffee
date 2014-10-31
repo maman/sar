@@ -2,10 +2,11 @@ module.exports = (grunt) ->
 
   # Variables
   # =========
-  pkg         = require './package.json'
-  webpack     = require('webpack')
-  bower       = './bower_components/'
-  namespace   = './src/SAR/'
+  pkg          = require './package.json'
+  webpack      = require('webpack')
+  webpackBower = require('bower-webpack-plugin')
+  bower        = './bower_components/'
+  namespace    = './src/SAR/'
 
   # Supercharge
   # ===========
@@ -113,12 +114,10 @@ module.exports = (grunt) ->
         output:
           path: './public/js/'
           filename: 'bundle.js'
-        resolve:
-          modulesDirectories: [
-            './node_modules'
-            './bower_components'
-          ]
         plugins: [
+          new webpackBower(
+            excludes: /.*\.(less|css|woff|svg|ttf|eot)([\?]?.*)$/
+          )
           new webpack.ProvidePlugin(
             $: 'jquery'
             jquery: 'jquery'
@@ -130,13 +129,6 @@ module.exports = (grunt) ->
       stats: false
       dist:
         plugins: [
-          new webpack.ProvidePlugin(
-            $: 'jquery'
-            jquery: 'jquery'
-            jQuery: 'jquery'
-            'windows.jquery': 'jquery'
-            'windows.jQuery': 'jquery'
-          )
           new webpack.DefinePlugin(
             'process.env': NODE_ENV: JSON.stringify('production')
           )
@@ -231,7 +223,7 @@ module.exports = (grunt) ->
           'composer.json'
           'bower.json'
         ]
-        commit: true
+        commit: false
         commitMessage: 'Release v%VERSION%'
         commitFiles: ['-a']
         push: false
@@ -258,6 +250,6 @@ module.exports = (grunt) ->
     'cssmin:dist'
     'jshint:all'
     'webpack:dist'
-    'bump:patch'
+    'bump:prerelease'
     'notify:build'
   ]

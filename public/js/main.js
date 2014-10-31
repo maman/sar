@@ -5,6 +5,11 @@
 
 require('bootstrap');
 require('metisMenu');
+require('jquery-pjax');
+
+$(function() {
+    $('#side-menu').metisMenu();
+});
 
 $(function() {
     $(window).bind('load resize', function() {
