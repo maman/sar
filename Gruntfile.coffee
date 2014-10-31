@@ -223,7 +223,7 @@ module.exports = (grunt) ->
           'composer.json'
           'bower.json'
         ]
-        commit: false
+        commit: true
         commitMessage: 'Release v%VERSION%'
         commitFiles: ['-a']
         push: false
