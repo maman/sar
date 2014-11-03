@@ -29,9 +29,5 @@ $app->get('/', function () use ($app) {
             $matkul = $_SESSION['matkul'];
         }
     }
-    $app->render('pages/_dashboard.twig', array(
-        'username' => $username,
-        'role'     => $role,
-        'matkuls'  => $matkul
-    ));
+    $app->render('pages/_dashboard.twig');
 });

@@ -66,20 +66,38 @@ $app = new \Slim\Slim(array(
 /* Setup Auth Middleware */
 $authenticate = function ($app) {
     return function () use ($app) {
+        $currPath = $app->request()->getPath();
         if (!isset($_SESSION['username'])) {
-            $_SESSION['urlredirect'] = $app->request()->getPathInfo();
             $app->flash('error', 'Login Required');
-            $app->redirect('/login');
+            $app->redirect('/login?r=' . $currPath);
         }
     };
 };
 
 $app->hook('slim.before.dispatch', function () use ($app) {
+    $nip = null;
     $user = null;
+    $role = null;
+    $matkul = null;
+    if (isset($_SESSION['nip'])) {
+        $nip = $_SESSION['nip'];
+    }
     if (isset($_SESSION['username'])) {
         $user = $_SESSION['username'];
     }
-    $app->view()->setData('username', $user);
+    if (isset($_SESSION['role'])) {
+        $role = $_SESSION['role'];
+    }
+    if (isset($_SESSION['matkul'])) {
+        $matkul = $_SESSION['matkul'];
+    }
+    // $app->view()->setData('username', $user);
+    $app->view()->appendData(array(
+        'nip' => $nip,
+        'username' => $user,
+        'role' => $role,
+        'matkuls' => $matkul
+    ));
 });
 
 /* Setup App Env */

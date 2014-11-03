@@ -17,6 +17,7 @@
  * @license GNU General Public License v2
  */
 use SAR\models\Login;
+use SAR\models\User;
 
 /** GET request on `/login` */
 $app->get('/login', function () use ($app) {
@@ -25,7 +26,7 @@ $app->get('/login', function () use ($app) {
     $user_val = $user_error = $pass_error = '';
     $flash = $app->view()->getData('flash');
     if ($app->request->get('r') && $app->request->get('r') != '/logout' && $app->request->get('r') != '/login') {
-        $_SESSION['urlRedirect'] = $app->request->get('r');
+        $urlRedirect = $app->request->get('r');
     }
     if (isset($_SESSION['username'])) {
         $app->redirect('/');
@@ -49,12 +50,13 @@ $app->post('/login', function () use ($app) {
     $username = $req->post('username');
     $password = $req->post('password');
     $auth = new Login();
+    $user = new User();
     if ($username != "" && $password != "") {
         if ($auth->authenticate($username, $password)) {
             $_SESSION['nip'] = $auth->nip;
             $_SESSION['username'] = $auth->username;
             $_SESSION['role'] = $auth->role;
-            $matkul = $auth->getMatkul($username);
+            $matkul = $user->getMatkul($username);
             if (count($matkul) >= 1) {
                 $_SESSION['matkul'] = $matkul;
                 if (isset($_SESSION['urlRedirect'])) {
@@ -87,6 +89,11 @@ $app->get('/logout', $authenticate($app), function () use ($app) {
     unset($_SESSION['username']);
     unset($_SESSION['role']);
     unset($_SESSION['matkul']);
-    $app->view()->setData('username', null);
+    $app->view()->setData(array(
+        'nip' => null,
+        'username' => null,
+        'role' => null,
+        'matkuls' => null
+    ));
     $app->redirect('/');
 });

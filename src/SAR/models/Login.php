@@ -37,13 +37,15 @@ class Login
         $this->core = Slim::getInstance();
     }
 
-    public function __get($prop) {
+    public function __get($prop)
+    {
         if (property_exists($this, $prop)) {
             return $this->$prop;
         }
     }
 
-    public function __set($prop, $val) {
+    public function __set($prop, $val)
+    {
         if (property_exists($this, $prop)) {
             $this->$prop = $val;
         }
@@ -88,39 +90,12 @@ class Login
                         $this->role = "kaprodi";
                     } else {
                     $this->role = "dosen";
+                    }
                 }
-            }
-            $this->nip = $result['NIP'];
-            $this->username = $result['NAMA'];
-            return true;
+                $this->nip = $result['NIP'];
+                $this->username = $result['NAMA'];
+                return true;
             }
         }
-    }
-
-    /**
-     * Get Matakuliah
-     *
-     * Get Mata Kuliah associated with username
-     * @param  string $username
-     * @return array
-     */
-    public function getMatkul($username) {
-        $results = array();
-        $query = $this->core->db->prepare(
-            'SELECT
-                PLOTTING."KDMataKuliah",
-                MATAKULIAH."NamaMK"
-            FROM
-                PLOTTING INNER JOIN MATAKULIAH
-            ON
-                PLOTTING."KDMataKuliah" = MATAKULIAH."KDMataKuliah"
-            WHERE
-                PLOTTING.NIP = :nip
-                AND PLOTTING.STATUS IS NOT NULL'
-        );
-        $query->bindParam(':nip', $username);
-        $query->execute();
-        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-        return $results;
     }
 }

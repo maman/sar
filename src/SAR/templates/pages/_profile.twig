@@ -1,0 +1,61 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}User Detail for {{ profileUsername }} {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' %}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">User Profile</h1>
+		</div>
+		<!-- /.col-lg-12 -->
+		<div class="row">
+        <div class="col-xs-12 toppad">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ profileUsername }}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> </div>
+                <div class=" col-md-9 col-lg-9 ">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td><strong>Department</strong></td>
+                        <td>Programming</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Hire date</strong></td>
+                        <td>06/23/2013</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Date of Birth</strong></td>
+                        <td>01/24/1988</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Gender</strong></td>
+                        <td>Male</td>
+                      </tr>
+                        <tr>
+                        <td><strong>Home Address</strong></td>
+                        <td>Metro Manila,Philippines</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Email</strong></td>
+                        <td><a href="mailto:info@support.com">info@support.com</a></td>
+                      </tr>
+                        <td><strong>Phone Number</strong></td>
+                        <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+	</div>
+{% endblock content %}

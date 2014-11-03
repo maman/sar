@@ -16,17 +16,33 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
+use SAR\models\User;
 
 /** GET request on `/user` */
-$app->get('/user', $authenticate($app), function () use ($app) {
+$app->get('/user(/:id)', $authenticate($app), function ($id = 'current') use ($app) {
     $username = $_SESSION['username'];
     $role     = $_SESSION['role'];
     if (isset($_SESSION['matkul'])) {
         $matkul = $_SESSION['matkul'];
     }
-    $app->render('pages/_user.twig', array(
-        'username' => $username,
-        'role'     => $role,
-        'matkuls'  => $matkul
-    ));
+    if ($id != 'current') {
+        $users = new User();
+        if ($_SESSION['role'] == 'kaprodi') {
+            $users->getUserDetails($id);
+            $app->render('pages/_profile.twig', array(
+                'profileNip' => $id,
+                'profileUsername' => $users->name,
+                'profileRole' => $users->role,
+                'profileMatkuls' => $users->matkul
+            ));
+        } else {
+            $app->redirect('/', 400);
+        }
+    } else {
+        $app->render('pages/_user.twig', array(
+            'username' => $username,
+            'role'     => $role,
+            'matkuls'  => $matkul
+        ));
+    }
 });
