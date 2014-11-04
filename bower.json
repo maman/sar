@@ -1,6 +1,6 @@
 {
   "name": "pkl-self-assest",
-  "version": "0.0.6-0",
+  "version": "0.0.6",
   "homepage": "https://github.com/maman/sar",
   "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
   "main": "public/index.php",
@@ -17,7 +17,9 @@
     "tests"
   ],
   "resolutions": {
-    "jquery": ">= 2.1.0"
+    "jquery": ">= 1.9.0",
+    "bootstrap": "~3.2.0",
+    "twitter-bootstrap-wizard": "1.2"
   },
   "dependencies": {
     "bootstrap": "~3.2.0",
@@ -27,6 +29,7 @@
     "moment": "~2.8.3",
     "metisMenu": "~1.1.2",
     "jquery-pjax": "~1.9.2",
-    "lesshat": "~3.0.2"
+    "lesshat": "~3.0.2",
+    "twitter-bootstrap-wizard": "1.2"
   }
 }

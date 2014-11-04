@@ -1,10 +1,14 @@
 /* jslint node: true */
-/* global $, window, document */
+/* global $, window, document, define */
 
 'use strict';
 
 require('bootstrap');
 require('metisMenu');
+require('twitter-bootstrap-wizard');
+
+var moment = require('moment');
+// var fuelux = require('fuelux');
 
 $('#side-menu').metisMenu();
 
@@ -27,4 +31,10 @@ $(window).bind('load resize', function() {
     if (height > topOffset) {
         $('#page-wrapper').css('min-height', (height) + 'px');
     }
+});
+
+$('[data-toggle=sidebar-mini]').hover(function() {
+  $(this).toggleClass('sidebar-mini');
+  $('#page-wrapper').toggleClass('full-page');
+  $('[data-toggle=sidebar-right]').toggleClass('collapsed');
 });
