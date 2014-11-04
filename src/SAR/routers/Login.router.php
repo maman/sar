@@ -28,7 +28,7 @@ $app->get('/login', function () use ($app) {
     if ($app->request->get('r') && $app->request->get('r') != '/logout' && $app->request->get('r') != '/login') {
         $urlRedirect = $app->request->get('r');
     }
-    if (isset($_SESSION['username'])) {
+    if (isset($_SESSION['username']) & !isset($flash['errors'])) {
         $app->redirect('/');
     } else {
         if (isset($_SESSION['urlRedirect'])) {
@@ -57,23 +57,22 @@ $app->post('/login', function () use ($app) {
             $_SESSION['username'] = $auth->username;
             $_SESSION['role'] = $auth->role;
             $matkul = $user->getMatkul($username);
-            if (count($matkul) >= 1) {
+            if (count($matkul) > 1) {
                 $_SESSION['matkul'] = $matkul;
-                if (isset($_SESSION['urlRedirect'])) {
-                    $tmp = $_SESSION['urlRedirect'];
-                    unset($_SESSION['urlRedirect']);
-                    $app->redirect($tmp);
-                } else {
-                    $app->log->info("LOGIN SUCCESS: " . $username . ":" . sha1($password) . " from " . $req->getIp());
-                    $app->redirect('/');
-                }
+            } else if (count($matkul) == 1) {
+                $_SESSION['matkul'] = $matkul[0];
+            }
+            if (isset($_SESSION['urlRedirect'])) {
+                $tmp = $_SESSION['urlRedirect'];
+                unset($_SESSION['urlRedirect']);
+                $app->redirect($tmp);
             } else {
-                $app->flash('errors', "Not Yet Plotted");
-                $app->log->notice("NOT PLOTTED: " . $username . ":" . $password . " from " . $req->getIp());
-                $app->redirect('/login');
+                $app->log->info("LOGIN SUCCESS: " . $username . ":" . sha1($password) . " from " . $req->getIp());
+                $app->redirect('/');
             }
         } else {
             $app->flash('errors', "Authentication Error");
+            $_SESSION['username'] = $req->post('username');
             $app->log->notice("LOGIN ATTEMPT: " . $username . ":" . $password . " from " . $req->getIp());
             $app->redirect('/login');
         }

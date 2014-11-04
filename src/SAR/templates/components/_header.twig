@@ -6,16 +6,12 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="/"><strong>MCIS</strong>Silabus &amp; SAR</a>
+		<a href="/login" class="navbar-toggle navbar-btn navbar-login btn btn-primary visible-xs">Login</a>
+		<a class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
 	</div>
 	<ul class="nav navbar-top-links navbar-right">
-		<li>
-			<a href="/">
-				<i class="fa fa-bank fa-fw"></i> MCIS
-			</a>
-		</li>
 		{% if username is not empty %}
-			{% if matkuls is not empty and matkuls|length > 1 %}
+			{% if matkuls is not empty and matkuls['0']|length > 1 %}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-briefcase fa-fw"></i> Lessons <i class="fa fa-caret-down"></i>
@@ -44,6 +40,19 @@
 			</ul>
 			<!-- /.dropdown-tasks -->
 		</li>
+			{% elseif matkuls is not empty %}
+		<li>
+			<div class="progress-navbar">
+				<a href="#">
+					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls.NamaMK }}</strong></span>
+					<div class="progress" style="width: 120px">
+						<div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+							x%
+						</div>
+					</div>
+				</a>
+			</div>
+		</li>
 			{% endif %}
 		<!-- /.dropdown -->
 		<li class="dropdown">
@@ -62,7 +71,7 @@
 			<!-- /.dropdown-user -->
 		</li>
 		{% else %}
-		<a href="/login" class="btn btn-primary primary navbar-btn" style="margin-right: 15px">Login</a>
+		<a href="/login" class="btn btn-primary primary navbar-btn btn-login hidden-xs">Login</a>
 		{% endif %}
 		<!-- /.dropdown -->
 	</ul>

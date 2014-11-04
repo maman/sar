@@ -19,14 +19,12 @@
 
 /** GET request on `/` */
 $app->get('/', function () use ($app) {
-    $username = '';
-    $role     = '';
-    $matkul   = '';
+    $req = $app->request();
     if (isset($_SESSION['username'])) {
-        $username = $_SESSION['username'];
-        $role = $_SESSION['role'];
-        if (isset($_SESSION['matkul'])) {
-            $matkul = $_SESSION['matkul'];
+        if (!isset($_SESSION['matkul'])) {
+            $app->flash('errors', "Not Yet Plotted");
+            $app->log->notice("NOT PLOTTED: " . $_SESSION['username'] . " from " . $req->getIp());
+            $app->redirect('/login');
         }
     }
     $app->render('pages/_dashboard.twig');

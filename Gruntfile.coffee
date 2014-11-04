@@ -66,6 +66,7 @@ module.exports = (grunt) ->
       dist:
         options:
           paths: [
+            bower + 'lesshat/build'
             bower + 'bootstrap/less'
             bower + 'font-awesome/less'
             bower + 'morrisjs/less'
@@ -83,6 +84,7 @@ module.exports = (grunt) ->
       dev:
         options:
           paths: [
+            bower + 'lesshat/build'
             bower + 'bootstrap/less'
             bower + 'font-awesome/less'
             bower + 'morrisjs/less'

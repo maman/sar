@@ -3,7 +3,8 @@
 /**
  * Config File
  *
- * This file contains the application configuration
+ * This file contains the base application configuration.
+ * Edit this file as needed.
  *
  * PHP version 5.4
  *

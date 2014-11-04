@@ -1,1 +1,27 @@
 // Mixins
+//
+
+/** All Caps */
+.text-allcaps {
+	text-transform: uppercase;
+}
+
+/** Centering */
+.preserve3d {
+	.lh-transform-style(preserve-3d);
+}
+
+.vertical-center, .horizontal center {
+	position: relative;
+}
+
+.vertical-center {
+	height: 100%;
+	.lh-display(flex);
+	.lh-align-items(center);
+}
+
+.horizontal-center {
+	left: 50%;
+	.lh-translateX(-50%);
+}

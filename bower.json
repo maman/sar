@@ -26,6 +26,7 @@
     "flot": "~0.8.3",
     "moment": "~2.8.3",
     "metisMenu": "~1.1.2",
-    "jquery-pjax": "~1.9.2"
+    "jquery-pjax": "~1.9.2",
+    "lesshat": "~3.0.2"
   }
 }

@@ -3,14 +3,15 @@
 {% block pagetitle %}Login{% endblock %}
 
 {% block content %}
-<div class="container">
-	<div class="row">
-		<div class="col-md-4 col-md-offset-4">
+<div class="container preserve3d">
+	<div class="row vertical-center">
+		<div class="col-md-4 horizontal-center">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Login to SAR</h3>
 				</div>
 				<div class="panel-body">
+					<img src="/assets/logo.png" alt="machung-logo" class="img-responsive img-rounded center-block" style="margin-bottom:1rem;pointer-events:none">
 					{% if errors is not empty %}
 					<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -25,9 +26,15 @@
 					{% endif %}
 					<form role="form" action="/login" method="POST">
 						<fieldset>
+							{% if username is not empty %}
+							<div class="form-group has-error">
+								<input class="form-control error" placeholder="Username" name="username" type="text" value="{{ nip }}">
+							</div>
+							{% else %}
 							<div class="form-group">
 								<input class="form-control" placeholder="Username" name="username" type="text" autofocus>
 							</div>
+							{% endif %}
 							<div class="form-group">
 								<input class="form-control" placeholder="Password" name="password" type="password" value="">
 							</div>
