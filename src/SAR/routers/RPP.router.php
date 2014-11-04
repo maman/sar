@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Silabus router for SAR Application
+ * RPP router for SAR Application
  *
- * this file contains route definition and logic for `silabus` route,
+ * this file contains route definition and logic for `rpp` route,
  * which is the descendants of the `/matakuliah` routes.
  *
  * PHP version 5.4
@@ -19,7 +19,7 @@
  */
 // use SAR\models\User;
 
-/** GET request on `//matakuliah/:idMatkul/silabus` */
-$app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), function ($idMatkul) use ($app) {
+/** GET request on `//matakuliah/:idMatkul/rpp` */
+$app->get('/matakuliah/:idMatkul/rpp', $authenticate($app), function ($idMatkul) use ($app) {
     $app->render('pages/_silabus.twig');
 });

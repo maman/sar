@@ -6,7 +6,9 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
+		{% if username is empty %}
 		<a href="/login" class="navbar-toggle navbar-btn navbar-login btn btn-primary visible-xs">Login</a>
+		{% endif %}
 		<a class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
 	</div>
 	<ul class="nav navbar-top-links navbar-right">
@@ -19,8 +21,7 @@
 			<ul class="dropdown-menu dropdown-tasks">
 				{% for matkul in matkuls %}
 				<li>
-					{# <a href="/matkul/{{ matkul.KDMataKuliah }}"> #}
-					<a href="/silabus">
+					<a href="/matakuliah/{{ matkul.KDMataKuliah }}">
 						<div>
 							<p>
 								<strong>{{ matkul.NamaMK }}</strong>
@@ -44,7 +45,7 @@
 			{% elseif matkuls is not empty %}
 		<li>
 			<div class="progress-navbar">
-				<a href="#">
+				<a href="/matakuliah/{{ matkuls.KDMataKuliah }}">
 					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls.NamaMK }}</strong></span>
 					<div class="progress" style="width: 120px">
 						<div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">

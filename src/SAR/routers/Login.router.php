@@ -17,7 +17,7 @@
  * @license GNU General Public License v2
  */
 use SAR\models\Login;
-use SAR\models\User;
+use SAR\models\Matkul;
 
 /** GET request on `/login` */
 $app->get('/login', function () use ($app) {
@@ -50,13 +50,13 @@ $app->post('/login', function () use ($app) {
     $username = $req->post('username');
     $password = $req->post('password');
     $auth = new Login();
-    $user = new User();
+    $user = new Matkul();
     if ($username != "" && $password != "") {
         if ($auth->authenticate($username, $password)) {
             $_SESSION['nip'] = $auth->nip;
             $_SESSION['username'] = $auth->username;
             $_SESSION['role'] = $auth->role;
-            $matkul = $user->getMatkul($username);
+            $matkul = $user->getMatkulByNIP($username);
             if (count($matkul) > 1) {
                 $_SESSION['matkul'] = $matkul;
             } else if (count($matkul) == 1) {

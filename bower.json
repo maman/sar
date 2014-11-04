@@ -30,6 +30,8 @@
     "metisMenu": "~1.1.2",
     "jquery-pjax": "~1.9.2",
     "lesshat": "~3.0.2",
-    "twitter-bootstrap-wizard": "1.2"
+    "twitter-bootstrap-wizard": "1.2",
+    "jquery.steps": "~1.1.0",
+    "jquery.easyWizard": "https://github.com/maman/jquery.easyWizard.git#master"
   }
 }

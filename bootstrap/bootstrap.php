@@ -63,17 +63,6 @@ $app = new \Slim\Slim(array(
     'cookies.cipher_mode' => MCRYPT_MODE_CBC
 ));
 
-/* Setup Auth Middleware */
-$authenticate = function ($app) {
-    return function () use ($app) {
-        $currPath = $app->request()->getPath();
-        if (!isset($_SESSION['username'])) {
-            $app->flash('error', 'Login Required');
-            $app->redirect('/login?r=' . $currPath);
-        }
-    };
-};
-
 $app->hook('slim.before.dispatch', function () use ($app) {
     $nip = null;
     $user = null;
@@ -137,6 +126,11 @@ $view->parserOptions = array(
     'debug' => true,
     'cache' => $config['path.templates.cache']
 );
+
+/* Load Middlewares */
+foreach (glob($config['path.middlewares'] . '*.php') as $middleware) {
+    require $middleware;
+}
 
 /* Load Routes */
 foreach (glob($config['path.routes'] . '*.router.php') as $router) {
