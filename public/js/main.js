@@ -8,7 +8,6 @@ require('metisMenu');
 require('twitter-bootstrap-wizard');
 
 var moment = require('moment');
-// var fuelux = require('fuelux');
 
 $('#side-menu').metisMenu();
 

@@ -1,0 +1,42 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Silabus for {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'} %}
+<div id="page-wrapper" class="full-page">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Silabus</h1>
+			<h3>SI001 MATERIAL REQUIREMENT PLANNING SYSTEM, 3 SKS</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-7">
+			<form action="" role="form">
+				<div class="form-group">
+					<label for="tujuan">Tujuan</label>
+					<textarea class="form-control" name="" id="tujuan" rows="10"></textarea>
+					<hr>
+				</div>
+				<div class="form-group">
+					<label for="kompetensi">Kompetensi</label>
+					<textarea class="form-control" name="" id="kompetensi" rows="10"></textarea>
+					<hr>
+				</div>
+				<div class="form-group">
+					<label for="tujuan-belajar">Tujuan Pembelajaran</label>
+					<textarea class="form-control" name="" id="tujuan-belajar" rows="10"></textarea>
+					<hr>
+				</div>
+				<div class="form-group">
+					<label for="pokok-bahasan">Pokok bahasan</label>
+					<textarea class="form-control" name="" id="pokok-bahasan" rows="10"></textarea>
+					<hr>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/right-bar/_silabus-helper.twig' %}
+{% endblock %}
