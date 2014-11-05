@@ -1,11 +1,12 @@
 {% if state == 'mini' %}
-<div class="navbar-default sidebar sidebar-mini" role="navigation" data-toggle="sidebar-mini">
+<div class="navbar-default sidebar" role="navigation" data-mini>
 {% else %}
 <div class="navbar-default sidebar" role="navigation">
 {% endif %}
 	<div class="sidebar-nav navbar-collapse">
 		<ul class="nav" id="side-menu">
 			<li class="sidebar-search">
+				<i class="fa fa-search fa-fw text-primary icon-dummy"></i>
 				<form class="input-group custom-search-form" action="/search" method="GET">
 					<input type="text" class="form-control" placeholder="Search..." name="q">
 					<span class="input-group-btn">

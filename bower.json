@@ -18,8 +18,7 @@
   ],
   "resolutions": {
     "jquery": ">= 1.9.0",
-    "bootstrap": "~3.2.0",
-    "twitter-bootstrap-wizard": "1.2"
+    "bootstrap": "~3.2.0"
   },
   "dependencies": {
     "bootstrap": "~3.2.0",
@@ -28,10 +27,8 @@
     "flot": "~0.8.3",
     "moment": "~2.8.3",
     "metisMenu": "~1.1.2",
-    "jquery-pjax": "~1.9.2",
     "lesshat": "~3.0.2",
-    "twitter-bootstrap-wizard": "1.2",
-    "jquery.steps": "~1.1.0",
-    "jquery.easyWizard": "https://github.com/maman/jquery.easyWizard.git#master"
+    "jquery-cycle2": "~2.1.6",
+    "phoenix": "https://github.com/maman/jquery-phoenix.git#master"
   }
 }

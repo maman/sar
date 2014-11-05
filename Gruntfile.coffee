@@ -181,7 +181,7 @@ module.exports = (grunt) ->
         files: [
           dot: true
           src: [
-            'public/css/tmp'
+            'public/css/tmp/*.css'
             '!public/css/tmp/.git*'
             'public/css/app.min.css'
             'public/js/*.js'

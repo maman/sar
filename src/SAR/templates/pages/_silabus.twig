@@ -3,8 +3,8 @@
 {% block pagetitle %}Silabus for {% endblock %}
 
 {% block content %}
-{% include 'components/_header.twig' with {'state': 'mini'} %}
-<div id="page-wrapper" class="full-page">
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">Silabus</h1>
@@ -25,16 +25,39 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-7">
-			<form action="" role="form" data-wizard>
-				<section class="form-group step" data-step-title="Tujuan" data-step-explanation="Berisi tentang tujuan dari mata kuliah yang sedang dijabarkan">
-					<textarea class="form-control" name="" id="tujuan" rows="10" autofocus></textarea>
+		<div class="col-lg-12">
+			<ul data-wizard-pager></ul>
+			<form action="/" id="silabusForm" role="form" data-wizard data-form-autosave class="cycle-slideshow"
+				data-cycle-fx="none"
+				data-cycle-auto-height="false"
+				data-cycle-timeout="0"
+				data-cycle-speed="100"
+				data-cycle-slides=">[data-wizard-pages]"
+				data-cycle-slide-active-class="active"
+				data-cycle-log="false"
+				data-cycle-prev="[data-wizard-toggle=wizard-prev]"
+				data-cycle-next="[data-wizard-toggle=wizard-next]"
+				data-cycle-allow-wrap="false"
+				data-cycle-pager="[data-wizard-pager]"
+				data-cycle-pager-active-class="active"
+				{% verbatim %}
+				data-cycle-pager-template="<li data-wizard-pagers><a href='#'><span>{{slideNum}}</span>. {{dataset.stepTitle}}</a></li>"
+				{% endverbatim %}
+				>
+				<section class="step" data-wizard-pages data-step-title="Tujuan" data-step-explanation="Berisi tentang tujuan dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Tujuan">
+					<div class="form-group" data-step-title="Tujuan">
+						<textarea data-input-autosave class="form-control input-plain input-lg" name="tujuan" id="tujuan" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+					</div>
 				</section>
-				<section class="form-group step" data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan">
-					<textarea class="form-control" name="" id="kompetensi" rows="10" autofocus></textarea>
+				<section class="step" data-wizard-pages data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Kompetensi">
+					<div class="form-group">
+						<textarea data-input-autosave class="form-control input-plain input-lg" name="kompetensi" id="tujuan" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+					</div>
 				</section>
-				<section class="form-group step" data-step-title="JANCOK" data-step-explanation="Berisi tentang JANCOK dari mata kuliah yang sedang dijabarkan">
-					<textarea class="form-control" name="" id="kompetensi" rows="10" autofocus></textarea>
+				<section class="step" data-wizard-pages data-step-title="Asolole" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="asdasds">
+					<div class="form-group">
+						<textarea data-input-autosave class="form-control input-plain input-lg" name="asolole" id="tujuan" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+					</div>
 				</section>
 				{# <div class="form-group">
 					<label for="kompetensi">Kompetensi</label>
@@ -55,5 +78,17 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' %}
+{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% endblock %}
+
+{% block inlinejs %}
+<script>
+setTimeout(
+	function() {
+		document.querySelector('.sidebar').className += ' ' + 'sidebar-mini';
+		document.querySelector('#page-wrapper').className += ' ' + 'full-page';
+		document.querySelector('.sidebar-right').className = 'sidebar-right';
+	}
+, 4500)
+</script>
 {% endblock %}

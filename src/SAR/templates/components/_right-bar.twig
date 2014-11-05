@@ -1,4 +1,8 @@
+{% if state == 'collapsed' %}
+<div class="sidebar-right collapsed" data-toggle="sidebar-right">
+{% else %}
 <div class="sidebar-right" data-toggle="sidebar-right">
+{% endif %}
 	<div class="panel panel-right">
 		{% block sidebar_right %}{% endblock %}
 	</div>

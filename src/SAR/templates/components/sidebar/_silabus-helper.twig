@@ -4,8 +4,8 @@
 <div class="panel-body">
 	<h4 class="page-header" data-wizard-step-title>Tujuan</h4>
 	<p data-wizard-step-explanation>Berisi tentang tujuan dari mata kuliah yang sedang dijabarkan</p>
-	<div class="btn-group btn-group-justified" style="margin-bottom: 15px">
-		<a href="#" class="btn btn-primary disabled" alt="previous" data-wizard-toggle="wizard-prev"><i class="fa fa-chevron-left"></i><span class="sr-only">Previous</span></a>
+	<div class="btn-group btn-group-justified hidden-xs" style="margin-bottom: 15px">
+		<a href="#" class="btn btn-primary" alt="previous" data-wizard-toggle="wizard-prev"><i class="fa fa-chevron-left"></i><span class="sr-only">Previous</span></a>
 		<a href="#" class="btn btn-primary" alt="next" data-wizard-toggle="wizard-next"><i class="fa fa-chevron-right"></i><span class="sr-only">Next</span></a>
 	</div>
 	<ul class="list-group">
@@ -13,10 +13,10 @@
 		<li class="list-group-item"><strong class="text-muted">Started on</strong> 08-01-2014</li>
 		<li class="list-group-item"><span class="text-danger">Unapproved</span></li>
 	</ul>
-	<div class="btn-group btn-group-justified">
-		<a href="#" class="btn btn-primary" alt="Clear"><i class="fa fa-file"></i><span class="sr-only">Clear</span></a>
-		<a href="#" class="btn btn-primary" alt="Save"><i class="fa fa-save"></i><span class="sr-only">Save</span></a>
-		<a href="#" class="btn btn-primary" alt="Delete"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
+	<div class="btn-group btn-group-justified" style="margin-bottom: 15px">
+		<a href="#" class="btn btn-primary" alt="Delete" data-form-destroy><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
+		<a href="#" class="btn btn-primary" alt="Save" data-form-save><i class="fa fa-save"></i><span class="sr-only">Save</span></a>
 	</div>
+	<input type="submit" form="silabusForm" class="btn btn-block btn-success btn-lg" value="Submit">
 </div>
 {% endblock %}
