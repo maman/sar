@@ -26,6 +26,37 @@
 	.lh-translateX(-50%);
 }
 
+/** Lists itemtext li */
+.list-group-item-section {
+	margin-top: @padding-small-vertical;
+}
+ul.list-group-item-text {
+	padding-left: 1em;
+	li {
+		padding-left: 0;
+	}
+}
+
+/** Normal color links */
+.normal-link {
+	color: @text-color;
+	text-decoration: none;
+	&:hover {
+		color: @gray-dark;
+		text-decoration: none;
+	}
+}
+
+/** Wells, color only */
+.darken {
+	background: @well-bg;
+}
+
+/** HR additional styles */
+hr.mini {
+	margin: @padding-small-vertical 0;
+}
+
 /** Form style */
 .input-plain {
 	border: none;

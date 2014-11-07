@@ -29,6 +29,7 @@ $basedir = __DIR__ . '/../';
 return array(
 
     /** Application Settings */
+    'app.base.url'          => 'localhost:8888',
     'app.environment'      => 'development',
     'app.log'              => $basedir . 'logs/app-' . date('Y-m-d') . '.log',
     'app.cookie.lifetime'  => '20 minutes',

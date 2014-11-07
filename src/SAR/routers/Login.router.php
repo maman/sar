@@ -27,13 +27,11 @@ $app->get('/login', function () use ($app) {
     $flash = $app->view()->getData('flash');
     if ($app->request->get('r') && $app->request->get('r') != '/logout' && $app->request->get('r') != '/login') {
         $urlRedirect = $app->request->get('r');
+        $_SESSION['urlRedirect'] = $urlRedirect;
     }
     if (isset($_SESSION['username']) & !isset($flash['errors'])) {
         $app->redirect('/');
     } else {
-        if (isset($_SESSION['urlRedirect'])) {
-            $urlRedirect = $_SESSION['urlRedirect'];
-        }
         if (isset($flash['errors'])) {
             $errors = $flash['errors'];
         }

@@ -68,6 +68,8 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     $user = null;
     $role = null;
     $matkul = null;
+    $c['config'] = require 'config.php';
+    $config = $c['config'];
     if (isset($_SESSION['nip'])) {
         $nip = $_SESSION['nip'];
     }
@@ -82,6 +84,7 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     }
     // $app->view()->setData('username', $user);
     $app->view()->appendData(array(
+        'baseUrl' => $config['app.base.url'],
         'nip' => $nip,
         'username' => $user,
         'role' => $role,

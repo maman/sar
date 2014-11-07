@@ -3,8 +3,7 @@
 /**
  * Agenda router for SAR Application
  *
- * this file contains route definition and logic for `silabus` route,
- * which is the descendants of the `/matakuliah` routes.
+ * this file contains route definition and logic for `/matakuliah/:idmatakuliah/agenda` route.
  *
  * PHP version 5.4
  *
@@ -17,8 +16,20 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
+use SAR\models\Matkul;
 
-/** GET request on `//matakuliah/:idMatkul/silabus` */
+/** GET request on `/matakuliah/:idMatkul/agenda` */
 $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), function ($idMatkul) use ($app) {
-    $app->render('pages/_agenda.twig');
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $semesterMatkul = $details['SemesterMK'];
+    $tahunMatkul = $details['TahunAjaranMK'];
+    $app->render('pages/_agenda.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'semesterMatkul' => $semesterMatkul,
+        'tahunMatkul' => $tahunMatkul,
+    ));
 });

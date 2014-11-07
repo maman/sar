@@ -2,9 +2,6 @@
   "name": "pkl-self-assest",
   "version": "0.0.7",
   "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
-  "scripts": {
-    "test": "phpunit"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/maman/sar.git"

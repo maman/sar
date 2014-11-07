@@ -16,22 +16,31 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
-use SAR\models\User;
 use SAR\models\Matkul;
 
 /** GET request on `/matakuliah/:idmatakuliah` */
-$app->get('/matakuliah/:id', $authenticate($app), function ($id) use ($app) {
+$app->get('/matakuliah/:idMatkul', $authenticate($app), function ($idMatkul) use ($app) {
+    $currPath = $app->request->getPath();
     $matkul = new Matkul();
-    $details = $matkul->getMatkulDetails($id)[0];
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
-    $currPath = $app->request->getPath();
     $app->render('pages/_matakuliah.twig', array(
-        'idMatkul' => $id,
+        'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
         'currPath' => $currPath
     ));
+});
+
+/** GET request on `/matakuliah/:idMatkul/silabus` */
+$app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), function ($idMatkul) use ($app) {
+    $app->render('pages/_silabus.twig');
+});
+
+/** GET request on `//matakuliah/:idMatkul/rpp` */
+$app->get('/matakuliah/:idMatkul/rpp', $authenticate($app), function ($idMatkul) use ($app) {
+    $app->render('pages/_silabus.twig');
 });
