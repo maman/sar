@@ -31,6 +31,10 @@ module.exports = (grunt) ->
     # Watch
     # =====
     watch:
+      config:
+        files: ['Gruntfile.coffee']
+        options:
+          reload: true
       less:
         files: ['public/less/{,*/}*.less']
         tasks: ['less:dev', 'concat:dev']
@@ -43,7 +47,7 @@ module.exports = (grunt) ->
           livereload: true
 
       js:
-        files: ['public/js/main.js']
+        files: ['public/js/**/*.js']
         tasks: ['jshint', 'webpack:dev']
         options:
           livereload: true
@@ -103,17 +107,24 @@ module.exports = (grunt) ->
         browser: true
         browserify: true
         jquery: true
+        predef: [
+          'require'
+          'define'
+          'escape'
+        ]
         reporter: require('jshint-stylish')
       all: [
-        'public/js/**/*.js'
+        'public/js/main/*.js'
         '!public/js/bundle.js'
+        '!public/js/vendor.bundle.js'
       ]
 
     # Webpack
     # =======
     webpack:
       options:
-        entry: './public/js/main.js'
+        context: './public/js'
+        entry: './main.js'
         output:
           path: './public/js/'
           filename: 'bundle.js'

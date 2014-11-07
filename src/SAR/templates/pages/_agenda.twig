@@ -1,0 +1,46 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Agenda for {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Agenda</h1>
+			<div class="alert alert-dismissible alert-warning" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<strong>Warning:</strong> You have finished this section.
+			</div>
+			<div class="alert alert-dismissible alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<strong>Uh oh.</strong> This has been verified and approved by kaprodi. you cannot edit this anymore.
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga amet alias odit hic, commodi error saepe cupiditate veritatis accusantium in provident neque blanditiis perspiciatis ad eligendi deserunt labore pariatur repellendus.</p>
+		</div>
+	</div>
+</div>
+{% include 'components/sidebar/_agenda-helper.twig' with {'state': 'collapsed'}  %}
+{% endblock %}
+
+{% block inlinejs %}
+<script>
+setTimeout(
+	function() {
+		document.querySelector('.sidebar').className += ' ' + 'sidebar-mini';
+		document.querySelector('#page-wrapper').className += ' ' + 'full-page';
+		document.querySelector('.sidebar-right').className = 'sidebar-right';
+	}
+, 4500)
+</script>
+{% endblock %}

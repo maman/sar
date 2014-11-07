@@ -82,13 +82,5 @@
 {% endblock %}
 
 {% block inlinejs %}
-<script>
-setTimeout(
-	function() {
-		document.querySelector('.sidebar').className += ' ' + 'sidebar-mini';
-		document.querySelector('#page-wrapper').className += ' ' + 'full-page';
-		document.querySelector('.sidebar-right').className = 'sidebar-right';
-	}
-, 4500)
-</script>
+<script>triggerLayoutMini();formAutoSave()</script>
 {% endblock %}
