@@ -32,6 +32,13 @@ var domLoad = function() {
           $('#page-wrapper').css('min-height', (height) + 'px');
       }
   });
+  if ($('.sidebar[data-mini]').length) {
+    $('.sidebar[data-mini]').hover(function() {
+      $(this).toggleClass('sidebar-mini');
+      $('#page-wrapper').toggleClass('full-page');
+      $('[data-toggle=sidebar-right]').toggleClass('collapsed');
+    });
+  }
 };
 
 module.exports = domLoad();

@@ -26,6 +26,30 @@
 	.lh-translateX(-50%);
 }
 
+/** Toggleable List */
+[data-list-toggle-target] {
+	.lh-transition(box-shadow .3s .5s ease-out, max-height .5s ease-in-out, margin .2s .5s ease-in-out, background-image 1s .5s ease-in-out);
+	.lh-background-image(linear-gradient(to top, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0)));
+	overflow: hidden;
+	max-height: 2000px;
+	margin-bottom: @padding-large-vertical;
+	box-shadow: 0 30px 50px fade(@text-color, 40%);
+	&:not(:first-of-type) {
+		margin-top: @padding-large-vertical;
+	}
+	&.collapsed {
+		max-height: 200px;
+		margin-top: 0;
+		margin-bottom: 0;
+		box-shadow: none;
+		.lh-background-image(linear-gradient(to top, #E7E7E7 0%, rgba(255, 255, 255, .7) 20%, rgba(255, 255, 255, 0)));
+		.lh-transition(box-shadow .3s .5s ease-out, max-height .5s ease-in-out, margin .2s .5s ease-in-out, background-image 1s .5s ease-in-out);
+	}
+	.list-group-toggle {
+		cursor: pointer;
+	}
+}
+
 /** Lists itemtext li */
 .list-group-item-section {
 	margin-top: @padding-small-vertical;

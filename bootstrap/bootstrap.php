@@ -64,12 +64,26 @@ $app = new \Slim\Slim(array(
 ));
 
 $app->hook('slim.before.dispatch', function () use ($app) {
+    $c['config'] = require 'config.php';
+    $config = $c['config'];
+    $baseUrl = $config['app.base.url'];
     $nip = null;
     $user = null;
     $role = null;
     $matkul = null;
-    $c['config'] = require 'config.php';
-    $config = $c['config'];
+    $prevLink = null;
+    $pathInfo = array();
+    $currPath = $app->request->getPathInfo();
+    $breadcrumb = explode('/', $currPath);
+    foreach ($breadcrumb as $link) {
+        if ($prevLink) {
+            $pathInfo[$link] = '/' . $prevLink . '/' . $link;
+            $prevLink .= '/';
+        } else {
+            $pathInfo[$link] = $baseUrl . '/' . $link;
+        }
+        $prevLink .= $link;
+    }
     if (isset($_SESSION['nip'])) {
         $nip = $_SESSION['nip'];
     }
@@ -84,11 +98,12 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     }
     // $app->view()->setData('username', $user);
     $app->view()->appendData(array(
-        'baseUrl' => $config['app.base.url'],
+        'baseUrl' => $baseUrl,
         'nip' => $nip,
         'username' => $user,
         'role' => $role,
-        'matkuls' => $matkul
+        'matkuls' => $matkul,
+        'breadcrumbs' => $pathInfo
     ));
 });
 

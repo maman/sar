@@ -1,0 +1,11 @@
+{% if breadcrumbs is not empty %}
+<ol class="breadcrumb" role="navigation">
+	<li><a href="/">Home</a></li>
+{% for name, link in breadcrumbs %}
+	{% if not loop.first %}
+	<li><a href="{{ link }}">{{name|capitalize}}</a></li>
+	{% endif %}
+{% endfor %}
+</ol>
+{% endif %}
+

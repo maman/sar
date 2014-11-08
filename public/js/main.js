@@ -11,5 +11,6 @@ require('./globals/domReady');
 
 require('./helpers/formAutosave');
 require('./helpers/layoutMini');
+require('./helpers/listToggler');
 
 console.log('ready to dispatch.');
