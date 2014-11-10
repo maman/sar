@@ -1,0 +1,15 @@
+{
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": "."
+        }
+    ],
+    "settings": {
+        "xdebug": {
+            "path_mapping": {"/var/www/": "/Users/Evo/Documents/Hack/pkl-kampus/app/"},
+            "url": "http://localhost:8888/"
+        }
+    }
+}

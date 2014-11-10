@@ -104,4 +104,40 @@ class Matkul
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
     }
+
+    /**
+     * isMatkulNIP
+     *
+     * Check if current user is handed the provided Mata Kuliah
+     * @param  string  $nip
+     * @param  string  $idMatkul
+     * @return boolean
+     */
+    public function isMatkulNIP($nip, $idMatkul)
+    {
+        $results = false;
+        $query = $this->core->db->prepare(
+            'SELECT
+                "KDMataKuliah",
+                NIP,
+                STATUS
+            FROM
+                PLOTTING
+            WHERE
+                "KDMataKuliah" = :idMatkul
+            AND
+                NIP = :nip
+            AND
+                STATUS IS NOT NULL'
+        );
+        $query->bindParam(':nip', $nip);
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchColumn();
+        if ($results > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
