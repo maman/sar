@@ -91,6 +91,8 @@ class Login
                     } else {
                     $this->role = "dosen";
                     }
+                } else {
+                    return false;
                 }
                 $this->nip = $result['NIP'];
                 $this->username = $result['NAMA'];

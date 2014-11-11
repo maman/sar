@@ -19,28 +19,20 @@
 use SAR\models\Matkul;
 
 /** GET request on `/matakuliah/:idmatakuliah` */
-$app->get('/matakuliah/:idMatkul', $authenticate($app), function ($idMatkul) use ($app) {
-    $req = $app->request();
-    if(!array_search($idMatkul, $_SESSION['matkul']) && !$_SESSION['role'] == 'kaprodi') {
-        $app->log->error("403: " . $req->getUrl() . $req->getPath() . " - SessionDump: [" . var_export($_SESSION, true) . "]");
-        $app->render('pages/_403.twig', array(
-            'url' => $req->getUrl() . $req->getPath()
-        ));
-    } else {
-        $currPath = $req->getPath();
-        $matkul = new Matkul();
-        $details = $matkul->getMatkulDetails($idMatkul)[0];
-        $namaMatkul = $details['NamaMK'];
-        $semesterMatkul = $details['SemesterMK'];
-        $tahunMatkul = $details['TahunAjaranMK'];
-        $app->render('pages/_matakuliah.twig', array(
-            'idMatkul' => $idMatkul,
-            'namaMatkul' => $namaMatkul,
-            'semesterMatkul' => $semesterMatkul,
-            'tahunMatkul' => $tahunMatkul,
-            'currPath' => $currPath
-        ));
-    }
+$app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    $currPath = $app->request()->getPath();
+    $matkul = new Matkul();
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $semesterMatkul = $details['SemesterMK'];
+    $tahunMatkul = $details['TahunAjaranMK'];
+    $app->render('pages/_matakuliah.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'semesterMatkul' => $semesterMatkul,
+        'tahunMatkul' => $tahunMatkul,
+        'currPath' => $currPath
+    ));
 });
 
 /** GET request on `/matakuliah/:idMatkul/silabus` */
