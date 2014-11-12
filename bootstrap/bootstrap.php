@@ -77,7 +77,7 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     $breadcrumb = explode('/', $currPath);
     foreach ($breadcrumb as $link) {
         if ($prevLink) {
-            $pathInfo[$link] = '/' . $prevLink . '/' . $link;
+            $pathInfo[$link] = $baseUrl . '/' . $prevLink . '/' . $link;
             $prevLink .= '/';
         } else {
             $pathInfo[$link] = $baseUrl . '/' . $link;

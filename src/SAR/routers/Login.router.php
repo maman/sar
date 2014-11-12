@@ -63,6 +63,8 @@ $app->post('/login', function () use ($app) {
                         $rps->createRpsForMatkul($matkul_loop['KDMataKuliah']);
                     }
                     $matkul[$key]['percentage'] = $rps->getRpsProgress($matkul_loop['KDMataKuliah'])['percentage'];
+                    $matkul[$key]['approved'] = $rps->getRpsProgress($matkul_loop['KDMataKuliah'])['approved'];
+                    $matkul[$key]['RPSDetails'] = $rps->getRpsProgress($matkul_loop['KDMataKuliah'])['RPSDetails'];
                 }
                 $_SESSION['matkul'] = $matkul;
             } else if (count($matkul) == 1) {
@@ -70,6 +72,8 @@ $app->post('/login', function () use ($app) {
                     $rps->createRpsForMatkul($matkul[0]['KDMataKuliah']);
                 }
                 $matkul[0]['percentage'] = $rps->getRpsProgress($matkul[0]['KDMataKuliah'])['percentage'];
+                $matkul[0]['approved'] = $rps->getRpsProgress($matkul[0]['KDMataKuliah'])['approved'];
+                $matkul[0]['RPSDetails'] = $rps->getRpsProgress($matkul[0]['KDMataKuliah'])['RPSDetails'];
                 $_SESSION['matkul'] = $matkul[0];
             }
             if (isset($_SESSION['urlRedirect'])) {
