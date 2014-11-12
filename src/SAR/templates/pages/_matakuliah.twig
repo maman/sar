@@ -62,7 +62,12 @@
 						{% endif %}
 						{% if progress.RPSDetails.project %}
 						<a href="{{ currPath }}/task" class="list-group-item list-group-item-success">
-							<i class="fa fa-exclamation fa-fw text-success"></i> Rencana Task/Project Pembelajaran
+							<i class="fa fa-check fa-fw text-success"></i> Rencana Task/Project Pembelajaran
+							<span class="pull-right label label-success">finished</span>
+							</span>
+						</a>
+						<a href="{{ currPath }}/jadwal" class="list-group-item list-group-item-success">
+							<i class="fa fa-check fa-fw text-success"></i> Jadwal Aktivitas Belajar
 							<span class="pull-right label label-success">finished</span>
 							</span>
 						</a>
@@ -72,21 +77,21 @@
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
 						</a>
-						{% endif %}
 						<a href="{{ currPath }}/jadwal" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Jadwal Aktivitas Belajar
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
 						</a>
+						{% endif %}
 					</div>
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
 								{% if progress.RPSDetails.silabus and progress.RPSDetails.agenda and progress.RPSDetails.project %}
-								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
 								<a href="#" class="btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 								{% endif %}
-								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Cetak RPS</a>
 								<a href="#" class="btn btn-success disabled"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
@@ -106,66 +111,71 @@
 				<div class="panel-body">
 					<div class="list-group">
 						{% if matkul.RPSDetails.silabus %}
-						<div class="list-group-item list-group-item-success">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/silabus" class="list-group-item list-group-item-success">
 							<i class="fa fa-check fa-fw text-success"></i> Silabus
 							<span class="pull-right label label-success">finished</span>
-						</div>
+						</a>
 						{% else %}
-						<div class="list-group-item list-group-item-warning">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/silabus" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Silabus
 							<span class="pull-right label label-danger">unfinished</span>
-						</div>
+						</a>
 						{% endif %}
 						{% if matkul.RPSDetails.agenda %}
-						<div class="list-group-item list-group-item-success">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/agenda" class="list-group-item list-group-item-success">
 							<i class="fa fa-check fa-fw text-success"></i> Agenda Pembelajaran
 							<span class="pull-right label label-success">finished</span>
 							</span>
-						</div>
-						<div class="list-group-item list-group-item-success">
+						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-success">
 							<i class="fa fa-check fa-fw text-success"></i> Rencana Evaluasi Pembelajaran
 							<span class="pull-right label label-success">finished</span>
 							</span>
-						</div>
+						</a>
 						{% else %}
-						<div class="list-group-item list-group-item-warning">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/agenda" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Agenda Pembelajaran
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
-						</div>
-						<div class="list-group-item list-group-item-warning">
+						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Evaluasi Pembelajaran
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
-						</div>
+						</a>
 						{% endif %}
 						{% if matkul.RPSDetails.project %}
-						<div class="list-group-item list-group-item-success">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/task" class="list-group-item list-group-item-success">
 							<i class="fa fa-exclamation fa-fw text-success"></i> Rencana Task/Project Pembelajaran
 							<span class="pull-right label label-success">finished</span>
 							</span>
-						</div>
+						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-success">
+							<i class="fa fa-check fa-fw text-success"></i> Jadwal Aktivitas Belajar
+							<span class="pull-right label label-success">finished</span>
+							</span>
+						</a>
 						{% else %}
-						<div class="list-group-item list-group-item-warning">
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/task" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Task/Project Pembelajaran
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
-						</div>
-						{% endif %}
-						<div class="list-group-item list-group-item-warning">
+						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Jadwal Aktivitas Belajar
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
-						</div>
+						</a>
+						{% endif %}
 					</div>
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified">
 								{% if matkul.RPSDetails.silabus and matkul.RPSDetails.agenda and matkul.RPSDetails.project %}
-								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
 								<a href="#" class="btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 								{% endif %}
-								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Cetak RPS</a>
 								<a href="#" class="btn btn-success disabled"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>

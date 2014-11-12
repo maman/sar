@@ -31,5 +31,22 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), function ($idMatk
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
+        'currPath' => $currPath
+    ));
+});
+
+$app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($idMatkul) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $semesterMatkul = $details['SemesterMK'];
+    $tahunMatkul = $details['TahunAjaranMK'];
+    $app->render('pages/_agenda-new.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'semesterMatkul' => $semesterMatkul,
+        'tahunMatkul' => $tahunMatkul,
+        'currPath' => $currPath
     ));
 });
