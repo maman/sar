@@ -3,7 +3,7 @@
 	<li><a href="/">Home</a></li>
 {% for name, link in breadcrumbs %}
 	{% if not loop.first %}
-	<li><a href="{{ link }}">{{name|capitalize}}</a></li>
+	<li><a href="http://{{ link }}">{{name|capitalize}}</a></li>
 	{% endif %}
 {% endfor %}
 </ol>

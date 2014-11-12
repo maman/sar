@@ -30,7 +30,6 @@ $accessmatkul = function($route) use ($app) {
     $idMatkul = $route->getParams();
     if (!array_search($idMatkul['idMatkul'], $_SESSION['matkul'])) {
         if ($_SESSION['role'] != 'kaprodi') {
-            echo('jancok');
             $app->log->error("403: " . $req->getUrl() . $req->getPath() . " - SessionDump: [" . var_export($_SESSION, true) . "]");
             $app->redirect('/', 403);
         }

@@ -18,6 +18,7 @@
  */
 use SAR\models\Login;
 use SAR\models\Matkul;
+use SAR\models\Rps;
 
 /** GET request on `/login` */
 $app->get('/login', function () use ($app) {
@@ -49,6 +50,7 @@ $app->post('/login', function () use ($app) {
     $password = $req->post('password');
     $auth = new Login();
     $user = new Matkul();
+    $rps = new Rps();
     if ($username != "" && $password != "") {
         if ($auth->authenticate($username, $password)) {
             $_SESSION['nip'] = $auth->nip;
@@ -56,8 +58,18 @@ $app->post('/login', function () use ($app) {
             $_SESSION['role'] = $auth->role;
             $matkul = $user->getMatkulByNIP($username);
             if (count($matkul) > 1) {
+                foreach($matkul as $key => $matkul_loop) {
+                    if (!$rps->getRpsProgress($matkul_loop['KDMataKuliah'])) {
+                        $rps->createRpsForMatkul($matkul_loop['KDMataKuliah']);
+                    }
+                    $matkul[$key]['percentage'] = $rps->getRpsProgress($matkul_loop['KDMataKuliah'])['percentage'];
+                }
                 $_SESSION['matkul'] = $matkul;
             } else if (count($matkul) == 1) {
+                if (!$rps->getRpsProgress($matkul[0]['KDMataKuliah'])) {
+                    $rps->createRpsForMatkul($matkul[0]['KDMataKuliah']);
+                }
+                $matkul[0]['percentage'] = $rps->getRpsProgress($matkul[0]['KDMataKuliah'])['percentage'];
                 $_SESSION['matkul'] = $matkul[0];
             }
             if (isset($_SESSION['urlRedirect'])) {

@@ -13,7 +13,7 @@
 		<!-- /.col-lg-12 -->
 	</div>
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 				<i class="fa fa-bell fa-fw"></i> Progress Pembuatan
@@ -21,15 +21,29 @@
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="list-group">
+						{% if progress.RPSDetails.silabus %}
 						<a href="{{ currPath }}/silabus" class="list-group-item list-group-item-success">
 							<i class="fa fa-check fa-fw text-success"></i> Silabus
-							<span class="pull-right label label-success">finished: 4 minutes ago</span>
+							<span class="pull-right label label-success">finished</span>
 						</a>
-						<a href="{{ currPath }}/rpp" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Rancangan Pembelajaran
+						{% else %}
+						<a href="{{ currPath }}/silabus" class="list-group-item list-group-item-warning">
+							<i class="fa fa-exclamation fa-fw text-danger"></i> Silabus
 							<span class="pull-right label label-danger">unfinished</span>
+						</a>
+						{% endif %}
+						{% if progress.RPSDetails.agenda %}
+						<a href="{{ currPath }}/agenda" class="list-group-item list-group-item-success">
+							<i class="fa fa-check fa-fw text-success"></i> Agenda Pembelajaran
+							<span class="pull-right label label-success">finished</span>
 							</span>
 						</a>
+						<a href="{{ currPath }}/evaluasi" class="list-group-item list-group-item-success">
+							<i class="fa fa-check fa-fw text-success"></i> Rencana Evaluasi Pembelajaran
+							<span class="pull-right label label-success">finished</span>
+							</span>
+						</a>
+						{% else %}
 						<a href="{{ currPath }}/agenda" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Agenda Pembelajaran
 							<span class="pull-right label label-danger">unfinished</span>
@@ -40,16 +54,37 @@
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
 						</a>
+						{% endif %}
+						{% if progress.RPSDetails.project %}
+						<a href="{{ currPath }}/task" class="list-group-item list-group-item-success">
+							<i class="fa fa-exclamation fa-fw text-success"></i> Rencana Task/Project Pembelajaran
+							<span class="pull-right label label-success">finished</span>
+							</span>
+						</a>
+						{% else %}
 						<a href="{{ currPath }}/task" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Task/Project Pembelajaran
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
 						</a>
+						{% endif %}
 						<a href="{{ currPath }}/jadwal" class="list-group-item list-group-item-warning">
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Jadwal Aktivitas Belajar
 							<span class="pull-right label label-danger">unfinished</span>
 							</span>
 						</a>
+					</div>
+					<div class="row">
+						<div class="col-lg-6 col-lg-offset-3">
+							<div class="btn-group btn-group-justified btn-group-lg">
+								{% if progress.RPSDetails.silabus and progress.RPSDetails.agenda and progress.RPSDetails.project %}
+								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
+								{% endif %}
+								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Print RPS</a>
+								<a href="#" class="btn btn-success disabled"><i class="fa fa-cloud"></i> Submit RPS</a>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- /.panel-body -->

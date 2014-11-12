@@ -130,7 +130,7 @@ module.exports = (grunt) ->
           filename: 'bundle.js'
         plugins: [
           new webpackBower(
-            excludes: /.*\.(less|css|woff|svg|ttf|eot)([\?]?.*)$/
+            excludes: /.*\.(less|css|woff|svg|ttf|eot|png|gif)([\?]?.*)$/
           )
           new webpack.ProvidePlugin(
             $: 'jquery'

@@ -19,6 +19,7 @@
 namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
+use SAR\models\Rps;
 
 /**
  * Matkul Class
@@ -140,4 +141,30 @@ class Matkul
             return false;
         }
     }
+
+    // public function getSilabusProgress($idMatkul) {
+    //     $results = false;
+    //     $query = $this->core->db->prepare(
+    //         'SELECT
+    //             *
+    //         FROM
+    //             RPS
+    //         WHERE
+    //             "KDMataKuliah" = :idMatkul'
+    //     );
+    //     $query->bindParam(':idMatkul', $idMatkul);
+    //     $query->execute();
+    //     $results = $query->fetchColumn();
+    //     if ($results = 0) {
+    //         $insert = $this->core->db->prepare(
+    //             'INSERT INTO
+    //                 RPS
+    //             ("KDMataKuliah")
+    //                 VALUES
+    //             (:idMatkul)'
+    //         );
+    //         $insert->bindParam(':idMatkul', $idMatkul);
+    //         $query->execute();
+    //     }
+    // }
 }

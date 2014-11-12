@@ -139,3 +139,33 @@ hr.mini {
 	border-bottom: (@width / 2) solid transparent;
 	border-left: @height solid @color;
 }
+
+/** Self-generate form */
+[data-multi-target] {
+	position: relative;
+	margin: @padding-large-vertical*2 0;
+	&:first-of-type {
+		margin-top: 0;
+		[data-multi-target-close] {
+			display: none;
+		}
+	}
+	[data-multi-target-close] {
+		position: absolute;
+		right: -10px;
+		top: -10px;
+		display: block;
+		width: 22px;
+		height: 22px;
+		border-radius: 9999em;
+		background: @body-bg;
+		text-align: center;
+		color: @brand-danger;
+		box-shadow: 0 0 0 3px @brand-danger;
+	}
+	.form-control {
+		margin-bottom: @padding-large-vertical;
+	}
+}
+
+/** Select2 Plain */

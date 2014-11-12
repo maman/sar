@@ -17,20 +17,24 @@
  * @license GNU General Public License v2
  */
 use SAR\models\Matkul;
+use SAR\models\Rps;
 
 /** GET request on `/matakuliah/:idmatakuliah` */
 $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
+    $rps = new Rps();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
+    $progress = $rps->getRpsProgress($idMatkul);
     $app->render('pages/_matakuliah.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
+        'progress' => $progress,
         'currPath' => $currPath
     ));
 });

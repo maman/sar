@@ -12,5 +12,7 @@ require('./globals/domReady');
 require('./helpers/formAutosave');
 require('./helpers/layoutMini');
 require('./helpers/listToggler');
+require('./helpers/multitags');
+require('./helpers/formMultiTarget');
 
 console.log('ready to dispatch.');

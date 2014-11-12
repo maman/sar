@@ -29,6 +29,7 @@
     "metisMenu": "~1.1.2",
     "lesshat": "~3.0.2",
     "jquery-cycle2": "~2.1.6",
-    "phoenix": "https://github.com/maman/jquery-phoenix.git#master"
+    "phoenix": "https://github.com/maman/jquery-phoenix.git#master",
+    "select2": "~3.5.2"
   }
 }
