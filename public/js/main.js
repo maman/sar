@@ -5,6 +5,7 @@
 
 require('bootstrap');
 require('jquery-cycle2');
+require('jquery.serializeJSON');
 
 require('./globals/domLoad');
 require('./globals/domReady');

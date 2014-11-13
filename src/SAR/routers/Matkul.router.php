@@ -21,7 +21,6 @@ use SAR\models\Rps;
 
 $app->get('/matakuliah', $authenticate($app), function() use ($app) {
     $matkul = new Matkul();
-    $rps = new Rps();
     $app->render('pages/_matakuliah.twig');
 });
 
@@ -43,11 +42,6 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
         'progress' => $progress,
         'currPath' => $currPath
     ));
-});
-
-/** GET request on `/matakuliah/:idMatkul/silabus` */
-$app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), function ($idMatkul) use ($app) {
-    $app->render('pages/_silabus.twig');
 });
 
 /** GET request on `//matakuliah/:idMatkul/rpp` */

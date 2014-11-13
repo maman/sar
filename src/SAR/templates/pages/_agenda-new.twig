@@ -46,8 +46,12 @@
 				{% endverbatim %}
 				>
 				<section class="step" data-wizard-pages data-step-title="Sub Kompetensi" data-step-explanation="Berisi tentang tujuan dan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="sub-kompetensi">
-					<div class="form-group">
+					<div class="form-group" data-multi-target>
 						<textarea data-input-autosave class="form-control input-lg" name="sub-kompetensi" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+						<select multiple name="sub-kompetensi-select" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+							<option value="187" data-tag-text="Berkomunikasi dengan menggunakan multibahasa">U1</option>
+							<option value="188" data-tag-text="Kemampuan Technopreneurship">V2</option>
+						</select>
 					</div>
 				</section>
 				<section class="step" data-wizard-pages data-step-title="Materi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="materi-belajar">
@@ -96,18 +100,22 @@
 				</section>
 				<section class="step" data-wizard-pages data-step-title="Evaluasi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="evaluasi">
 					<div class="form-group evaluasi" data-multi-target-parent>
-						<div class="evaluasi" data-multi-target>
+						<div class="evaluasi row" data-multi-target>
 							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="evaluasi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<div class="radio">
-								<label>
-									<input type="radio" name="tes-type" value="tes"> Tes
-								</label>
+							<div class="col-sm-10 col-xs-9">
+								<textarea data-input-autosave class="form-control input-lg" name="evaluasi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
 							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="tes-type" value="non-tes"> Non Tes
-								</label>
+							<div class="col-sm-2 col-xs-3">
+								<div class="radio">
+									<label>
+										<input type="radio" name="tes-type" value="tes"> Tes
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="tes-type" value="non-tes"> Non Tes
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
