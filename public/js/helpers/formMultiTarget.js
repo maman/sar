@@ -21,19 +21,22 @@ $(document).on('click.sar.form-multi-target', '[data-multi-target-btn]', functio
     $target
       .clone()
       .appendTo($this.data('multiTargetContainer'))
-      .find(':input:not(.select2-input)').attr('name', name + '-' + $count);
+      .find(':input:not(.select2-input)').attr('name', name + '-' + $count)
+      .val('');
     window.multitags();
   } else {
     $target
       .clone()
       .appendTo($this.data('multiTargetContainer'))
-      .find(':input:not(.select2-input)').attr('name', name + '-' + $count);
+      .find(':input:not(.select2-input)').attr('name', name + '-' + $count)
+      .val('');
   }
 });
 
 $(document).on('click.sar.form-multi-target-close', '[data-multi-target-close]', function(e) {
   var $this = $(this);
   var $target = $this.parent();
+  var $count = $target.parent().children().length;
 
   if ($this.is('a')) e.preventDefault();
 
@@ -44,4 +47,5 @@ $(document).on('click.sar.form-multi-target-close', '[data-multi-target-close]',
       .end();
   }
   $target.remove();
+  console.log($count);
 });

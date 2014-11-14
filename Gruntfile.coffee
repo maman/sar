@@ -136,6 +136,8 @@ module.exports = (grunt) ->
             $: 'jquery'
             jquery: 'jquery'
             jQuery: 'jquery'
+            'window.jquery': 'jquery'
+            'window.jQuery': 'jquery'
             'windows.jquery': 'jquery'
             'windows.jQuery': 'jquery'
           )

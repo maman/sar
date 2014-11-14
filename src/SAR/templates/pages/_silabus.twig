@@ -9,14 +9,16 @@
 		<div class="col-lg-12">
 			<h1 class="page-header">Silabus</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
-			{# <div class="alert alert-dismissible alert-warning" role="alert">
+			{% if warning is defined %}
+			<div class="alert alert-dismissible alert-warning" role="alert">
 				<button type="button" class="close" data-dismiss="alert">
 					<span aria-hidden="true">&times;</span>
 					<span class="sr-only">Close</span>
 				</button>
-				<strong>Warning:</strong> You have finished this section.
+				<strong>Warning:</strong> Anda telah menyelesaikan tahap pengisian Silabus
 			</div>
-			<div class="alert alert-dismissible alert-danger" role="alert">
+			{% endif %}
+			{# <div class="alert alert-dismissible alert-danger" role="alert">
 				<button type="button" class="close" data-dismiss="alert">
 					<span aria-hidden="true">&times;</span>
 					<span class="sr-only">Close</span>
@@ -28,7 +30,9 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<ul data-wizard-pager></ul>
-			<form action="/" id="silabusForm" role="form" data-wizard data-form-autosave class="cycle-slideshow"
+			<form action="{{ currPath }}" id="silabusForm" role="form" class="cycle-slideshow"
+				method="POST"
+				data-form-dynamic
 				data-cycle-fx="none"
 				data-cycle-auto-height="false"
 				data-cycle-timeout="0"
@@ -41,25 +45,44 @@
 				data-cycle-allow-wrap="false"
 				data-cycle-pager="[data-wizard-pager]"
 				data-cycle-pager-active-class="active"
+				data-wizard
+				data-form-autosave
 				{% verbatim %}
 				data-cycle-pager-template="<li data-wizard-pagers><a href='#'><span>{{slideNum}}</span>. {{dataset.stepTitle}}</a></li>"
 				{% endverbatim %}
 				>
 				<section class="step" data-wizard-pages data-step-title="Tujuan" data-step-explanation="Berisi tentang tujuan dan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Tujuan">
 					<div class="form-group" data-step-title="Tujuan">
-						<textarea data-input-autosave class="form-control input-lg" name="tujuan" id="tujuan" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+						<textarea data-input-autosave class="form-control input-lg" name="tujuan" rows="10" placeholder="lorem" data-multiline="disable">{% if tujuan is defined %}{{ tujuan }}{% endif %}</textarea>
 					</div>
 				</section>
 				<section class="step" data-wizard-pages data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Kompetensi">
 					<div class="form-group kompetensi" data-multi-target-parent>
-						<div class="kompetensi" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="kompetensi" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select multiple name="kompetensi-select" id="kompetensi-1" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
-								<option value="187" data-tag-text="Berkomunikasi dengan menggunakan multibahasa">U1</option>
-								<option value="188" data-tag-text="Kemampuan Technopreneurship">V2</option>
+						{% if kompetensi is defined %}
+							{% for detail in kompetensi %}
+						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kompetensi[{{ loop.index0 }}][id]" data-id="[id]" value="{{ detail.ID_KOMPETENSI }}">
+							<textarea class="form-control input-lg" name="kompetensi[{{ loop.index0 }}][text]" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ detail.NAMA_KOMPETENSI }}</textarea>
+							<select multiple name="kompetensi[{{ loop.index0 }}][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+								{% for item in detail.KATEGORI_KOMPETENSI %}
+								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KATEGORI_KOMPETENSI }}</option>
+								{% endfor %}
 							</select>
 						</div>
+							{% endfor %}
+						{% else %}
+						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kompetensi[0][id]" data-id="[id]" value="">
+							<textarea data-input-autosave class="form-control input-lg" name="kompetensi[0][text]" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<select multiple name="kompetensi[0][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+							{% for item in kategori %}
+								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
+							{% endfor %}
+							</select>
+						</div>
+						{% endif %}
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-3">
@@ -67,17 +90,58 @@
 						</div>
 					</div>
 				</section>
-				<section class="step" data-wizard-pages data-step-title="Pokok Bahasan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="asdasds">
+				<section class="step" data-wizard-pages data-step-title="Pokok Bahasan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="pokok-bahasan">
 					<div class="form-group">
-						<textarea data-input-autosave class="form-control input-lg" name="pokok-bahasan" id="pokokbahasan" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
+						<textarea data-input-autosave class="form-control input-lg" name="pokok-bahasan" rows="10" placeholder="lorem" data-multiline="disable">{% if pokokBahasan is defined %}{{ pokokBahasan }}{% endif %}</textarea>
 					</div>
 				</section>
-				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="asdasds">
+				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
 					<div class="form-group kepustakaan" data-multi-target-parent>
+						{% if pustaka is defined %}
+							{% for item in pustaka %}
 						<div class="kepustakaan" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="kepustakaan" id="kepustakaan" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kepustakaan[{{ loop.index0 }}][id]" value="{{ item.ID_PUSTAKA }}">
+							<div class="row">
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][judul]" placeholder="Judul" value="{{ item.JUDUL_PUSTAKA }}">
+								</div>
+								<div class="col-sm-3">
+									<input type="number" class="form-control" name="kepustakaan[{{ loop.index0 }}][tahun]" placeholder="Tahun Terbit" value="{{ item.TAHUN_TERBIT_PUSTAKA }}">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][penerbit]" placeholder="Penerbit" value="{{ item.PENERBIT_PUSTAKA }}">
+								</div>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][pengarang]" placeholder="Pengarang" value="{{ item.PENGARANG_PUSTAKA }}">
+								</div>
+							</div>
 						</div>
+							{% endfor %}
+						{% else %}
+						<div class="kepustakaan" data-multi-target>
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kepustakaan[0][id]" value="{{ item.ID_PUSTAKA }}">
+							<div class="row">
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="kepustakaan[0][judul]" placeholder="Judul">
+								</div>
+								<div class="col-sm-3">
+									<input type="number" class="form-control" name="kepustakaan[0][tahun]" placeholder="Tahun Terbit">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[0][penerbit]" placeholder="Penerbit">
+								</div>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[0][pengarang]" placeholder="Pengarang">
+								</div>
+							</div>
+						</div>
+						{% endif %}
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-3">
@@ -85,21 +149,6 @@
 						</div>
 					</div>
 				</section>
-				{# <div class="form-group">
-					<label for="kompetensi">Kompetensi</label>
-					<textarea class="form-control" name="" id="kompetensi" rows="10"></textarea>
-					<hr>
-				</div>
-				<div class="form-group">
-					<label for="tujuan-belajar">Tujuan Pembelajaran</label>
-					<textarea class="form-control" name="" id="tujuan-belajar" rows="10"></textarea>
-					<hr>
-				</div>
-				<div class="form-group">
-					<label for="pokok-bahasan">Pokok bahasan</label>
-					<textarea class="form-control" name="" id="pokok-bahasan" rows="10"></textarea>
-					<hr>
-				</div> #}
 			</form>
 		</div>
 	</div>

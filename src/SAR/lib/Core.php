@@ -25,7 +25,8 @@ use alfmel\OCI8\PDO as OCI8;
  * Core Class
  * @package SAR\lib
  */
-class Core {
+class Core
+{
     public $db;
     public $mcc;
     private static $instance;
