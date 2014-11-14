@@ -1,0 +1,63 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Pustaka untuk {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Pustaka</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="list-group">
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Anda belum mempunyai pustaka untuk mata kuliah {{ namaMatkul }}</h4>
+					<p class="list-group-item-text">Untuk mulai memasukkan pustaka baru klik tombol dibawah, dan isi masukan yang diberikan.</p>
+					<br>
+					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai masukkan pustaka</strong></i></a>
+				</div>
+			</div>
+			<form action="#" method="POST">
+				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
+					<div class="form-group kepustakaan" data-multi-target-parent>
+						<div class="kepustakaan" data-multi-target>
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kepustakaan[0][id]" value="{{ item.ID_PUSTAKA }}">
+							<div class="row">
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="kepustakaan[0][judul]" placeholder="Judul">
+								</div>
+								<div class="col-sm-3">
+									<input type="number" class="form-control" name="kepustakaan[0][tahun]" placeholder="Tahun Terbit">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[0][penerbit]" placeholder="Penerbit">
+								</div>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="kepustakaan[0][pengarang]" placeholder="Pengarang">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<a data-multi-target-btn data-target=".kepustakaan[data-multi-target]" data-multi-target-container=".kepustakaan[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kepustakaan</span></a>
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% endblock %}
+
+{% block inlinejs %}
+<script>triggerLayoutMini()</script>
+{% endblock %}

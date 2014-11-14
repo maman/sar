@@ -1,0 +1,53 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Silabus untuk {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Kompetensi</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="list-group">
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Anda belum mempunyai kompetensi untuk mata kuliah {{ namaMatkul }}</h4>
+					<p class="list-group-item-text">Untuk mulai membuat kompetensi baru klik tombol dibawah, dan isi masukan yang diberikan.</p>
+					<br>
+					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat kompetensi</strong></i></a>
+				</div>
+			</div>
+			<form action="#" method="POST">
+				<section class="step" data-wizard-pages data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Kompetensi">
+					<div class="form-group kompetensi" data-multi-target-parent>
+						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+							<input type="hidden" name="kompetensi[0][id]" data-id="[id]" value="">
+							<textarea data-input-autosave class="form-control input-lg" name="kompetensi[0][text]" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<select multiple name="kompetensi[0][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+							{% for item in kategori %}
+								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<a data-multi-target-btn data-target=".kompetensi[data-multi-target]" data-multi-target-container=".kompetensi[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kompetensi</span></a>
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% endblock %}
+
+{% block inlinejs %}
+<script>triggerLayoutMini();</script>
+{% endblock %}

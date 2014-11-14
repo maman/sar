@@ -203,6 +203,14 @@
 							<i class="fa fa-exclamation fa-fw text-danger"></i> Silabus
 							<span class="pull-right label label-danger">unfinished</span>
 						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/kompetensi" class="list-group-item list-group-item-warning">
+							<i class="fa fa-exclamation fa-fw text-danger"></i> Kompetensi
+							<span class="pull-right label label-danger">unfinished</span>
+						</a>
+						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/pustaka" class="list-group-item list-group-item-warning">
+							<i class="fa fa-exclamation fa-fw text-danger"></i> Pustaka
+							<span class="pull-right label label-danger">unfinished</span>
+						</a>
 						{% endif %}
 						{% if matkul.RPSDetails.agenda %}
 						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/agenda" class="list-group-item list-group-item-success">
