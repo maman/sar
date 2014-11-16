@@ -1,30 +1,14 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}Silabus untuk {% endblock %}
+{% block pagetitle %}Silabus untuk {{ namaMatkul }}{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig' with {'state': 'mini'}%}
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Silabus</h1>
+			<h1 class="page-header">Silabus untuk {{ namaMatkul }}</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
-			{% if warning is defined %}
-			<div class="alert alert-dismissible alert-warning" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Warning:</strong> Anda telah menyelesaikan tahap pengisian Silabus
-			</div>
-			{% endif %}
-			{# <div class="alert alert-dismissible alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Uh oh.</strong> This has been verified and approved by kaprodi. you cannot edit this anymore.
-			</div> #}
 		</div>
 	</div>
 	{# <div class="row">
@@ -154,78 +138,67 @@
 	</div> #}
 	<div class="row">
 		<div class="col-lg-12">
+			{% if isNew %}
 			<div class="list-group">
 				<div class="list-group-item well">
 					<h4 class="list-group-item-heading">Anda belum mempunyai silabus untuk mata kuliah {{ namaMatkul }}</h4>
 					<p class="list-group-item-text">Untuk mulai membuat silabus baru klik tombol dibawah, dan isi masukan yang akan diberikan pada halaman yang muncul.</p>
 					<br>
-					<a href="{{currPath}}/new" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat silabus</strong></i></a>
+					<a href="{{currPath}}/new" class="btn btn-large btn-success"><i class="fa fa-plus"></i> <strong>Mulai membuat silabus</strong></a>
 				</div>
 			</div>
-			<div class="list-group-item clearfix">
+			{% else %}
+			<div class="list-group-item clearfix" style="margin-bottom: 2em">
 				<div class="list-group-item-content">
 					<div class="list-group-toggle">
 						<section class="list-group-item-section">
-							<strong class="text-info">Sub Kompetensi</strong>
-							<p class="list-group-item-text">Mahasiswa mampu menjelaskan dan memberi contoh proyek proyek TI</p>
+							<strong class="text-info">Tujuan</strong>
+							<p class="list-group-item-text">{{ silabus.tujuan }}</p>
 						</section>
 						<section class="list-group-item-section">
-							<strong class="text-info">Indikator Pencapaian</strong>
+							<strong class="text-info">Kompetensi</strong>
+							{% if silabus.kompetensi %}
 							<ul class="list-group-item-text">
-								<li>Pemahaman karakteristik, sasaran, stakeholder, kumpulan, keahlian, dan jenis proyek <span class="label label-primary">C1</span></li>
-								<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-							</ul>
-						</section>
-						<section class="list-group-item-section">
-							<strong class="text-info">Materi Pembelajaran</strong>
-							<ul class="list-group-item-text">
-								<li>Inisialisasi Perkuliahan
-									<ul>
-										<li>Motivasi Belajar</li>
-										<li>Rencana Pembelajaran</li>
-										<li>Rules Belajar</li>
-									</ul>
+								{% for item in silabus.kompetensi %}
+								<li>{{ item.NAMA_KOMPETENSI }}
+									{% for tag in item.KATEGORI_KOMPETENSI %}
+										{% if tag.SELECTED %}
+									<span class="label label-primary">{{tag.ID_KATEGORI_KOMPETENSI}}</span>
+										{% endif %}
+									{% endfor %}
 								</li>
-								<li>Berbagai Artikel tentang proyek, proyek TI dan proyek non TI</li>
-								<li>Metode pengembangan aplikasi</li>
-								<li>Pengantar Manajemen Proyek
-								<ul>
-									<li>Tiga Batasan Proyek</li>
-									<li>Area keahlian Manajemen Proyek</li>
-									<li>Program dan Portofolio</li>
-									<li>SubProject</li>
-								</ul>
+								{% endfor %}
+							</ul>
+							{% else %}
+							<br><a href="{{currPath}}/kompetensi" class="btn btn-small btn-success"><i class="fa fa-plus"></i> Tambah Kompetensi</a>
+							{% endif %}
+						</section>
+						<section class="list-group-item-section">
+							<strong class="text-info">Pokok Bahasan</strong>
+							<p class="list-group-item-text">{{ silabus.pokokBahasan }}</p>
+						</section>
+						<section class="list-group-item-section">
+							<strong class="text-info">Kepustakaan</strong>
+							{% if silabus.pustaka %}
+							<ul class="list-group-item-text">
+								{% for item in silabus.kompetensi %}
+								<li>{{ item.NAMA_KOMPETENSI }}
+									{% for tag in item.KATEGORI_KOMPETENSI %}
+										{% if tag.SELECTED %}
+									<span class="label label-primary">{{tag.ID_KATEGORI_KOMPETENSI}}</span>
+										{% endif %}
+									{% endfor %}
 								</li>
-								<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
+								{% endfor %}
 							</ul>
+							{% else %}
+							<br><a href="{{currPath}}/pustaka" class="btn btn-small btn-success"><i class="fa fa-plus"></i> Tambah Kepustakaan</a>
+							{% endif %}
 						</section>
-						<section class="list-group-item-section">
-							<strong class="text-info">Aktivitas Pembelajaran</strong>
-							<ul class="list-group-item-text">
-								<li>Kuliah &amp; Brainstorming</li>
-								<li>Task 1: Membuat target kompetensi</li>
-								<li>Diskusi tentang Proyek, proyek TI, proyek bukan TI, dan perbedaannya</li>
-								<li>Task 2: Membuat resume tentang proyek TI</li>
-							</ul>
-						</section>
-						<section class="list-group-item-section">
-							<strong class="text-info">Assesmen <span class="label label-primary">Non-Tes</span> <span class="label label-danger">15%</span></strong>
-							<ul class="list-group-item-text">
-								<li>Presentasi skenario sendratari</li>
-								<li>Yel yel tim dan sendratari</li>
-								<li>Pembelajaran proyek sendratari</li>
-							</ul>
-						</section>
-					</div>
-					<hr class="mini">
-					<span class="label label-primary">C1 - Pengetahuan</span>
-					<span class="label label-primary">A5 - Mengatur Diri</span>
-					<div class="btn-group btn-group-xs pull-right">
-						<a href="#" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i><span class="sr-only">Edit</span></a>
-						<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
 					</div>
 				</div>
 			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>

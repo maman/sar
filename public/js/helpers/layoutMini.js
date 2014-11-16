@@ -5,11 +5,11 @@
 
 window.triggerLayoutMini = function() {
   if ($('.sidebar[data-mini]').length) {
-    setTimeout(function() {
+    // setTimeout(function() {
       $('.sidebar[data-mini]').addClass('sidebar-mini');
       $('#page-wrapper').addClass('full-page');
       $('.sidebar-right').removeClass('collapsed');
-    }, 4500);
+    // }, 4500);
   }
 };
 

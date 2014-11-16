@@ -21,14 +21,28 @@
 					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat kompetensi</strong></i></a>
 				</div>
 			</div>
+			<div class="form-group kompetensi">
+				{% if silabus.kompetensi %}
+					{% for kompetensi in silabus.kompetensi %}
+				<div class="kompetensi" data-multi-target data-name="kompetensi">
+					<a href="{{currPath}}/del/{{ kompetensi.ID_KOMPETENSI }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<input type="hidden" name="idKompetensi" value="{{ kompetensi.ID_KOMPETENSI }}">
+					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ kompetensi.NAMA_KOMPETENSI }}</textarea>
+					<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" disabled data-input-autosave data-form-multitag data-placeholder="Kategori">
+					{% for item in kompetensi.KATEGORI_KOMPETENSI %}
+						<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KATEGORI_KOMPETENSI }}</option>
+					{% endfor %}
+					</select>
+				</div>
+					{% endfor %}
+				{% endif %}
+			</div>
 			<form action="#" method="POST">
-				<section class="step" data-wizard-pages data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Kompetensi">
-					<div class="form-group kompetensi" data-multi-target-parent>
+				<section class="step">
+					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kompetensi[0][id]" data-id="[id]" value="">
-							<textarea data-input-autosave class="form-control input-lg" name="kompetensi[0][text]" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select multiple name="kompetensi[0][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+							<textarea data-input-autosave class="form-control input-lg" name="text" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
 							{% for item in kategori %}
 								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
 							{% endfor %}
@@ -37,7 +51,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".kompetensi[data-multi-target]" data-multi-target-container=".kompetensi[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kompetensi</span></a>
+							<input type="submit" class="btn btn-lg btn-success btn-block" value="Tambah Kompetensi">
 						</div>
 					</div>
 				</section>

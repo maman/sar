@@ -42,9 +42,26 @@ class Silabus
     private $assesmentNonTes;
     private $core;
 
-    function __construct()
+    function __construct($idMatkul)
     {
         $this->core = Slim::getInstance();
+        $silabus = $this->getSilabusByMatkul($idMatkul);
+        if ($silabus) {
+            foreach ($silabus as $result) {
+                $this->silabusID = $result['ID_SILABUS'];
+                // $this->mediaBelajarSoft = $result['MEDIA_BELAJAR_SOFTWARE'];
+                // $this->mediaBelajarHard = $result['MEDIA_BELAJAR_HARDWARE'];
+                // $this->assesmentTes = $result['ASSESMENT_TES'];
+                // $this->assesmentNonTes = $result['ASSESMENT_NONTES'];
+                $this->pokokBahasan = $result['POKOK_BAHASAN'];
+                $this->tujuan = $result['TUJUAN'];
+                $this->pustaka = $this->getPustakaBySilabusID($result['ID_SILABUS']);
+                $this->kompetensi = $this->combineKompetensiKategori($result['ID_SILABUS']);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function __get($prop)
@@ -61,36 +78,6 @@ class Silabus
         }
         return $this;
     }
-
-    // /**
-    //  * Get Kategori for the provided Silabus ID
-    //  * @return mixed
-    //  */
-    // public function getKategori()
-    // {
-    //     $query = $this->core->db->prepare(
-    //         'SELECT
-    //             KATEGORI_KOMPETENSI.ID_KATEGORI_KOMPETENSI,
-    //             KATEGORI_KOMPETENSI.NAMA_KATEGORI_KOMPETENSI
-    //         FROM
-    //             KATEGORI_KOMPETENSI INNER JOIN SILABUS_KATEGORI_KOMPETENSI
-    //         ON
-    //             KATEGORI_KOMPETENSI.ID_KATEGORI_KOMPETENSI = SILABUS_KATEGORI_KOMPETENSI.ID_KATEGORI_KOMPETENSI
-    //             INNER JOIN KOMPETENSI
-    //         ON
-    //             KOMPETENSI.ID_KOMPETENSI = SILABUS_KATEGORI_KOMPETENSI.ID_KOMPETENSI
-    //         WHERE
-    //             KOMPETENSI.ID_SILABUS = :idSilabus'
-    //     );
-    //     $query->bindParam(':idSilabus', $this->silabusID);
-    //     $query->execute();
-    //     $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-    //     if (count($results) > 0) {
-    //         return $results;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 
     /**
      * Get Silabus for the provided Matkul ID
@@ -179,57 +166,61 @@ class Silabus
     /**
      * Combine Kompetensi and Kategori for the provided Silabus ID
      * @param  string $idSilabus
-     * @return array
+     * @return mixed
      */
     private function combineKompetensiKategori($idSilabus)
     {
         $kategori = new Kategori();
         $allKategori = $kategori->getAllKategori();
         $kompetensi = $this->getKompetensiBySilabusID($idSilabus);
-        foreach ($kompetensi as $key => $item) {
-            $currentKategori = $kategori->getKategoriByKompetensiID($item['ID_KOMPETENSI']);
-            if ($currentKategori) {
-                foreach ($allKategori as $id => $value) {
-                    foreach ($currentKategori as $num => $val) {
-                        if ($currentKategori[$num]['ID_KATEGORI_KOMPETENSI'] == $allKategori[$id]['ID_KATEGORI_KOMPETENSI']) {
-                            $allKategori[$id]['SELECTED'] = true;
-                            break;
-                        } else {
-                            $allKategori[$id]['SELECTED'] = false;
-                            // break;
+        if ($kompetensi) {
+            foreach ($kompetensi as $key => $item) {
+                $currentKategori = $kategori->getKategoriByKompetensiID($item['ID_KOMPETENSI']);
+                if ($currentKategori) {
+                    foreach ($allKategori as $id => $value) {
+                        foreach ($currentKategori as $num => $val) {
+                            if ($currentKategori[$num]['ID_KATEGORI_KOMPETENSI'] == $allKategori[$id]['ID_KATEGORI_KOMPETENSI']) {
+                                $allKategori[$id]['SELECTED'] = true;
+                                break;
+                            } else {
+                                $allKategori[$id]['SELECTED'] = false;
+                                // break;
+                            }
                         }
                     }
+                    $kompetensi[$key]['KATEGORI_KOMPETENSI'] = $allKategori;
+                } else {
+                    foreach ($allKategori as $id => $value) {
+                        $allKategori[$id]['SELECTED'] = false;
+                    }
+                    $kompetensi[$key]['KATEGORI_KOMPETENSI'] = $allKategori;
                 }
-                $kompetensi[$key]['KATEGORI_KOMPETENSI'] = $allKategori;
-            } else {
-                foreach ($allKategori as $id => $value) {
-                    $allKategori[$id]['SELECTED'] = false;
-                }
-                $kompetensi[$key]['KATEGORI_KOMPETENSI'] = $allKategori;
             }
-        }
-        return $kompetensi;
-    }
-
-    public function init($idMatkul) {
-        $silabus = $this->getSilabusByMatkul($idMatkul);
-        if (count($silabus) == 1) {
-            foreach ($silabus as $result) {
-                $this->silabusID = $result['ID_SILABUS'];
-                // $this->mediaBelajarSoft = $result['MEDIA_BELAJAR_SOFTWARE'];
-                // $this->mediaBelajarHard = $result['MEDIA_BELAJAR_HARDWARE'];
-                // $this->assesmentTes = $result['ASSESMENT_TES'];
-                // $this->assesmentNonTes = $result['ASSESMENT_NONTES'];
-                $this->pokokBahasan = $result['POKOK_BAHASAN'];
-                $this->tujuan = $result['TUJUAN'];
-                $this->pustaka = $this->getPustakaBySilabusID($result['ID_SILABUS']);
-                $this->kompetensi = $this->combineKompetensiKategori($result['ID_SILABUS']);
-            }
-            return true;
+            return $kompetensi;
         } else {
             return false;
         }
     }
+
+    // public function init($idMatkul) {
+    //     $silabus = $this->getSilabusByMatkul($idMatkul);
+    //     if (count($silabus) == 1) {
+    //         foreach ($silabus as $result) {
+    //             $this->silabusID = $result['ID_SILABUS'];
+    //             // $this->mediaBelajarSoft = $result['MEDIA_BELAJAR_SOFTWARE'];
+    //             // $this->mediaBelajarHard = $result['MEDIA_BELAJAR_HARDWARE'];
+    //             // $this->assesmentTes = $result['ASSESMENT_TES'];
+    //             // $this->assesmentNonTes = $result['ASSESMENT_NONTES'];
+    //             $this->pokokBahasan = $result['POKOK_BAHASAN'];
+    //             $this->tujuan = $result['TUJUAN'];
+    //             $this->pustaka = $this->getPustakaBySilabusID($result['ID_SILABUS']);
+    //             $this->kompetensi = $this->combineKompetensiKategori($result['ID_SILABUS']);
+    //         }
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     /**
      * Save or Edit Silabus Entries
@@ -238,31 +229,52 @@ class Silabus
      * @param  string $tujuan           Tujuan
      * @return boolean
      */
-    public function save($pokokBahasan, $idMatkul, $tujuan)
+    public function saveOrEdit($idMatkul, $idSilabus, $pokokBahasan, $tujuan)
     {
-        try {
-            $query = $this->core->db->prepare(
-                'INSERT INTO
-                    SILABUS
-                (
-                    POKOK_BAHASAN,
-                    ID_MATAKULIAH,
-                    TUJUAN
-                )
-                VALUES
-                (
-                    :pokokBahasan,
-                    :idMatkul,
-                    :tujuan
-                )'
-            );
-            $query->bindParam(':pokokBahasan', $pokokBahasan);
-            $query->bindParam(':idMatkul', $idMatkul);
-            $query->bindParam(':tujuan', $tujuan);
-            $query->execute();
-            return true;
-        } catch (PDOException $e) {
-            return false;
+        if ($idSilabus == '') {
+            try {
+                $query = $this->core->db->prepare(
+                    'INSERT INTO
+                        SILABUS
+                    (
+                        POKOK_BAHASAN,
+                        ID_MATAKULIAH,
+                        TUJUAN
+                    )
+                    VALUES
+                    (
+                        :pokokBahasan,
+                        :idMatkul,
+                        :tujuan
+                    )'
+                );
+                $query->bindParam(':pokokBahasan', $pokokBahasan);
+                $query->bindParam(':idMatkul', $idMatkul);
+                $query->bindParam(':tujuan', $tujuan);
+                $query->execute();
+                return true;
+            } catch (PDOException $e) {
+                return false;
+            }
+        } else {
+            try {
+                $query = $this->core->db->prepare(
+                    'UPDATE
+                        SILABUS
+                    SET
+                        POKOK_BAHASAN = :pokokBahasan,
+                        TUJUAN = :tujuan
+                    WHERE
+                        ID_SILABUS = :idSilabus'
+                );
+                $query->bindParam(':pokokBahasan', $pokokBahasan);
+                $query->bindParam(':idSilabus', $idSilabus);
+                $query->bindParam(':tujuan', $tujuan);
+                $query->execute();
+                return true;
+            } catch (PDOException $e) {
+                return false;
+            }
         }
     }
 

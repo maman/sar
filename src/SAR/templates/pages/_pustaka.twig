@@ -21,33 +21,59 @@
 					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai masukkan pustaka</strong></i></a>
 				</div>
 			</div>
+			<div class="form-group kepustakaan">
+				{% if silabus.pustaka %}
+					{% for pustaka in silabus.pustaka %}
+				<div class="pustaka" data-multi-target data-name="pustaka">
+					<a href="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<input type="hidden" name="idSilabus" value="{{ silabusID }}">
+					<input type="hidden" name="idPustaka" value="{{ item.ID_PUSTAKA }}">
+					<div class="row">
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="judul" placeholder="Judul" value="{{ item.JUDUL_PUSTAKA }}">
+						</div>
+						<div class="col-sm-3">
+							<input type="number" class="form-control" name="tahun" placeholder="Tahun Terbit" value="{{ item.TAHUN_TERBIT_PUSTAKA }}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="penerbit" placeholder="Penerbit" value="{{ item.PENERBIT_PUSTAKA }}">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="pengarang" placeholder="Pengarang" value="{{ item.PENGARANG_PUSTAKA }}">
+						</div>
+					</div>
+				</div>
+					{% endfor %}
+				{% endif %}
+			</div>
 			<form action="#" method="POST">
 				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
 					<div class="form-group kepustakaan" data-multi-target-parent>
 						<div class="kepustakaan" data-multi-target>
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kepustakaan[0][id]" value="{{ item.ID_PUSTAKA }}">
+							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
 							<div class="row">
 								<div class="col-sm-9">
-									<input type="text" class="form-control" name="kepustakaan[0][judul]" placeholder="Judul">
+									<input type="text" class="form-control" name="judul" placeholder="Judul">
 								</div>
 								<div class="col-sm-3">
-									<input type="number" class="form-control" name="kepustakaan[0][tahun]" placeholder="Tahun Terbit">
+									<input type="number" class="form-control" name="tahun" placeholder="Tahun Terbit">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[0][penerbit]" placeholder="Penerbit">
+									<input type="text" class="form-control" name="penerbit" placeholder="Penerbit">
 								</div>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[0][pengarang]" placeholder="Pengarang">
+									<input type="text" class="form-control" name="pengarang" placeholder="Pengarang">
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".kepustakaan[data-multi-target]" data-multi-target-container=".kepustakaan[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kepustakaan</span></a>
+							<input type="submit" class="btn btn-lg btn-success btn-block" value="Tambah Pustaka">
 						</div>
 					</div>
 				</section>

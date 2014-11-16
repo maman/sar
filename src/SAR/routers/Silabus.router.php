@@ -16,42 +16,137 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
+use SAR\models\Matkul;
 use SAR\models\Silabus;
 use SAR\models\Kategori;
 
 /** GET request on `/matakuliah/:idMatkul/silabus` */
-$app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), function ($idMatkul) use ($app) {
+$app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
-    $kategori = new Kategori();
+    $matkul = new Matkul();
+    $silabus = new Silabus($idMatkul);
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $semesterMatkul = $details['SemesterMK'];
+    $tahunMatkul = $details['TahunAjaranMK'];
+    $new = true;
+    if (!is_null($silabus->silabusID)) {
+        $new = false;
+    }
     $app->render('pages/_silabus.twig', array(
-        'currPath' => $currPath
+        'currPath' => $currPath,
+        'isNew' => $new,
+        'namaMatkul' => $namaMatkul,
+        'silabus' => array(
+            'idSilabus' => $silabus->silabusID,
+            'pokokBahasan' => $silabus->pokokBahasan,
+            'tujuan' => $silabus->tujuan,
+            'pustaka' => $silabus->pustaka,
+            'kompetensi' => $silabus->kompetensi
+        )
     ));
 });
 
-$app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), function ($idMatkul) use ($app) {
+$app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
-    $kategori = new Kategori();
-    $app->render('pages/_silabus-new.twig', array(
-        'currPath' => $currPath
-    ));
+    $matkul = new Matkul();
+    $silabus = new Silabus($idMatkul);
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    if (!is_null($silabus->silabusID)) {
+        $_SESSION['silabusID'] = $silabus->silabusID;
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/edit');
+    } else {
+        $app->render('pages/_silabus-new.twig', array(
+            'currPath' => $currPath,
+            'namaMatkul' => $namaMatkul
+        ));
+    }
 });
 
-$app->get('/matakuliah/:idMatkul/kompetensi', $authenticate($app), function ($idMatkul) use ($app) {
+$app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->saveOrEdit($idMatkul, '', $_POST['pokok-bahasan'], $_POST['tujuan']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus');
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
+    $matkul = new Matkul();
+    $silabus = new Silabus($idMatkul);
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    if (!empty($_SESSION['silabusID'])) {
+        $silabusID = $_SESSION['silabusID'];
+        unset($_SESSION['silabusID']);
+    }
+    if (is_null($silabus->silabusID)) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/new');
+    } else {
+        $app->render('pages/_silabus-new.twig', array(
+            'currPath' => $currPath,
+            'namaMatkul' => $namaMatkul,
+            'silabus' => array(
+                'idSilabus' => $silabus->silabusID,
+                'pokokBahasan' => $silabus->pokokBahasan,
+                'tujuan' => $silabus->tujuan,
+                'pustaka' => $silabus->pustaka,
+                'kompetensi' => $silabus->kompetensi
+            )
+        ));
+    }
+});
+
+$app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->saveOrEdit($idMatkul, $_POST['idSilabus'], $_POST['pokok-bahasan'], $_POST['tujuan']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus');
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    $currPath = $app->request()->getPath();
+    $silabus = new Silabus($idMatkul);
     $kategori = new Kategori();
     $app->render('pages/_kompetensi.twig', array(
         'kategori' => $kategori->getAllKategori(),
-        'currPath' => $currPath
+        'currPath' => $currPath,
+        'silabus' => array(
+            'idSilabus' => $silabus->silabusID,
+            'kompetensi' => $silabus->kompetensi
+        )
     ));
 });
 
-$app->get('/matakuliah/:idMatkul/pustaka', $authenticate($app), function ($idMatkul) use ($app) {
+$app->post('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    var_dump($_POST);
+});
+
+$app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authenticate($app), $accessmatkul, function ($idMatkul, $idKompetensi) use ($app) {
+    $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
+});
+
+$app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
-    $kategori = new Kategori();
+    $silabus = new Silabus($idMatkul);
     $app->render('pages/_pustaka.twig', array(
-        'kategori' => $kategori->getAllKategori(),
-        'currPath' => $currPath
+        'currPath' => $currPath,
+        'silabus' => array(
+            'idSilabus' => $silabus->silabusID,
+            'pustaka' => $silabus->pustaka
+        )
     ));
+});
+
+$app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+    var_dump($_POST);
 });
 
 /** POST request on `/matakuliah/:idMatkul/silabus` */

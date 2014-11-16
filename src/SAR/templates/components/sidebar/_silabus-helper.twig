@@ -4,10 +4,6 @@
 <div class="panel-body">
 	<h4 class="page-header" data-wizard-step-title>Tujuan</h4>
 	<p data-wizard-step-explanation>Berisi tentang tujuan dari mata kuliah yang sedang dijabarkan</p>
-	<div class="btn-group btn-group-justified hidden-xs" style="margin-bottom: 15px">
-		<a href="#" class="btn btn-primary" alt="previous" data-wizard-toggle="wizard-prev"><i class="fa fa-chevron-left"></i><span class="sr-only">Previous</span></a>
-		<a href="#" class="btn btn-primary" alt="next" data-wizard-toggle="wizard-next"><i class="fa fa-chevron-right"></i><span class="sr-only">Next</span></a>
-	</div>
 	<ul class="list-group">
 		<li class="list-group-item"><strong class="text-muted">Revision</strong> 01</li>
 		<li class="list-group-item"><strong class="text-muted">Started on</strong> 08-01-2014</li>
@@ -17,6 +13,6 @@
 		<a href="#" class="btn btn-primary" alt="Delete" data-form-destroy><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
 		<a href="#" class="btn btn-primary" alt="Save" data-form-save><i class="fa fa-save"></i><span class="sr-only">Save</span></a>
 	</div>
-	<a href="#" class="btn btn-block btn-success btn-lg" data-form-submit-complex data-target="#silabusForm">Submit</a>
+	<input type="submit" class="btn btn-block btn-success btn-lg" form="silabusForm" value="Submit">
 </div>
 {% endblock %}
