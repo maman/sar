@@ -6,6 +6,8 @@
 	<p data-wizard-step-explanation>Berisi tentang ... mata kuliah</p>
 	<ul class="list-group">
 		<li class="list-group-item"><strong class="text-muted">Revision</strong> 01</li>
+		<li class="list-group-item"><strong class="text-muted">Start Date</strong> {{ startDate }}</li>
+		<li class="list-group-item"><strong class="text-muted">Last Edit</strong> {% if lastEditDate is not null %}{{ lastEditDate }}{% else %}Never{% endif %}</li>
 		<li class="list-group-item"><span class="text-danger">Unapproved</span></li>
 	</ul>
 	<a href="#" class="{% if (not silabus.kompetensi) or (not silabus.pustaka) %}disabled{% endif %} btn btn-block btn-success btn-lg">Submit</a>

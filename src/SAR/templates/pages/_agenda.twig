@@ -27,7 +27,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12" data-app="agenda">
-			{# <div class="list-group" data-list-toggle>
+			<div class="list-group" data-list-toggle>
 				<div class="list-group-item well">
 					<h4 class="list-group-item-heading">Anda belum mempunyai agenda untuk mata kuliah {{ namaMatkul }}</h4>
 					<p class="list-group-item-text">Untuk membuat agenda baru klik tombol dibawah, dan isi masukan yang akan diberikan pada halaman yang muncul.</p>
@@ -167,7 +167,7 @@
 				<div class="darken list-group-item clearfix">
 					<a href="#" class="btn btn-md btn-success col-xs-4 col-xs-offset-4"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <strong>Tambahkan Agenda Baru</strong></span></a>
 				</div>
-			</div> #}
+			</div>
 		</div>
 	</div>
 </div>
@@ -175,148 +175,4 @@
 {% endblock %}
 
 {% block inlinejs %}
-<script type="text/template" id="content-template">
-	<div class="list-group" data-list-toggle>
-		<div class="list-group-item well">
-			<h4 class="list-group-item-heading">Anda belum mempunyai agenda untuk mata kuliah {{ namaMatkul }}</h4>
-			<p class="list-group-item-text">Untuk membuat agenda baru klik tombol dibawah, dan isi masukan yang akan diberikan pada halaman yang muncul.</p>
-			<br>
-			<a href="{{currPath}}/new" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Tambahkan agenda baru</strong></i></a>
-		</div>
-		<div class="list-group-item collapsed clearfix" data-list-toggle-target>
-			<div class="list-group-item-content">
-				<div class="list-group-toggle">
-					<span class="label label-success">Pertemuan 5,6,9</span>
-					<section class="list-group-item-section">
-						<strong class="text-info">Sub Kompetensi</strong>
-						<p class="list-group-item-text">Mahasiswa mampu menjelaskan dan memberi contoh proyek proyek TI</p>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Indikator Pencapaian</strong>
-						<ul class="list-group-item-text">
-							<li>Pemahaman karakteristik, sasaran, stakeholder, kumpulan, keahlian, dan jenis proyek <span class="label label-primary">C1</span></li>
-							<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Materi Pembelajaran</strong>
-						<ul class="list-group-item-text">
-							<li>Inisialisasi Perkuliahan
-								<ul>
-									<li>Motivasi Belajar</li>
-									<li>Rencana Pembelajaran</li>
-									<li>Rules Belajar</li>
-								</ul>
-							</li>
-							<li>Berbagai Artikel tentang proyek, proyek TI dan proyek non TI</li>
-							<li>Metode pengembangan aplikasi</li>
-							<li>Pengantar Manajemen Proyek
-							<ul>
-								<li>Tiga Batasan Proyek</li>
-								<li>Area keahlian Manajemen Proyek</li>
-								<li>Program dan Portofolio</li>
-								<li>SubProject</li>
-							</ul>
-							</li>
-							<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Aktivitas Pembelajaran</strong>
-						<ul class="list-group-item-text">
-							<li>Kuliah &amp; Brainstorming</li>
-							<li>Task 1: Membuat target kompetensi</li>
-							<li>Diskusi tentang Proyek, proyek TI, proyek bukan TI, dan perbedaannya</li>
-							<li>Task 2: Membuat resume tentang proyek TI</li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Assesmen <span class="label label-primary">Non-Tes</span> <span class="label label-danger">15%</span></strong>
-						<ul class="list-group-item-text">
-							<li>Presentasi skenario sendratari</li>
-							<li>Yel yel tim dan sendratari</li>
-							<li>Pembelajaran proyek sendratari</li>
-						</ul>
-					</section>
-				</div>
-				<hr class="mini">
-				<span class="label label-primary">C1 - Pengetahuan</span>
-				<span class="label label-primary">A5 - Mengatur Diri</span>
-				<div class="btn-group btn-group-xs pull-right">
-					<a href="#" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i><span class="sr-only">Edit</span></a>
-					<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
-				</div>
-			</div>
-		</div>
-		<div class="list-group-item collapsed clearfix" data-list-toggle-target>
-			<div class="list-group-item-content">
-				<div class="list-group-toggle">
-					<span class="label label-success">Pertemuan 5,6,9</span>
-					<section class="list-group-item-section">
-						<strong class="text-info">Sub Kompetensi</strong>
-						<p class="list-group-item-text">Mahasiswa mampu menjelaskan dan memberi contoh proyek proyek TI</p>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Indikator Pencapaian</strong>
-						<ul class="list-group-item-text">
-							<li>Pemahaman karakteristik, sasaran, stakeholder, kumpulan, keahlian, dan jenis proyek <span class="label label-primary">C1</span></li>
-							<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Materi Pembelajaran</strong>
-						<ul class="list-group-item-text">
-							<li>Inisialisasi Perkuliahan
-								<ul>
-									<li>Motivasi Belajar</li>
-									<li>Rencana Pembelajaran</li>
-									<li>Rules Belajar</li>
-								</ul>
-							</li>
-							<li>Berbagai Artikel tentang proyek, proyek TI dan proyek non TI</li>
-							<li>Metode pengembangan aplikasi</li>
-							<li>Pengantar Manajemen Proyek
-							<ul>
-								<li>Tiga Batasan Proyek</li>
-								<li>Area keahlian Manajemen Proyek</li>
-								<li>Program dan Portofolio</li>
-								<li>SubProject</li>
-							</ul>
-							</li>
-							<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Aktivitas Pembelajaran</strong>
-						<ul class="list-group-item-text">
-							<li>Kuliah &amp; Brainstorming</li>
-							<li>Task 1: Membuat target kompetensi</li>
-							<li>Diskusi tentang Proyek, proyek TI, proyek bukan TI, dan perbedaannya</li>
-							<li>Task 2: Membuat resume tentang proyek TI</li>
-						</ul>
-					</section>
-					<section class="list-group-item-section">
-						<strong class="text-info">Assesmen <span class="label label-primary">Non-Tes</span> <span class="label label-danger">15%</span></strong>
-						<ul class="list-group-item-text">
-							<li>Presentasi skenario sendratari</li>
-							<li>Yel yel tim dan sendratari</li>
-							<li>Pembelajaran proyek sendratari</li>
-						</ul>
-					</section>
-				</div>
-				<hr class="mini">
-				<span class="label label-primary">C1 - Pengetahuan</span>
-				<span class="label label-primary">A5 - Mengatur Diri</span>
-				<div class="btn-group btn-group-xs pull-right">
-					<a href="#" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i><span class="sr-only">Edit</span></a>
-					<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
-				</div>
-			</div>
-		</div>
-		<div class="darken list-group-item clearfix">
-			<a href="#" class="btn btn-md btn-success col-xs-4 col-xs-offset-4"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <strong>Tambahkan Agenda Baru</strong></span></a>
-		</div>
-	</div>
-</script>
-<script>triggerLayoutMini()</script>
 {% endblock %}

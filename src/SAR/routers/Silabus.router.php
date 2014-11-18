@@ -19,12 +19,15 @@
 use SAR\models\Matkul;
 use SAR\models\Silabus;
 use SAR\models\Kategori;
+use SAR\models\Rps;
 
 /** GET request on `/matakuliah/:idMatkul/silabus` */
 $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
     $silabus = new Silabus($idMatkul);
+    $rps = new Rps();
+    $rps->getRpsByIdMatkul($idMatkul);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
@@ -33,9 +36,13 @@ $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, f
     if (!is_null($silabus->silabusID)) {
         $new = false;
     }
+    $startDate = $rps->silabusStart;
+    $lastEditDate = $rps->silabusLastEdit;
     $app->render('pages/_silabus.twig', array(
         'currPath' => $currPath,
         'isNew' => $new,
+        'startDate' => $startDate,
+        'lastEditDate' => $lastEditDate,
         'namaMatkul' => $namaMatkul,
         'silabus' => array(
             'idSilabus' => $silabus->silabusID,
@@ -58,6 +65,11 @@ $app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatku
         $_SESSION['silabusID'] = $silabus->silabusID;
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus/edit');
     } else {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusStart)) {
+            $rps->startSilabus($idMatkul);
+        }
         $app->render('pages/_silabus-new.twig', array(
             'currPath' => $currPath,
             'namaMatkul' => $namaMatkul
@@ -70,6 +82,11 @@ $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatk
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveOrEdit($idMatkul, '', $_POST['pokok-bahasan'], $_POST['tujuan']);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus');
     } else {
         $app->stop();
@@ -109,6 +126,11 @@ $app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmat
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveOrEdit($idMatkul, $_POST['idSilabus'], $_POST['pokok-bahasan'], $_POST['tujuan']);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus');
     } else {
         $app->stop();
@@ -135,6 +157,11 @@ $app->post('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $acc
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveKompetensi($_POST['idSilabus'], $_POST['text'], $_POST['kategori']);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
     } else {
         $app->stop();
@@ -146,6 +173,11 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authent
     $silabus = new Silabus($idMatkul);
     $result = $silabus->deleteKompetensi($idKompetensi);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
     } else {
         $app->stop();
@@ -168,6 +200,11 @@ $app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $access
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveKepustakaan($_POST['idSilabus'], $_POST['judul'], $_POST['tahun'], $_POST['penerbit'], $_POST['pengarang']);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus/pustaka');
     } else {
         $app->stop();
@@ -178,6 +215,11 @@ $app->get('/matakuliah/:idMatkul/silabus/pustaka/del/:idPustaka', $authenticate(
     $silabus = new Silabus($idMatkul);
     $result = $silabus->deleteKepustakaan($idPustaka);
     if ($result) {
+        $rps = new Rps();
+        $rps->getRpsByIdMatkul($idMatkul);
+        if (is_null($rps->silabusLastEdit)) {
+            $rps->editSilabus($idMatkul);
+        }
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus/pustaka');
     } else {
         $app->stop();
