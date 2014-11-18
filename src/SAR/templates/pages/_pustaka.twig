@@ -13,6 +13,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
+			{% if not silabus.pustaka %}
 			<div class="list-group">
 				<div class="list-group-item well">
 					<h4 class="list-group-item-heading">Anda belum mempunyai pustaka untuk mata kuliah {{ namaMatkul }}</h4>
@@ -21,27 +22,26 @@
 					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai masukkan pustaka</strong></i></a>
 				</div>
 			</div>
+			{% endif %}
 			<div class="form-group kepustakaan">
 				{% if silabus.pustaka %}
 					{% for pustaka in silabus.pustaka %}
 				<div class="pustaka" data-multi-target data-name="pustaka">
 					<a href="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-					<input type="hidden" name="idSilabus" value="{{ silabusID }}">
-					<input type="hidden" name="idPustaka" value="{{ item.ID_PUSTAKA }}">
 					<div class="row">
 						<div class="col-sm-9">
-							<input type="text" class="form-control" name="judul" placeholder="Judul" value="{{ item.JUDUL_PUSTAKA }}">
+							<input type="text" class="form-control" disabled name="judul" placeholder="Judul" value="{{ pustaka.JUDUL_PUSTAKA }}">
 						</div>
 						<div class="col-sm-3">
-							<input type="number" class="form-control" name="tahun" placeholder="Tahun Terbit" value="{{ item.TAHUN_TERBIT_PUSTAKA }}">
+							<input type="number" class="form-control" disabled name="tahun" placeholder="Tahun Terbit" value="{{ pustaka.TAHUN_TERBIT_PUSTAKA }}">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-6">
-							<input type="text" class="form-control" name="penerbit" placeholder="Penerbit" value="{{ item.PENERBIT_PUSTAKA }}">
+							<input type="text" class="form-control" disabled name="penerbit" placeholder="Penerbit" value="{{ pustaka.PENERBIT_PUSTAKA }}">
 						</div>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" name="pengarang" placeholder="Pengarang" value="{{ item.PENGARANG_PUSTAKA }}">
+							<input type="text" class="form-control" disabled name="pengarang" placeholder="Pengarang" value="{{ pustaka.PENGARANG_PUSTAKA }}">
 						</div>
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% include 'components/sidebar/_silabus-kepustakaan-helper.twig' with {'state': 'collapsed'}  %}
 {% endblock %}
 
 {% block inlinejs %}

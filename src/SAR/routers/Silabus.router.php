@@ -47,6 +47,7 @@ $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, f
     ));
 });
 
+/** GET request on `/matakuliah/:idMatkul/silabus/new` */
 $app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
@@ -64,6 +65,7 @@ $app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatku
     }
 });
 
+/** POST request on `/matakuliah/:idMatkul/silabus/new` */
 $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveOrEdit($idMatkul, '', $_POST['pokok-bahasan'], $_POST['tujuan']);
@@ -74,6 +76,7 @@ $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatk
     }
 });
 
+/** GET request on `/matakuliah/:idMatkul/silabus/edit` */
 $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
@@ -101,6 +104,7 @@ $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatk
     }
 });
 
+/** POST request on `/matakuliah/:idMatkul/silabus/edit` */
 $app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveOrEdit($idMatkul, $_POST['idSilabus'], $_POST['pokok-bahasan'], $_POST['tujuan']);
@@ -111,6 +115,7 @@ $app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmat
     }
 });
 
+/** GET request on `/matakuliah/:idMatkul/silabus/kompetensi` */
 $app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $silabus = new Silabus($idMatkul);
@@ -125,12 +130,26 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $acce
     ));
 });
 
+/** POST request on `/matakuliah/:idMatkul/silabus/kompetensi` */
 $app->post('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    var_dump($_POST);
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->saveKompetensi($_POST['idSilabus'], $_POST['text'], $_POST['kategori']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
+    } else {
+        $app->stop();
+    }
 });
 
+/** GET request on `/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi` */
 $app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authenticate($app), $accessmatkul, function ($idMatkul, $idKompetensi) use ($app) {
-    $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->deleteKompetensi($idKompetensi);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/kompetensi');
+    } else {
+        $app->stop();
+    }
 });
 
 $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
@@ -146,42 +165,21 @@ $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessm
 });
 
 $app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    var_dump($_POST);
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->saveKepustakaan($_POST['idSilabus'], $_POST['judul'], $_POST['tahun'], $_POST['penerbit'], $_POST['pengarang']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/pustaka');
+    } else {
+        $app->stop();
+    }
 });
 
-/** POST request on `/matakuliah/:idMatkul/silabus` */
-// $app->post('/matakuliah/:idMatkul/silabus', function ($idMatkul) use ($app) {
-//     $silabus = new Silabus();
-//     if (!empty($_POST)) {
-//         $pokokBahasan = $_POST['pokok-bahasan'];
-//         $tujuan = $_POST['tujuan'];
-//         $kompetensi = $_POST['kompetensi'];
-//         // echo('$silabus->save('.$pokokBahasan.', '.$idMatkul.', '.$tujuan.')<br>');
-//         foreach ($kompetensi as $key => $item) {
-//             // echo('$kompetensi->save(idsilabus'.$kompetensi[$key]['text'].')<br>');
-//         }
-//         $app->response()->header('Content-Type', 'application/json');
-//         // echo(json_encode($_POST));
-//     } else {
-//         echo 'ERROR';
-//     }
-// });
-
-// $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), function ($idMatkul) use ($app) {
-//     $currPath = $app->request()->getPath();
-//     $silabus = new Silabus();
-//     $result = $silabus->init($idMatkul);
-//     $app->render('pages/_silabus.twig', array(
-//         'warning' => true,
-//         'tujuan' => $silabus->tujuan,
-//         'kompetensi' => $silabus->kompetensi,
-//         'pokokBahasan' => $silabus->pokokBahasan,
-//         'pustaka' => $silabus->pustaka,
-//         'currPath' => $currPath
-//     ));
-// });
-
-// $app->post('/matakuliah/:idMatkul/silabus/edit', function ($idMatkul) use ($app) {
-//     $app->response()->header('Content-Type', 'application/json');
-//     echo json_encode($_POST);
-// });
+$app->get('/matakuliah/:idMatkul/silabus/pustaka/del/:idPustaka', $authenticate($app), $accessmatkul, function ($idMatkul, $idPustaka) use ($app) {
+    $silabus = new Silabus($idMatkul);
+    $result = $silabus->deleteKepustakaan($idPustaka);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/silabus/pustaka');
+    } else {
+        $app->stop();
+    }
+});

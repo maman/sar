@@ -123,7 +123,9 @@ class Silabus
             ON
                 SILABUS.ID_SILABUS = PUSTAKA.ID_SILABUS
             WHERE
-                SILABUS.ID_SILABUS = :idSilabus'
+                SILABUS.ID_SILABUS = :idSilabus
+            ORDER BY
+                PUSTAKA.ID_PUSTAKA ASC'
         );
         $query->bindParam(':idSilabus', $idSilabus);
         $query->execute();
@@ -136,7 +138,7 @@ class Silabus
     }
 
     /**
-     * Get Kompetensi for the provided Matkul ID
+     * Get Kompetensi for the provided Silabus ID
      * @param  string $idSilabus
      * @return mixed
      */
@@ -151,7 +153,9 @@ class Silabus
             ON
                 SILABUS.ID_SILABUS = KOMPETENSI.ID_SILABUS
             WHERE
-                SILABUS.ID_SILABUS = :idSilabus'
+                SILABUS.ID_SILABUS = :idSilabus
+            ORDER BY
+                KOMPETENSI.ID_KOMPETENSI ASC'
         );
         $query->bindParam(':idSilabus', $idSilabus);
         $query->execute();
@@ -202,25 +206,24 @@ class Silabus
         }
     }
 
-    // public function init($idMatkul) {
-    //     $silabus = $this->getSilabusByMatkul($idMatkul);
-    //     if (count($silabus) == 1) {
-    //         foreach ($silabus as $result) {
-    //             $this->silabusID = $result['ID_SILABUS'];
-    //             // $this->mediaBelajarSoft = $result['MEDIA_BELAJAR_SOFTWARE'];
-    //             // $this->mediaBelajarHard = $result['MEDIA_BELAJAR_HARDWARE'];
-    //             // $this->assesmentTes = $result['ASSESMENT_TES'];
-    //             // $this->assesmentNonTes = $result['ASSESMENT_NONTES'];
-    //             $this->pokokBahasan = $result['POKOK_BAHASAN'];
-    //             $this->tujuan = $result['TUJUAN'];
-    //             $this->pustaka = $this->getPustakaBySilabusID($result['ID_SILABUS']);
-    //             $this->kompetensi = $this->combineKompetensiKategori($result['ID_SILABUS']);
-    //         }
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    /**
+     * Get Last inserted Kompetensi ID
+     * @return string
+     */
+    private function getLastKompetensiId()
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                ID_KOMPETENSI
+            FROM
+                KOMPETENSI
+            ORDER BY
+                ID_KOMPETENSI DESC'
+        );
+        $query->execute();
+        $results = $query->fetchColumn();
+        return $results;
+    }
 
     /**
      * Save or Edit Silabus Entries
@@ -279,19 +282,158 @@ class Silabus
     }
 
     /**
-     * Save or Edit Silabus Entries
-     * @param  string $silabusID        Silabus ID
-     * @param  string $pokokBahasan     Pokok Bahasan
-     * @param  string $mediaBelajarSoft Media Belajar Software
-     * @param  string $mediaBelajarHard Media Belajar Hardware
-     * @param  string $assesmentTes     Assesment Tes
-     * @param  string $assesmentNonTes  Assesment Non Tes
-     * @param  string $idMatkul         Mata Kuliah ID
-     * @param  string $tujuan           Tujuan
+     * Save Kompetensi
+     * @param  string $idSilabus
+     * @param  string $text
+     * @param  array  $kategori
      * @return boolean
      */
-    public function edit($silabusID, $pokokBahasan, $mediaBelajarSoft, $mediaBelajarHard, $assesmentTes, $assesmentNonTes, $idMatkul, $tujuan)
+    public function saveKompetensi($idSilabus, $text, $kategori)
     {
-        # TODO
+        $nextInsertId = null;
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    KOMPETENSI
+                (
+                    ID_SILABUS,
+                    NAMA_KOMPETENSI
+                )
+                VALUES
+                (
+                    :idSilabus,
+                    :text
+                )'
+            );
+            $query->bindParam(':idSilabus', $idSilabus);
+            $query->bindParam(':text', $text);
+            $query->execute();
+            $nextInsertId = $this->getLastKompetensiId();
+            foreach ($kategori as $item) {
+                try {
+                    $query2 = $this->core->db->prepare(
+                        'INSERT INTO
+                            SILABUS_KATEGORI_KOMPETENSI
+                        (
+                            ID_KOMPETENSI,
+                            ID_KATEGORI_KOMPETENSI
+                        )
+                        VALUES
+                        (
+                            :idKompetensi,
+                            :idKategori
+                        )'
+                    );
+                    $query2->bindParam(':idKompetensi', $nextInsertId);
+                    $query2->bindParam(':idKategori', $item);
+                    $query2->execute();
+                } catch (PDOException $e) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete Kompetensi
+     * @param  string $idKompetensi
+     * @return boolean
+     */
+    public function deleteKompetensi($idKompetensi)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    KOMPETENSI
+                WHERE
+                    ID_KOMPETENSI = :idKompetensi'
+            );
+            $query->bindParam(':idKompetensi', $idKompetensi);
+            $query->execute();
+            try {
+                $query2 = $this->core->db->prepare(
+                    'DELETE FROM
+                        SILABUS_KATEGORI_KOMPETENSI
+                    WHERE
+                        ID_KOMPETENSI = :idKompetensi'
+                );
+                $query2->bindParam(':idKompetensi', $idKompetensi);
+                $query2->execute();
+            } catch (PDOException $e) {
+                return false;
+            }
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Save Kepustakaan
+     * @param  string $idSilabus
+     * @param  string $judul
+     * @param  string $tahunTerbit
+     * @param  string $penerbit
+     * @param  string $pengarang
+     * @return boolean
+     */
+    public function saveKepustakaan($idSilabus, $judul, $tahunTerbit, $penerbit, $pengarang)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    PUSTAKA
+                (
+                    ID_SILABUS,
+                    PENGARANG_PUSTAKA,
+                    JUDUL_PUSTAKA,
+                    PENERBIT_PUSTAKA,
+                    TAHUN_TERBIT_PUSTAKA
+                )
+                VALUES
+                (
+                    :idSilabus,
+                    :pengarang,
+                    :judul,
+                    :penerbit,
+                    :tahunTerbit
+                )'
+            );
+            $query->bindParam(':idSilabus', $idSilabus);
+            $query->bindParam(':judul', $judul);
+            $query->bindParam(':tahunTerbit', $tahunTerbit);
+            $query->bindParam(':penerbit', $penerbit);
+            $query->bindParam(':pengarang', $pengarang);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete Kepustakaan by provided ID
+     * @param  string $idPustaka
+     * @return boolean
+     */
+    public function deleteKepustakaan($idPustaka)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    PUSTAKA
+                WHERE
+                    ID_PUSTAKA = :idPustaka'
+            );
+            $query->bindParam(':idPustaka', $idPustaka);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
     }
 }

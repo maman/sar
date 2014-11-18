@@ -1,6 +1,6 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}Silabus untuk {% endblock %}
+{% block pagetitle %}Kompetensi{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig' with {'state': 'mini'}%}
@@ -13,6 +13,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
+			{% if not silabus.kompetensi %}
 			<div class="list-group">
 				<div class="list-group-item well">
 					<h4 class="list-group-item-heading">Anda belum mempunyai kompetensi untuk mata kuliah {{ namaMatkul }}</h4>
@@ -21,6 +22,7 @@
 					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat kompetensi</strong></i></a>
 				</div>
 			</div>
+			{% endif %}
 			<div class="form-group kompetensi">
 				{% if silabus.kompetensi %}
 					{% for kompetensi in silabus.kompetensi %}
@@ -41,6 +43,7 @@
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
 							<textarea data-input-autosave class="form-control input-lg" name="text" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
 							<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
 							{% for item in kategori %}
@@ -59,7 +62,7 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% include 'components/sidebar/_silabus-kompetensi-helper.twig' with {'state': 'collapsed'}  %}
 {% endblock %}
 
 {% block inlinejs %}

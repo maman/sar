@@ -2,12 +2,12 @@
 
 {% block sidebar_right %}
 <div class="panel-body">
-	<h4 class="page-header" data-wizard-step-title>Silabus</h4>
+	<h4 class="page-header" data-wizard-step-title>Kompetensi</h4>
 	<p data-wizard-step-explanation>Berisi tentang ... mata kuliah</p>
 	<ul class="list-group">
 		<li class="list-group-item"><strong class="text-muted">Revision</strong> 01</li>
 		<li class="list-group-item"><span class="text-danger">Unapproved</span></li>
 	</ul>
-	<a href="#" class="{% if (not silabus.kompetensi) or (not silabus.pustaka) %}disabled{% endif %} btn btn-block btn-success btn-lg">Submit</a>
+	<a href="{{ breadcrumbs.silabus }}" class="btn btn-block btn-primary btn-lg">Kembali</a>
 </div>
 {% endblock %}

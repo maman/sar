@@ -25,11 +25,18 @@
 					<label for="tujuan"><h3>Tujuan Mata Kuliah</h3></label>
 					<textarea name="tujuan" id="tujuan" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable">{{ silabus.tujuan }}</textarea>
 				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-4">
+							<input type="submit" class="btn btn-block btn-lg btn-success">
+						</div>
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
+{% include 'components/sidebar/_silabus-new-helper.twig' with {'state': 'collapsed'}  %}
 {% endblock %}
 
 {% block inlinejs %}

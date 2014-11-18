@@ -11,131 +11,6 @@
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
-	{# <div class="row">
-		<div class="col-lg-12">
-			<ul data-wizard-pager></ul>
-			<form action="{{ currPath }}" id="silabusForm" role="form" class="cycle-slideshow"
-				method="POST"
-				data-form-dynamic
-				data-cycle-fx="none"
-				data-cycle-auto-height="false"
-				data-cycle-timeout="0"
-				data-cycle-speed="100"
-				data-cycle-slides=">[data-wizard-pages]"
-				data-cycle-slide-active-class="active"
-				data-cycle-log="false"
-				data-cycle-prev="[data-wizard-toggle=wizard-prev]"
-				data-cycle-next="[data-wizard-toggle=wizard-next]"
-				data-cycle-allow-wrap="false"
-				data-cycle-pager="[data-wizard-pager]"
-				data-cycle-pager-active-class="active"
-				data-wizard
-				data-form-autosave
-				{% verbatim %}
-				data-cycle-pager-template="<li data-wizard-pagers><a href='#'><span>{{slideNum}}</span>. {{dataset.stepTitle}}</a></li>"
-				{% endverbatim %}
-				>
-				<section class="step" data-wizard-pages data-step-title="Tujuan" data-step-explanation="Berisi tentang tujuan dan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Tujuan">
-					<div class="form-group" data-step-title="Tujuan">
-						<textarea data-input-autosave class="form-control input-lg" name="tujuan" rows="10" placeholder="lorem" data-multiline="disable">{% if tujuan is defined %}{{ tujuan }}{% endif %}</textarea>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Kompetensi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="Kompetensi">
-					<div class="form-group kompetensi" data-multi-target-parent>
-						{% if kompetensi is defined %}
-							{% for detail in kompetensi %}
-						<div class="kompetensi" data-multi-target data-name="kompetensi">
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kompetensi[{{ loop.index0 }}][id]" data-id="[id]" value="{{ detail.ID_KOMPETENSI }}">
-							<textarea class="form-control input-lg" name="kompetensi[{{ loop.index0 }}][text]" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ detail.NAMA_KOMPETENSI }}</textarea>
-							<select multiple name="kompetensi[{{ loop.index0 }}][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
-								{% for item in detail.KATEGORI_KOMPETENSI %}
-								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KATEGORI_KOMPETENSI }}</option>
-								{% endfor %}
-							</select>
-						</div>
-							{% endfor %}
-						{% else %}
-						<div class="kompetensi" data-multi-target data-name="kompetensi">
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kompetensi[0][id]" data-id="[id]" value="">
-							<textarea data-input-autosave class="form-control input-lg" name="kompetensi[0][text]" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select multiple name="kompetensi[0][kategori][]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
-							{% for item in kategori %}
-								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
-							{% endfor %}
-							</select>
-						</div>
-						{% endif %}
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".kompetensi[data-multi-target]" data-multi-target-container=".kompetensi[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kompetensi</span></a>
-						</div>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Pokok Bahasan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="pokok-bahasan">
-					<div class="form-group">
-						<textarea data-input-autosave class="form-control input-lg" name="pokok-bahasan" rows="10" placeholder="lorem" data-multiline="disable">{% if pokokBahasan is defined %}{{ pokokBahasan }}{% endif %}</textarea>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
-					<div class="form-group kepustakaan" data-multi-target-parent>
-						{% if pustaka is defined %}
-							{% for item in pustaka %}
-						<div class="kepustakaan" data-multi-target>
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kepustakaan[{{ loop.index0 }}][id]" value="{{ item.ID_PUSTAKA }}">
-							<div class="row">
-								<div class="col-sm-9">
-									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][judul]" placeholder="Judul" value="{{ item.JUDUL_PUSTAKA }}">
-								</div>
-								<div class="col-sm-3">
-									<input type="number" class="form-control" name="kepustakaan[{{ loop.index0 }}][tahun]" placeholder="Tahun Terbit" value="{{ item.TAHUN_TERBIT_PUSTAKA }}">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][penerbit]" placeholder="Penerbit" value="{{ item.PENERBIT_PUSTAKA }}">
-								</div>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[{{ loop.index0 }}][pengarang]" placeholder="Pengarang" value="{{ item.PENGARANG_PUSTAKA }}">
-								</div>
-							</div>
-						</div>
-							{% endfor %}
-						{% else %}
-						<div class="kepustakaan" data-multi-target>
-							<a href="#" data-multi-target-close data-target="[data-multi-target]"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<input type="hidden" name="kepustakaan[0][id]" value="{{ item.ID_PUSTAKA }}">
-							<div class="row">
-								<div class="col-sm-9">
-									<input type="text" class="form-control" name="kepustakaan[0][judul]" placeholder="Judul">
-								</div>
-								<div class="col-sm-3">
-									<input type="number" class="form-control" name="kepustakaan[0][tahun]" placeholder="Tahun Terbit">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[0][penerbit]" placeholder="Penerbit">
-								</div>
-								<div class="col-sm-6">
-									<input type="text" class="form-control" name="kepustakaan[0][pengarang]" placeholder="Pengarang">
-								</div>
-							</div>
-						</div>
-						{% endif %}
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".kepustakaan[data-multi-target]" data-multi-target-container=".kepustakaan[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Kepustakaan</span></a>
-						</div>
-					</div>
-				</section>
-			</form>
-		</div>
-	</div> #}
 	<div class="row">
 		<div class="col-lg-12">
 			{% if isNew %}
@@ -148,51 +23,60 @@
 				</div>
 			</div>
 			{% else %}
-			<div class="list-group-item clearfix" style="margin-bottom: 2em">
+			<div class="list-group-item clearfix sheet" style="margin-bottom: 2em">
 				<div class="list-group-item-content">
 					<div class="list-group-toggle">
 						<section class="list-group-item-section">
-							<strong class="text-info">Tujuan</strong>
+							<strong class="text-info h3 sheet-heading">Tujuan <a href="{{ currPath }}/edit" class="btn btn-warning pull-right">Edit</a></strong>
 							<p class="list-group-item-text">{{ silabus.tujuan }}</p>
 						</section>
 						<section class="list-group-item-section">
-							<strong class="text-info">Kompetensi</strong>
 							{% if silabus.kompetensi %}
+							<strong class="text-info h3 sheet-heading">Kompetensi <a href="{{ currPath }}/kompetensi" class="btn btn-warning pull-right">Edit</a></strong>
 							<ul class="list-group-item-text">
 								{% for item in silabus.kompetensi %}
-								<li>{{ item.NAMA_KOMPETENSI }}
+								<li><p>{{ item.NAMA_KOMPETENSI }}
 									{% for tag in item.KATEGORI_KOMPETENSI %}
 										{% if tag.SELECTED %}
 									<span class="label label-primary">{{tag.ID_KATEGORI_KOMPETENSI}}</span>
 										{% endif %}
-									{% endfor %}
+									{% endfor %}</p>
 								</li>
 								{% endfor %}
 							</ul>
 							{% else %}
-							<br><a href="{{currPath}}/kompetensi" class="btn btn-small btn-success"><i class="fa fa-plus"></i> Tambah Kompetensi</a>
+							<strong class="text-info h3 sheet-heading">Kompetensi</strong>
+							<div class="well">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<a href="{{currPath}}/kompetensi" class="btn btn-block btn-lg btn-success"><i class="fa fa-plus"></i> Tambah Kompetensi</a>
+									</div>
+								</div>
+							</div>
 							{% endif %}
 						</section>
 						<section class="list-group-item-section">
-							<strong class="text-info">Pokok Bahasan</strong>
+							<strong class="text-info h3 sheet-heading">Pokok Bahasan <a href="{{ currPath }}/edit" class="btn btn-warning pull-right">Edit</a></strong>
 							<p class="list-group-item-text">{{ silabus.pokokBahasan }}</p>
 						</section>
 						<section class="list-group-item-section">
-							<strong class="text-info">Kepustakaan</strong>
 							{% if silabus.pustaka %}
-							<ul class="list-group-item-text">
-								{% for item in silabus.kompetensi %}
-								<li>{{ item.NAMA_KOMPETENSI }}
-									{% for tag in item.KATEGORI_KOMPETENSI %}
-										{% if tag.SELECTED %}
-									<span class="label label-primary">{{tag.ID_KATEGORI_KOMPETENSI}}</span>
-										{% endif %}
-									{% endfor %}
+							<strong class="text-info h3 sheet-heading">Kepustakaan <a href="{{ currPath }}/pustaka" class="btn btn-warning pull-right">Edit</a></strong>
+							<ol class="list-group-item-text">
+								{% for item in silabus.pustaka %}
+								<li>
+									<p><strong>{{ item.PENGARANG_PUSTAKA }},</strong> <span class="text-italic">{{ item.JUDUL_PUSTAKA }}</span>, {{ item.PENERBIT_PUSTAKA }}, {{ item.TAHUN_TERBIT_PUSTAKA }}.</p>
 								</li>
 								{% endfor %}
-							</ul>
+							</ol>
 							{% else %}
-							<br><a href="{{currPath}}/pustaka" class="btn btn-small btn-success"><i class="fa fa-plus"></i> Tambah Kepustakaan</a>
+							<div class="well">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<a href="{{currPath}}/pustaka" class="btn btn-block btn-lg btn-success"><i class="fa fa-plus"></i> Tambah Kepustakaan</a>
+									</div>
+								</div>
+							</div>
 							{% endif %}
 						</section>
 					</div>
