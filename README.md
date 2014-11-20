@@ -12,6 +12,7 @@
 * [Slim](http://www.slimframework.com)
 * [Pimple](http://pimple.sensiolabs.org)
 * [Monolog](https://github.com/Seldaek/monolog)
+* [Underscore.php](http://brianhaveri.github.io/Underscore.php)
 * [Grunt](http://gruntjs.com)
 * [Webpack](http://webpack.github.io)
 * [Twitter Bootstrap](http://getbootstrap.com)
