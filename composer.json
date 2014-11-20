@@ -15,7 +15,8 @@
     "slim/views": "0.1.*",
     "flynsarmy/slim-monolog": "1.*",
     "twig/twig": "1.*",
-    "alfmel/pdo-via-oci8": "dev-bugfix"
+    "alfmel/pdo-via-oci8": "dev-bugfix",
+    "underscore/underscore.php": "dev-master"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*"

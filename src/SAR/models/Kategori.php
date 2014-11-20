@@ -69,6 +69,7 @@ class Kategori
 
     /**
      * Get Kategori for the provided Silabus ID
+     * @param  string $idSilabus
      * @return mixed
      */
     public function getKategoriById($idSilabus)
@@ -123,5 +124,15 @@ class Kategori
         } else {
             return false;
         }
+    }
+
+    public function getAgendaKategoriByAgendaId($idAgenda)
+    {
+        # TODO -> return unique array of kategori by agenda ID
+    }
+
+    public function getAgendaKategoriByIndikatorId($idIndikator)
+    {
+        # TODO -> return array of kategori by indikator ID
     }
 }

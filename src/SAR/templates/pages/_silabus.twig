@@ -86,9 +86,5 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
-{% endblock %}
-
-{% block inlinejs %}
-<script>triggerLayoutMini()</script>
+{% include 'components/sidebar/_silabus-helper.twig' with {'pageTitle': 'Silabus', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit'}  %}
 {% endblock %}

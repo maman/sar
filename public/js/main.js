@@ -4,7 +4,6 @@
 'use strict';
 
 require('bootstrap');
-require('jquery-cycle2');
 
 require('./globals/domLoad');
 require('./globals/domReady');

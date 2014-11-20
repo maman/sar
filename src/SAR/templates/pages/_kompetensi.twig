@@ -62,9 +62,5 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-kompetensi-helper.twig' with {'state': 'collapsed'}  %}
-{% endblock %}
-
-{% block inlinejs %}
-<script>triggerLayoutMini();</script>
+{% include 'components/sidebar/_silabus-helper.twig' with {'pageTitle': 'Kompetensi', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
 {% endblock %}

@@ -19,7 +19,7 @@
 use SAR\models\Matkul;
 
 /** GET request on `/matakuliah/:idMatkul/agenda` */
-$app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), function ($idMatkul) use ($app) {
+$app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $details = $matkul->getMatkulDetails($idMatkul)[0];

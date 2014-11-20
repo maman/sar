@@ -81,9 +81,5 @@
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-kepustakaan-helper.twig' with {'state': 'collapsed'}  %}
-{% endblock %}
-
-{% block inlinejs %}
-<script>triggerLayoutMini()</script>
+{% include 'components/sidebar/_silabus-helper.twig' with {'pageTitle': 'Pustaka', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
 {% endblock %}
