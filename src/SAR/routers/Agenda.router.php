@@ -17,20 +17,25 @@
  * @license GNU General Public License v2
  */
 use SAR\models\Matkul;
+use SAR\models\Agenda;
+use SAR\models\Rps;
 
 /** GET request on `/matakuliah/:idMatkul/agenda` */
 $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
+    $agenda = new Agenda();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
+    $agendas = $agenda->getAgendaByMatkul($idMatkul);
     $app->render('pages/_agenda.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
+        'agendas' => $agendas,
         'currPath' => $currPath
     ));
 });

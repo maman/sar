@@ -29,29 +29,11 @@ use SAR\models\Silabus;
  */
 class Agenda
 {
-    private $agendaID;
-    private $pertemuan;
-    private $subKompetensi;
-    private $materi;
-    private $bobot;
     private $core;
 
-    function __construct($idMatkul)
+    function __construct()
     {
         $this->core = Slim::getInstance();
-        $silabus = new Silabus($idMatkul);
-        $silabusId = $silabus->silabusID;
-        $agenda = $this->getAgendaBySilabus($silabusId);
-        if ($agenda) {
-            foreach ($agenda as $result) {
-                $this->agendaID = $result['ID_SUB_KOMPETENSI'];
-                $this->subKompetensi = $result['TEXT_SUB_KOMPETENSI'];
-                $this->materi = $result['TEXT_MATERI_BELAJAR'];
-                $this->pertemuan = $result['RANGE_PERTEMUAN'];
-                $this->bobot = $result['BOBOT'];
-                $this->indikator = $this->getIndikatorByAgendaID($result['ID_SUB_KOMPETENSI']);
-            }
-        }
     }
 
     public function __get($prop)
@@ -70,21 +52,21 @@ class Agenda
     }
 
     /**
-     * Get Agenda for the provided Silabus ID
-     * @param  string $idSilabus
+     * Get Indikator for the provided Agenda ID
+     * @param  string $idAgenda
      * @return mixed
      */
-    private function getAgendaBySilabus($idSilabus)
+    private function getIndikatorByAgendaID($idAgenda)
     {
         $query = $this->core->db->prepare(
             'SELECT
                 *
             FROM
-                AGENDA
+                INDIKATOR_AGENDA
             WHERE
-                ID_SILABUS = :idSilabus'
+                ID_SUB_KOMPETENSI = :idAgenda'
         );
-        $query->bindParam(':idSilabus', $idSilabus);
+        $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -94,13 +76,87 @@ class Agenda
         }
     }
 
-    private function getIndikatorByAgendaID($idAgenda)
-    {
-        # TODO -> return indikator array or false.
-    }
-
+    /**
+     * Get Aktivitas for the provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
     private function getAktivitasByAgendaID($idAgenda)
     {
-        # TODO -> return aktivitas array or false.
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                AKTIVITAS_AGENDA
+            WHERE
+                ID_SUB_KOMPETENSI = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Asesmen for the provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    private function getAsesmenByAgendaID($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                ASESMEN_AGENDA
+            WHERE
+                ID_SUB_KOMPETENSI = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAgendaByMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                AGENDA.ID_SUB_KOMPETENSI,
+                AGENDA.TEXT_SUB_KOMPETENSI,
+                AGENDA.TEXT_MATERI_BELAJAR,
+                AGENDA.RANGE_PERTEMUAN,
+                AGENDA.BOBOT
+            FROM
+                MATAKULIAH INNER JOIN SILABUS
+            ON
+                MATAKULIAH."KDMataKuliah" = SILABUS.ID_MATAKULIAH
+                INNER JOIN AGENDA
+            ON
+                SILABUS.ID_SILABUS = AGENDA.ID_SILABUS
+            WHERE
+                MATAKULIAH."KDMataKuliah" = :idMatkul'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            foreach ($results as $value => $agenda) {
+                $results[$value]['INDIKATOR'] = $this->getIndikatorByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
+                $results[$value]['AKTIVITAS'] = $this->getAktivitasByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
+                $results[$value]['ASESMEN'] = $this->getAsesmenByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
+            }
+            return $results;
+        } else {
+            return false;
+        }
     }
 }
