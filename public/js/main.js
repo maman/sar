@@ -4,6 +4,7 @@
 'use strict';
 
 require('bootstrap');
+require('bootstrap-validator');
 
 require('./globals/domLoad');
 require('./globals/domReady');

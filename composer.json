@@ -1,6 +1,6 @@
 {
   "name": "pkl-self-assest",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
   "repositories": [
     {
@@ -16,7 +16,8 @@
     "flynsarmy/slim-monolog": "1.*",
     "twig/twig": "1.*",
     "alfmel/pdo-via-oci8": "dev-bugfix",
-    "underscore/underscore.php": "dev-master"
+    "respect/validation": "0.7.*@dev",
+    "lstrojny/functional-php": "dev-master"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*"
