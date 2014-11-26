@@ -131,7 +131,7 @@ $app->configureMode('development', function () use ($app) {
 });
 
 /* Load Database */
-$app->container->singleton('db', function() use ($config) {
+$app->container->singleton('db', function () use ($config) {
     $dsn = $config['db.dsn'];
     $user = $config['db.username'];
     $password = $config['db.password'];
