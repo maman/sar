@@ -45,13 +45,30 @@ $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($id
     $matkul = new Matkul();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
-    $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
     $app->render('pages/_agenda-new.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
-        'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        'currPath' => $currPath
+    ));
+});
+
+$app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($idMatkul) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $agenda = new Agenda();
+    $idAgenda = $_GET['id'];
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $detailAgenda = $agenda->getDetailAgenda($idAgenda);
+    $app->render('pages/_agenda-new.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'idAgenda' => $idAgenda,
+        'idSilabus' => $detailAgenda[0]['ID_SILABUS'],
+        'rangePertemuan' => $detailAgenda[0]['RANGE_PERTEMUAN'],
+        'bobot' => $detailAgenda[0]['BOBOT'],
+        'txtSubKompetensi' => $detailAgenda[0]['TEXT_SUB_KOMPETENSI'],
+        'txtMateriBelajar' => $detailAgenda[0]['TEXT_MATERI_BELAJAR'],
         'currPath' => $currPath
     ));
 });

@@ -9,169 +9,119 @@
 		<div class="col-lg-12">
 			<h1 class="page-header">Agenda</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
-			{# <div class="alert alert-dismissible alert-warning fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Warning:</strong> You have finished this section.
-			</div>
-			<div class="alert alert-dismissible alert-danger fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Uh oh.</strong> This has been verified and approved by kaprodi. you cannot edit this anymore.
-			</div> #}
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12" data-app="agenda">
+		<div class="col-lg-12">
 			<div class="list-group" data-list-toggle>
+				{% if not agendas %}
 				<div class="list-group-item well">
 					<h4 class="list-group-item-heading">Anda belum mempunyai agenda untuk mata kuliah {{ namaMatkul }}</h4>
 					<p class="list-group-item-text">Untuk membuat agenda baru klik tombol dibawah, dan isi masukan yang akan diberikan pada halaman yang muncul.</p>
 					<br>
 					<a href="{{currPath}}/new" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Tambahkan agenda baru</strong></i></a>
 				</div>
-				<div class="list-group-item collapsed clearfix" data-list-toggle-target>
+				{% endif %}
+				{% for agenda in agendas %}
+				<div class="list-group-item clearfix collapsed" data-list-toggle-target>
 					<div class="list-group-item-content">
 						<div class="list-group-toggle">
-							<span class="label label-success">Pertemuan 5,6,9</span>
+							<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
+							{% if agenda.ASESMEN.tes is not empty %}<span class="label label-info">Asesmen Tes</span>{% endif %}
+							{% if agenda.ASESMEN.nontes is not empty %}<span class="label label-info">Asesmen Non Tes</span>{% endif %}
+							<span class="label label-danger">{{ agenda.BOBOT }}</span>
 							<section class="list-group-item-section">
-								<strong class="text-info">Sub Kompetensi</strong>
-								<p class="list-group-item-text">Mahasiswa mampu menjelaskan dan memberi contoh proyek proyek TI</p>
+								<strong class="text-info">Sub Kompetensi</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
+								<p class="list-group-item-text">{{ agenda.TEXT_SUB_KOMPETENSI }}</p>
 							</section>
+							{% if not agenda.INDIKATOR %}
+							<section class="list-group-item-section well">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<a href="{{currPath}}/indikator?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Indikator</a>
+									</div>
+								</div>
+							</section>
+							{% else %}
 							<section class="list-group-item-section">
-								<strong class="text-info">Indikator Pencapaian</strong>
+								<strong class="text-info">Indikator Pencapaian</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								<ul class="list-group-item-text">
-									<li>Pemahaman karakteristik, sasaran, stakeholder, kumpulan, keahlian, dan jenis proyek <span class="label label-primary">C1</span></li>
-									<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
+								{% for item in agenda.INDIKATOR %}
+									<li>{{ item.TEXT_INDIKATOR }} <span class="label label-primary">{{ item.ID_KETERANGAN }}</span></li>
+								{% endfor %}
 								</ul>
 							</section>
+							{% endif %}
 							<section class="list-group-item-section">
-								<strong class="text-info">Materi Pembelajaran</strong>
+								<strong class="text-info">Materi Pembelajaran</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
+								<div class="list-group-item-text">{{ agenda.TEXT_MATERI_BELAJAR }}</div>
+							</section>
+							{% if not agenda.AKTIVITAS %}
+							<section class="list-group-item-section well">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<a href="{{currPath}}/aktivitas?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Aktivitas</a>
+									</div>
+								</div>
+							</section>
+							{% else %}
+							<section class="list-group-item-section">
+								<strong class="text-info">Aktivitas Pembelajaran</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								<ul class="list-group-item-text">
-									<li>Inisialisasi Perkuliahan
-										<ul>
-											<li>Motivasi Belajar</li>
-											<li>Rencana Pembelajaran</li>
-											<li>Rules Belajar</li>
-										</ul>
-									</li>
-									<li>Berbagai Artikel tentang proyek, proyek TI dan proyek non TI</li>
-									<li>Metode pengembangan aplikasi</li>
-									<li>Pengantar Manajemen Proyek
-									<ul>
-										<li>Tiga Batasan Proyek</li>
-										<li>Area keahlian Manajemen Proyek</li>
-										<li>Program dan Portofolio</li>
-										<li>SubProject</li>
+									{% for aktivitas in agenda.AKTIVITAS %}
+									<li>{% if aktivitas.TASK == '1' %}<strong>Task</strong> :{% endif %}{% if aktivitas.PROJECT == '1' %}Project {{ aktivitas.PROJECT }}:{% endif %}{{ aktivitas.TEXT_AKTIVITAS_AGENDA }}</li>
+									{% endfor %}
+								</ul>
+							</section>
+							{% endif %}
+							{% if not agenda.ASESMEN %}
+							<section class="list-group-item-section well">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<a href="{{currPath}}/asesmen?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Asesmen</a>
+									</div>
+								</div>
+							</section>
+							{% else %}
+							<section class="list-group-item-section"><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
+								{% if agenda.ASESMEN.tes is not empty %}
+								<strong class="text-info">Assesmen - Tes</strong>
+									{% for tes in agenda.ASESMEN.tes %}
+								<ul class="list-group-item-text">
+									<li>{{ tes.NAMA_ASSESMENT_SUB_KOMPETENSI }}</li>
+								</ul>
+									{% endfor %}
+								{% endif %}
+							</section>
+							<section class="list-group-item-section">
+								{% if agenda.ASESMEN.nontes is not empty %}
+								<strong class="text-info">Assesmen - Non Tes</strong>
+									{% for nontes in agenda.ASESMEN.nontes %}
+									<ul class="list-group-item-text">
+										<li>{{ nontes.NAMA_ASSESMENT_SUB_KOMPETENSI }}</li>
 									</ul>
-									</li>
-									<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-								</ul>
+									{% endfor %}
+								{% endif %}
 							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Aktivitas Pembelajaran</strong>
-								<ul class="list-group-item-text">
-									<li>Kuliah &amp; Brainstorming</li>
-									<li>Task 1: Membuat target kompetensi</li>
-									<li>Diskusi tentang Proyek, proyek TI, proyek bukan TI, dan perbedaannya</li>
-									<li>Task 2: Membuat resume tentang proyek TI</li>
-								</ul>
-							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Assesmen <span class="label label-primary">Non-Tes</span> <span class="label label-danger">15%</span></strong>
-								<ul class="list-group-item-text">
-									<li>Presentasi skenario sendratari</li>
-									<li>Yel yel tim dan sendratari</li>
-									<li>Pembelajaran proyek sendratari</li>
-								</ul>
-							</section>
+							{% endif %}
 						</div>
 						<hr class="mini">
-						<span class="label label-primary">C1 - Pengetahuan</span>
-						<span class="label label-primary">A5 - Mengatur Diri</span>
-						<div class="btn-group btn-group-xs pull-right">
-							<a href="#" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i><span class="sr-only">Edit</span></a>
-							<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
+						<div class="btn-group btn-group-xs pull-right" style="z-index:99">
+							<a href="{{currPath}}/del?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> <span class="text-allcaps">Delete</span></a>
 						</div>
 					</div>
 				</div>
-				<div class="list-group-item collapsed clearfix" data-list-toggle-target>
-					<div class="list-group-item-content">
-						<div class="list-group-toggle">
-							<span class="label label-success">Pertemuan 5,6,9</span>
-							<section class="list-group-item-section">
-								<strong class="text-info">Sub Kompetensi</strong>
-								<p class="list-group-item-text">Mahasiswa mampu menjelaskan dan memberi contoh proyek proyek TI</p>
-							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Indikator Pencapaian</strong>
-								<ul class="list-group-item-text">
-									<li>Pemahaman karakteristik, sasaran, stakeholder, kumpulan, keahlian, dan jenis proyek <span class="label label-primary">C1</span></li>
-									<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-								</ul>
-							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Materi Pembelajaran</strong>
-								<ul class="list-group-item-text">
-									<li>Inisialisasi Perkuliahan
-										<ul>
-											<li>Motivasi Belajar</li>
-											<li>Rencana Pembelajaran</li>
-											<li>Rules Belajar</li>
-										</ul>
-									</li>
-									<li>Berbagai Artikel tentang proyek, proyek TI dan proyek non TI</li>
-									<li>Metode pengembangan aplikasi</li>
-									<li>Pengantar Manajemen Proyek
-									<ul>
-										<li>Tiga Batasan Proyek</li>
-										<li>Area keahlian Manajemen Proyek</li>
-										<li>Program dan Portofolio</li>
-										<li>SubProject</li>
-									</ul>
-									</li>
-									<li>Kemampuan membedakan proyek TI dan bukan TI <span class="label label-primary">C1</span></li>
-								</ul>
-							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Aktivitas Pembelajaran</strong>
-								<ul class="list-group-item-text">
-									<li>Kuliah &amp; Brainstorming</li>
-									<li>Task 1: Membuat target kompetensi</li>
-									<li>Diskusi tentang Proyek, proyek TI, proyek bukan TI, dan perbedaannya</li>
-									<li>Task 2: Membuat resume tentang proyek TI</li>
-								</ul>
-							</section>
-							<section class="list-group-item-section">
-								<strong class="text-info">Assesmen <span class="label label-primary">Non-Tes</span> <span class="label label-danger">15%</span></strong>
-								<ul class="list-group-item-text">
-									<li>Presentasi skenario sendratari</li>
-									<li>Yel yel tim dan sendratari</li>
-									<li>Pembelajaran proyek sendratari</li>
-								</ul>
-							</section>
-						</div>
-						<hr class="mini">
-						<span class="label label-primary">C1 - Pengetahuan</span>
-						<span class="label label-primary">A5 - Mengatur Diri</span>
-						<div class="btn-group btn-group-xs pull-right">
-							<a href="#" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i><span class="sr-only">Edit</span></a>
-							<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i><span class="sr-only">Delete</span></a>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
+				{% if agendas %}
 				<div class="darken list-group-item clearfix">
-					<a href="#" class="btn btn-md btn-success col-xs-4 col-xs-offset-4"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <strong>Tambahkan Agenda Baru</strong></span></a>
+					<a href="{{currPath}}/new" class="btn btn-lg btn-success col-xs-4 col-xs-offset-4"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <strong>Tambah Agenda</strong></span></a>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_agenda-helper.twig' with {'state': 'collapsed'}  %}
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit'}  %}
 {% endblock %}
 
 {% block inlinejs %}

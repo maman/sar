@@ -1,137 +1,53 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}Silabus for {% endblock %}
+{% block pagetitle %}Agenda for {{ namaMatkul }} {% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig' with {'state': 'mini'}%}
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Agenda Pembelajaran baru untuk {{ namaMatkul }}</h1>
+			<h1 class="page-header">Agenda untuk {{ namaMatkul }}</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
-			{# <div class="alert alert-dismissible alert-warning" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Warning:</strong> You have finished this section.
-			</div>
-			<div class="alert alert-dismissible alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span>
-					<span class="sr-only">Close</span>
-				</button>
-				<strong>Uh oh.</strong> This has been verified and approved by kaprodi. you cannot edit this anymore.
-			</div> #}
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
-			<ul data-wizard-pager></ul>
-			<form action="/" id="silabusForm" role="form" data-wizard data-form-autosave class="cycle-slideshow"
-				data-cycle-fx="none"
-				data-cycle-auto-height="false"
-				data-cycle-timeout="0"
-				data-cycle-speed="100"
-				data-cycle-slides=">[data-wizard-pages]"
-				data-cycle-slide-active-class="active"
-				data-cycle-log="false"
-				data-cycle-prev="[data-wizard-toggle=wizard-prev]"
-				data-cycle-next="[data-wizard-toggle=wizard-next]"
-				data-cycle-allow-wrap="false"
-				data-cycle-pager="[data-wizard-pager]"
-				data-cycle-pager-active-class="active"
-				{% verbatim %}
-				data-cycle-pager-template="<li data-wizard-pagers><a href='#'><span>{{slideNum}}</span>. {{dataset.stepTitle}}</a></li>"
-				{% endverbatim %}
-				>
-				<section class="step" data-wizard-pages data-step-title="Sub Kompetensi" data-step-explanation="Berisi tentang tujuan dan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="sub-kompetensi">
-					<div class="form-group" data-multi-target>
-						<textarea data-input-autosave class="form-control input-lg" name="sub-kompetensi" rows="10" placeholder="lorem" data-multiline="disable"></textarea>
-						<select multiple name="sub-kompetensi-select" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
-							<option value="187" data-tag-text="Berkomunikasi dengan menggunakan multibahasa">U1</option>
-							<option value="188" data-tag-text="Kemampuan Technopreneurship">V2</option>
-						</select>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Materi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="materi-belajar">
-					<div class="form-group materi-belajar" data-multi-target-parent>
-						<div class="materi-belajar" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="materi-belajar" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+			<form action="#" method="POST" id="agendaForm">
+				{% if idAgenda is defined %}
+				<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
+				{% endif %}
+				<input type="hidden" name="idSilabus" value="{{ idSilabus }}">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="rangePertemuan">Range Pertemuan</label>
+							<input class="form-control input-lg" type="text" name="rangePertemuan" id="rangePertemuan" value="{{ rangePertemuan }}" placeholder="Range Pertemuan">
+						</div>
+						<div class="col-xs-6">
+							<label for="bobot">Bobot Agenda</label>
+							<input class="form-control input-lg" type="text" name="bobot" id="bobot" value="{{ bobot }}" placeholder="Bobot Agenda">
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".materi-belajar[data-multi-target]" data-multi-target-container=".materi-belajar[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Materi</span></a>
+				</div>
+				<div class="form-group">
+					<label for="textSubKompetensi"><h3>Penjelasan Agenda</h3></label>
+					<textarea name="textSubKompetensi" id="textSubKompetensi" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable">{{ txtSubKompetensi }}</textarea>
+				</div>
+				<div class="form-group">
+					<label for="textMateriBelajar"><h3>Penjelasan Materi yang Akan Diajarkan</h3></label>
+					<textarea name="textMateriBelajar" id="textMateriBelajar" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable">{{ txtMateriBelajar }}</textarea>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-4">
+							<input type="submit" class="btn btn-block btn-lg btn-success">
 						</div>
 					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Indikator" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="indikator-pencapaian">
-					<div class="form-group indikator-pencapaian" data-multi-target-parent>
-						<div class="indikator-pencapaian" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="indikator-pencapaian" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".indikator-pencapaian[data-multi-target]" data-multi-target-container=".indikator-pencapaian[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Indikator</span></a>
-						</div>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Aktivitas" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="aktivitas-belajar">
-					<div class="form-group aktivitas-belajar" data-multi-target-parent>
-						<div class="aktivitas-belajar" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<textarea data-input-autosave class="form-control input-lg" name="aktivitas-belajar" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="aktivitas-belajar-task"> Task?
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".aktivitas-belajar[data-multi-target]" data-multi-target-container=".aktivitas-belajar[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Aktivitas</span></a>
-						</div>
-					</div>
-				</section>
-				<section class="step" data-wizard-pages data-step-title="Evaluasi" data-step-explanation="Berisi tentang penjelasan kompetensi dari mata kuliah yang sedang dijabarkan" data-cycle-hash="evaluasi">
-					<div class="form-group evaluasi" data-multi-target-parent>
-						<div class="evaluasi row" data-multi-target>
-							<a href="#" data-multi-target-close><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-							<div class="col-sm-10 col-xs-9">
-								<textarea data-input-autosave class="form-control input-lg" name="evaluasi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							</div>
-							<div class="col-sm-2 col-xs-3">
-								<div class="radio">
-									<label>
-										<input type="radio" name="tes-type" value="tes"> Tes
-									</label>
-								</div>
-								<div class="radio">
-									<label>
-										<input type="radio" name="tes-type" value="non-tes"> Non Tes
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6 col-sm-offset-3">
-							<a data-multi-target-btn data-target=".evaluasi[data-multi-target]" data-multi-target-container=".evaluasi[data-multi-target-parent]" href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-plus"></i><span class="hidden-sm"> Tambah Evaluasi</span></a>
-						</div>
-					</div>
-				</section>
+				</div>
 			</form>
 		</div>
 	</div>
 </div>
-{% include 'components/sidebar/_silabus-helper.twig' with {'state': 'collapsed'}  %}
-{% endblock %}
-
-{% block inlinejs %}
-<script>triggerLayoutMini();formAutoSave();multitags()</script>
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
 {% endblock %}
