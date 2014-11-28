@@ -54,81 +54,6 @@ class Agenda
     }
 
     /**
-     * Get Indikator for the provided Agenda ID
-     * @param  string $idAgenda
-     * @return mixed
-     */
-    private function getIndikatorByAgendaID($idAgenda)
-    {
-        $query = $this->core->db->prepare(
-            'SELECT
-                *
-            FROM
-                INDIKATOR_AGENDA
-            WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
-        );
-        $query->bindParam(':idAgenda', $idAgenda);
-        $query->execute();
-        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-        if (count($results) > 0) {
-            return $results;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Get Aktivitas for the provided Agenda ID
-     * @param  string $idAgenda
-     * @return mixed
-     */
-    private function getAktivitasByAgendaID($idAgenda)
-    {
-        $query = $this->core->db->prepare(
-            'SELECT
-                *
-            FROM
-                AKTIVITAS_AGENDA
-            WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
-        );
-        $query->bindParam(':idAgenda', $idAgenda);
-        $query->execute();
-        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-        if (count($results) > 0) {
-            return $results;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Get Asesmen for the provided Agenda ID
-     * @param  string $idAgenda
-     * @return mixed
-     */
-    private function getAsesmenByAgendaID($idAgenda)
-    {
-        $query = $this->core->db->prepare(
-            'SELECT
-                *
-            FROM
-                ASESMEN_AGENDA
-            WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
-        );
-        $query->bindParam(':idAgenda', $idAgenda);
-        $query->execute();
-        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-        if (count($results) > 0) {
-            return $results;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Divide Assesmen to `tes` & `nontes`
      * @param  string $idAgenda
      * @return array
@@ -221,6 +146,207 @@ class Agenda
                 AGENDA
             WHERE
                 AGENDA."ID_SUB_KOMPETENSI" = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Save or Edit Agenda entries.
+     * @param  string $idSilabus
+     * @param  string $idAgenda
+     * @param  string $rangePertemuan
+     * @param  string $bobot
+     * @param  string $txtSubKompetensi
+     * @param  string $txtMateriBelajar
+     * @return boolean
+     */
+    public function saveOrEdit($idSilabus, $idAgenda, $rangePertemuan, $bobot, $txtSubKompetensi, $txtMateriBelajar)
+    {
+        if ($idAgenda == '') {
+            try {
+                $query = $this->core->db->prepare(
+                    'INSERT INTO
+                        AGENDA
+                    (
+                        ID_SILABUS,
+                        TEXT_SUB_KOMPETENSI,
+                        TEXT_MATERI_BELAJAR,
+                        RANGE_PERTEMUAN,
+                        BOBOT
+                    )
+                    VALUES
+                    (
+                        :idSilabus,
+                        :txtSubKompetensi,
+                        :txtMateriBelajar,
+                        :rangePertemuan,
+                        :bobot
+                    )'
+                );
+                $query->bindParam(':idSilabus', $idSilabus);
+                $query->bindParam(':txtSubKompetensi', $txtSubKompetensi);
+                $query->bindParam(':txtMateriBelajar', $txtMateriBelajar);
+                $query->bindParam(':rangePertemuan', $rangePertemuan);
+                $query->bindParam(':bobot', $bobot);
+                $query->execute();
+                return true;
+            } catch (PDOExcetion $e) {
+                return false;
+            }
+        } else {
+            try {
+                $query = $this->core->db->prepare(
+                    'UPDATE
+                        AGENDA
+                    SET
+                        TEXT_SUB_KOMPETENSI = :txtSubKompetensi,
+                        TEXT_MATERI_BELAJAR = :txtMateriBelajar,
+                        RANGE_PERTEMUAN = :rangePertemuan,
+                        BOBOT = :bobot
+                    WHERE
+                        ID_SUB_KOMPETENSI = :idAgenda'
+                );
+                $query->bindParam(':idAgenda', $idAgenda);
+                $query->bindParam(':txtSubKompetensi', $txtSubKompetensi);
+                $query->bindParam(':txtMateriBelajar', $txtMateriBelajar);
+                $query->bindParam(':rangePertemuan', $rangePertemuan);
+                $query->bindParam(':bobot', $bobot);
+                $query->execute();
+                return true;
+            } catch (PDOException $e) {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Get all Kategori Indikators
+     * @return mixed
+     */
+    public function getKategoriIndikator()
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                KATEGORI_INDIKATOR_AGENDA'
+        );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Indikator for the provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getIndikatorByAgendaID($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                INDIKATOR_AGENDA
+            WHERE
+                ID_SUB_KOMPETENSI = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Save or Edit Indikator
+     * @param  string $idAgenda
+     * @param  string $idIndikator
+     * @param  string $txtIndikator
+     * @param  string $idKeterangan
+     * @return boolean
+     */
+    public function saveIndikator($idAgenda, $txtIndikator, $idKeterangan)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    INDIKATOR_AGENDA
+                (
+                    TEXT_INDIKATOR,
+                    ID_KETERANGAN,
+                    ID_SUB_KOMPETENSI
+                )
+                VALUES
+                (
+                    :txtIndikator,
+                    :idKeterangan,
+                    :idAgenda
+                )'
+            );
+            $query->bindParam(':txtIndikator', $txtIndikator);
+            $query->bindParam(':idKeterangan', $idKeterangan);
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get Aktivitas for the provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getAktivitasByAgendaID($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                AKTIVITAS_AGENDA
+            WHERE
+                ID_SUB_KOMPETENSI = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Asesmen for the provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getAsesmenByAgendaID($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                ASESMEN_AGENDA
+            WHERE
+                ID_SUB_KOMPETENSI = :idAgenda'
         );
         $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();

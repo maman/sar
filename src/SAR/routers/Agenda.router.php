@@ -17,6 +17,7 @@
  * @license GNU General Public License v2
  */
 use SAR\models\Matkul;
+use SAR\models\Silabus;
 use SAR\models\Agenda;
 use SAR\models\Rps;
 
@@ -43,13 +44,25 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
 $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
+    $silabus = new Silabus($idMatkul);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $app->render('pages/_agenda-new.twig', array(
+        'idSilabus' => $silabus->silabusID,
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'currPath' => $currPath
     ));
+});
+
+$app->post('/matakuliah/:idMatkul/agenda/new',  $authenticate($app), function ($idMatkul) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->saveOrEdit($_POST['idSilabus'], '', $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda');
+    } else {
+        $app->stop();
+    }
 });
 
 $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($idMatkul) use ($app) {
@@ -70,5 +83,31 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
         'txtSubKompetensi' => $detailAgenda[0]['TEXT_SUB_KOMPETENSI'],
         'txtMateriBelajar' => $detailAgenda[0]['TEXT_MATERI_BELAJAR'],
         'currPath' => $currPath
+    ));
+});
+
+$app->post('/matakuliah/:idMatkul/agenda/edit',  $authenticate($app), function ($idMatkul) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->saveOrEdit($_POST['idSilabus'], $_POST['idAgenda'], $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda');
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/matakuliah/:idMatkul/agenda/indikator', $authenticate($app), function ($idMatkul) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $agenda = new Agenda();
+    $idAgenda = $_GET['id'];
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $subKomp = $agenda->getIndikatorByAgendaID($idAgenda);
+    $app->render('pages/_indikator.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'idAgenda' => $idAgenda,
+        'indikator' => $subKomp
     ));
 });
