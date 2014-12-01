@@ -19,7 +19,6 @@
 namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
-use SAR\lib\Helpers;
 use SAR\models\Kategori;
 
 /**
@@ -365,7 +364,6 @@ class Silabus
             } catch (PDOException $e) {
                 return false;
             }
-            return true;
         } catch (PDOException $e) {
             return false;
         }

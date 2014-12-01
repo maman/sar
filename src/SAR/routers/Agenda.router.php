@@ -19,6 +19,7 @@
 use SAR\models\Matkul;
 use SAR\models\Silabus;
 use SAR\models\Agenda;
+use SAR\models\Kategori;
 use SAR\models\Rps;
 
 /** GET request on `/matakuliah/:idMatkul/agenda` */
@@ -96,18 +97,53 @@ $app->post('/matakuliah/:idMatkul/agenda/edit',  $authenticate($app), function (
     }
 });
 
+$app->get('/matakuliah/:idMatkul/agenda/del/:idAgenda', $authenticate($app), function ($idMatkul, $idAgenda) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->deleteAgenda($idAgenda);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda');
+    } else {
+        $app->stop();
+    }
+});
+
 $app->get('/matakuliah/:idMatkul/agenda/indikator', $authenticate($app), function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $agenda = new Agenda();
+    $kategori = new Kategori();
     $idAgenda = $_GET['id'];
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
-    $subKomp = $agenda->getIndikatorByAgendaID($idAgenda);
+    $indikator = $agenda->getIndikatorByAgendaID($idAgenda);
+    $allKategori = $kategori->getAllKategoriIndikator();
     $app->render('pages/_indikator.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'idAgenda' => $idAgenda,
-        'indikator' => $subKomp
+        'indikator' => $indikator,
+        'allKategori' => $allKategori,
+        'currPath' => $currPath
     ));
+});
+
+$app->post('/matakuliah/:idMatkul/agenda/indikator', $authenticate($app), function ($idMatkul) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->saveIndikator($_POST['idAgenda'], $_POST['textIndikator'], $_POST['indikator']);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda/indikator?id=' . $_POST['idAgenda']);
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/matakuliah/:idMatkul/agenda/indikator/del/:idIndikator', $authenticate($app), function ($idMatkul, $idIndikator) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->deleteIndikator($idIndikator);
+    $idAgenda = $_GET['id'];
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda/indikator?id=' . $idAgenda);
+    } else {
+        $app->stop();
+    }
 });

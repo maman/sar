@@ -17,6 +17,7 @@
  * @copyright 2014 Achmad Mahardi
  */
 namespace SAR\models;
+
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 
@@ -26,8 +27,6 @@ use alfmel\OCI8\PDO as OCI8;
  */
 class Kategori
 {
-    private $nama;
-    private $kode;
     private $core;
 
     function __construct()
@@ -126,13 +125,84 @@ class Kategori
         }
     }
 
-    public function getAgendaKategoriByAgendaId($idAgenda)
+    /**
+     * Get all Kategori Indikators
+     * @return mixed
+     */
+    public function getAllKategoriIndikator()
     {
-        # TODO -> return unique array of kategori by agenda ID
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                KATEGORI_INDIKATOR_AGENDA'
+        );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
     }
 
+    /**
+     * Get Unique Agenda Kategori from provided Agenda ID
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getAgendaKategoriByAgendaId($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT DISTINCT
+                KATEGORI_INDIKATOR_AGENDA.ID_KETERANGAN,
+                KATEGORI_INDIKATOR_AGENDA.NAMA,
+                KATEGORI_INDIKATOR_AGENDA.KATEGORI
+            FROM
+                AGENDA INNER JOIN INDIKATOR_AGENDA
+            ON
+                AGENDA.ID_SUB_KOMPETENSI = INDIKATOR_AGENDA.ID_SUB_KOMPETENSI
+                INNER JOIN KATEGORI_INDIKATOR_AGENDA
+            ON
+                INDIKATOR_AGENDA.ID_KETERANGAN = KATEGORI_INDIKATOR_AGENDA.ID_KETERANGAN
+            WHERE
+                INDIKATOR_AGENDA.ID_SUB_KOMPETENSI = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Agenda Kategori from provided Indikator ID
+     * @param  string $idIndikator
+     * @return mixed
+     */
     public function getAgendaKategoriByIndikatorId($idIndikator)
     {
-        # TODO -> return array of kategori by indikator ID
+        $query = $this->core->db->prepare(
+            'SELECT
+                KATEGORI_INDIKATOR_AGENDA.ID_KETERANGAN,
+                KATEGORI_INDIKATOR_AGENDA.NAMA,
+                KATEGORI_INDIKATOR_AGENDA.KATEGORI
+            FROM
+                KATEGORI_INDIKATOR_AGENDA INNER JOIN INDIKATOR_AGENDA
+            ON
+                KATEGORI_INDIKATOR_AGENDA.ID_KETERANGAN = INDIKATOR_AGENDA.ID_KETERANGAN
+            WHERE INDIKATOR_AGENDA.ID_INDIKATOR = :idIndikator'
+        );
+        $query->bindParam(':idIndikator', $idIndikator);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
     }
 }

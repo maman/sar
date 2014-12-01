@@ -27,14 +27,9 @@
 				{% if indikator %}
 					{% for item in indikator %}
 				<div class="indikator" data-multi-target data-name="indikator">
-					<a href="{{currPath}}/del/{{ kompetensi.ID_KOMPETENSI }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
-					<input type="hidden" name="idKompetensi" value="{{ kompetensi.ID_KOMPETENSI }}">
-					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ kompetensi.NAMA_KOMPETENSI }}</textarea>
-					<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" disabled data-input-autosave data-form-multitag data-placeholder="Kategori">
-					{% for item in kompetensi.KATEGORI_KOMPETENSI %}
-						<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KATEGORI_KOMPETENSI }}</option>
-					{% endfor %}
-					</select>
+					<a href="{{currPath}}/del/{{ item.ID_INDIKATOR }}?id={{ idAgenda }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ item.TEXT_INDIKATOR }}</textarea>
+					<input type="text" class="form-control input-lg" disabled value="{{ item.INDIKATOR.0.ID_KETERANGAN }} ({{ item.INDIKATOR.0.NAMA }})">
 				</div>
 					{% endfor %}
 				{% endif %}
@@ -43,11 +38,11 @@
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
-							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
-							<textarea data-input-autosave class="form-control input-lg" name="text" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
-							{% for item in kategori %}
-								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
+							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
+							<textarea data-input-autosave class="form-control input-lg" name="textIndikator" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<select name="indikator" class="form-control input-plain" data-form-multitag data-placeholder="Kategori">
+							{% for item in allKategori %}
+								<option value="{{ item.ID_KETERANGAN }}" data-tag-text="{{ item.NAMA }}">{{ item.ID_KETERANGAN }}</option>
 							{% endfor %}
 							</select>
 						</div>

@@ -21,12 +21,12 @@ namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Silabus;
+use SAR\models\Kategori;
 use Functional as F;
 
 /**
  * Agenda Class
  *
- * To initialize, provide a `idMatkul` variable.
  * @package SAR\models
  */
 class Agenda
@@ -119,9 +119,11 @@ class Agenda
      */
     public function getAgendaByMatkul($idMatkul)
     {
+        $kategori = new Kategori();
         $results = $this->getDetailAgendaByMatkul($idMatkul);
         if ($results) {
             foreach ($results as $value => $agenda) {
+                $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaId($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['INDIKATOR'] = $this->getIndikatorByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['AKTIVITAS'] = $this->getAktivitasByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['ASESMEN'] = $this->divideAssesmen($results[$value]['ID_SUB_KOMPETENSI']);
@@ -227,24 +229,28 @@ class Agenda
     }
 
     /**
-     * Get all Kategori Indikators
-     * @return mixed
+     * Delete Agenda by Agenda ID
+     * @param  string $idAgenda
+     * @return boolean
      */
-    public function getKategoriIndikator()
+    public function deleteAgenda($idAgenda)
     {
-        $query = $this->core->db->prepare(
-            'SELECT
-                *
-            FROM
-                KATEGORI_INDIKATOR_AGENDA'
-        );
-        $query->execute();
-        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
-        if (count($results) > 0) {
-            return $results;
-        } else {
+        $this->deleteIndikatorByAgendaID($idAgenda);
+        $this->deleteAktivitasByAgendaID($idAgenda);
+        $this->deleteAsesmentByAgendaID($idAgenda);
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    AGENDA
+                WHERE
+                    ID_SUB_KOMPETENSI = :idAgenda'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+        } catch (PDOException $e) {
             return false;
         }
+        return true;
     }
 
     /**
@@ -254,9 +260,11 @@ class Agenda
      */
     public function getIndikatorByAgendaID($idAgenda)
     {
+        $kategori = new Kategori();
         $query = $this->core->db->prepare(
             'SELECT
-                *
+                ID_INDIKATOR,
+                TEXT_INDIKATOR
             FROM
                 INDIKATOR_AGENDA
             WHERE
@@ -266,6 +274,9 @@ class Agenda
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
+            foreach ($results as $item => $indikator) {
+                $results[$item]['INDIKATOR'] = $kategori->getAgendaKategoriByIndikatorId($results[$item]['ID_INDIKATOR']);
+            }
             return $results;
         } else {
             return false;
@@ -302,10 +313,54 @@ class Agenda
             $query->bindParam(':idKeterangan', $idKeterangan);
             $query->bindParam(':idAgenda', $idAgenda);
             $query->execute();
-            return true;
         } catch (PDOException $e) {
             return false;
         }
+        return true;
+    }
+
+    /**
+     * Delete Indikator by Indikator ID
+     * @param  string $idIndikator
+     * @return boolean
+     */
+    public function deleteIndikator($idIndikator)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    INDIKATOR_AGENDA
+                WHERE
+                    ID_INDIKATOR = :idIndikator'
+            );
+            $query->bindParam(':idIndikator', $idIndikator);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete Indikator by Agenda ID
+     * @param  string $idAgenda
+     * @return boolean
+     */
+    private function deleteIndikatorByAgendaID($idAgenda)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    INDIKATOR_AGENDA
+                WHERE
+                    ID_SUB_KOMPETENSI = :idAgenda'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -334,6 +389,91 @@ class Agenda
     }
 
     /**
+     * Save new Aktivitas
+     * @param  string  $idAgenda
+     * @param  string  $txtAktivitas
+     * @param  boolean $project
+     * @param  boolean $task
+     * @return boolean
+     */
+    public function saveAktivitas($idAgenda, $txtAktivitas, $project, $task)
+    {
+        $projectInt = ($project = true ? '1': '0');
+        $taskInt = ($task = true ? '1': '0');
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    AKTIVITAS_AGENDA
+                (
+                    ID_SUB_KOMPETENSI,
+                    TEXT_AKTIVITAS_AGENDA,
+                    PROJECT,
+                    TASK,
+                )
+                VALUES
+                (
+                    :idAgenda,
+                    :txtAktivitas,
+                    :projectInt,
+                    :taskInt
+                )'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':txtAktivitas', $txtAktivitas);
+            $query->bindParam(':projectInt', $projectInt);
+            $query->bindParam(':taskInt', $taskInt);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete aktivitas by Aktivitas ID
+     * @param  string $idAktivitas
+     * @return boolean
+     */
+    public function deleteAktivitas($idAktivitas)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    AKTIVITAS_AGENDA
+                WHERE
+                    ID_AKTIVITAS_AGENDA = :idAktivitas'
+            );
+            $query->bindParam(':idAktivitas', $idAktivitas);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete aktivitas by Agenda ID
+     * @param  string $idAgenda
+     * @return boolean
+     */
+    private function deleteAktivitasByAgendaID($idAgenda)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    AKTIVITAS_AGENDA
+                WHERE
+                    ID_SUB_KOMPETENSI = :idAgenda'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Get Asesmen for the provided Agenda ID
      * @param  string $idAgenda
      * @return mixed
@@ -356,5 +496,84 @@ class Agenda
         } else {
             return false;
         }
+    }
+
+    /**
+     * Save new Asesmen
+     * @param  string  $idAgenda
+     * @param  string  $txtAsesmen
+     * @param  boolean $jenis
+     * @return boolean
+     */
+    public function saveAsesmen($idAgenda, $txtAsesmen, $jenis)
+    {
+        $jenisInt = ($jenis = true ? '1': '0');
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    ASESMEN_AGENDA
+                (
+                    ID_SUB_KOMPETENSI,
+                    NAMA_ASSESMENT_SUB_KOMPETENSI,
+                    JENIS_ASSESMENT
+                )
+                VALUES
+                (
+                    :idAgenda,
+                    :txtAsesmen,
+                    :jenisInt
+                )'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':txtAsesmen', $txtAsesmen);
+            $query->bindParam(':jenisInt', $jenisInt);
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete Asesmen by Asesmen ID
+     * @param  string $idAsesmen
+     * @return boolean
+     */
+    public function deleteAsesment($idAsesmen)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    ASESMEN_AGENDA
+                WHERE
+                    ID_ASSESMENT_SUB_KOMPETENSI = :idAsesmen'
+            );
+            $query->bindParam(':idAsesmen', $idAsesmen);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete Asesmen by Agenda ID
+     * @param  string $idAgenda
+     * @return boolean
+     */
+    private function deleteAsesmentByAgendaID($idAgenda)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    ASESMEN_AGENDA
+                WHERE
+                    ID_SUB_KOMPETENSI = :idAgenda'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
     }
 }
