@@ -20,6 +20,7 @@ namespace SAR\models;
 
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
+use Functional as F;
 
 /**
  * Kategori Class
@@ -204,5 +205,18 @@ class Kategori
         } else {
             return false;
         }
+    }
+
+    /**
+     * Group Indikator Kategori By Indikator
+     * @return array
+     */
+    public function groupKategoriIndikator()
+    {
+        $indikator = $this->getAllKategoriIndikator();
+        $results = F\group($indikator, function($kategori) {
+            return $kategori['KATEGORI'];
+        });
+        return $results;
     }
 }
