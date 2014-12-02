@@ -11,6 +11,12 @@
 }
 
 /** Centering */
+.table-center {
+	text-align: center;
+	td {
+		vertical-align: middle !important;
+	}
+}
 .preserve3d {
 	.lh-transform-style(preserve-3d);
 }
@@ -182,5 +188,11 @@ hr.mini {
 	}
 	.form-control {
 		margin-bottom: @padding-large-vertical;
+	}
+}
+
+.table {
+	thead {
+		background-color: lighten(@table-border-color, 10%);
 	}
 }

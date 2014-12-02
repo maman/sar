@@ -179,6 +179,31 @@ class Kategori
         }
     }
 
+    public function getAgendaKategoriByAgendaIdVerbose($idAgenda)
+    {
+        $allKategori = $this->groupKategoriIndikator();
+        $currentKategori = $this->getAgendaKategoriByAgendaId($idAgenda);
+        if ($currentKategori) {
+            foreach ($allKategori as $keyKat => $valKat) {
+                foreach ($valKat as $key => $value) {
+                    if (is_array($value)) {
+                        foreach ($currentKategori as $num => $val) {
+                            if ($val['ID_KETERANGAN'] == $value['ID_KETERANGAN']) {
+                                $allKategori[$keyKat][$key]['SELECTED'] = true;
+                                break;
+                            } else {
+                                $allKategori[$keyKat][$key]['SELECTED'] = false;
+                            }
+                        }
+                    }
+                }
+            }
+            return $allKategori;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Get Agenda Kategori from provided Indikator ID
      * @param  string $idIndikator
@@ -217,6 +242,9 @@ class Kategori
         $results = F\group($indikator, function($kategori) {
             return $kategori['KATEGORI'];
         });
+        foreach ($results as $key => $value) {
+            $results[$key]['LENGTH'] = count($value);
+        }
         return $results;
     }
 }

@@ -117,16 +117,21 @@ class Agenda
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getAgendaByMatkul($idMatkul)
+    public function getAgendaByMatkul($idMatkul, $mode = NULL)
     {
         $kategori = new Kategori();
         $results = $this->getDetailAgendaByMatkul($idMatkul);
         if ($results) {
             foreach ($results as $value => $agenda) {
-                $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaId($results[$value]['ID_SUB_KOMPETENSI']);
+                if (is_null($mode)) {
+                    $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaId($results[$value]['ID_SUB_KOMPETENSI']);
+                } else {
+                    $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaIdVerbose($results[$value]['ID_SUB_KOMPETENSI']);
+                }
                 $results[$value]['INDIKATOR'] = $this->getIndikatorByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['AKTIVITAS'] = $this->getAktivitasByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['ASESMEN'] = $this->divideAssesmen($results[$value]['ID_SUB_KOMPETENSI']);
+                $results[$value]['MODE'] = $mode;
             }
             return $results;
         } else {
@@ -256,6 +261,7 @@ class Agenda
     /**
      * Get Indikator for the provided Agenda ID
      * @param  string $idAgenda
+     * @param  string $mode [OPTIONAL]
      * @return mixed
      */
     public function getIndikatorByAgendaID($idAgenda)

@@ -187,7 +187,6 @@ class Silabus
                                 break;
                             } else {
                                 $allKategori[$id]['SELECTED'] = false;
-                                // break;
                             }
                         }
                     }

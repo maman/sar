@@ -17,7 +17,8 @@
     "twig/twig": "1.*",
     "alfmel/pdo-via-oci8": "dev-bugfix",
     "respect/validation": "0.7.*@dev",
-    "lstrojny/functional-php": "dev-master"
+    "lstrojny/functional-php": "dev-master",
+    "ensepar/html2pdf": "1.0.1"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*"

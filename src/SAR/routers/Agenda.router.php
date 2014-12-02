@@ -33,7 +33,6 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
-    var_dump($kategori->groupKategoriIndikator());
     $app->render('pages/_agenda.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
