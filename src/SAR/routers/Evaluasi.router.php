@@ -3,7 +3,7 @@
 /**
  * Matkul router for SAR Application
  *
- * this file contains route definition and logic for `/matakuliah/:idmatakuliah` route.
+ * this file contains route definition and logic for `/matakuliah/:idmatakuliah/evaluasi` route.
  *
  * PHP version 5.4
  *

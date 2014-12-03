@@ -21,7 +21,8 @@
     "ensepar/html2pdf": "1.0.1"
   },
   "require-dev": {
-    "yusukezzz/slim-debugbar": "1.*"
+    "yusukezzz/slim-debugbar": "1.*",
+    "zeuxisoo/slim-whoops": "0.3.0"
   },
   "autoload": {
     "psr-0": {

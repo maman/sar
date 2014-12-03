@@ -96,7 +96,6 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     if (isset($_SESSION['matkul'])) {
         $matkul = $_SESSION['matkul'];
     }
-    // $app->view()->setData('username', $user);
     $app->view()->appendData(array(
         'baseUrl' => $baseUrl,
         'nip' => $nip,
@@ -117,7 +116,9 @@ $app->configureMode('production', function () use ($app) {
 
 $app->configureMode('development', function () use ($app) {
     $debugbar = new \Slim\Middleware\DebugBar();
+    $whoops = new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware();
     $app->add($debugbar);
+    $app->add($whoops);
     $app->config(array(
         'log.enable' => false,
         'debug' => true
@@ -145,7 +146,7 @@ $view->parserOptions = array(
     'cache' => $config['path.templates.cache']
 );
 
-/* Load Middlewares */
+/* Load Route Middlewares */
 foreach (glob($config['path.middlewares'] . '*.php') as $middleware) {
     require $middleware;
 }
