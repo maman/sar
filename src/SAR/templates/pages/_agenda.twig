@@ -66,7 +66,7 @@
 							</section>
 							{% else %}
 							<section class="list-group-item-section">
-								<strong class="text-info">Aktivitas Pembelajaran</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
+								<strong class="text-info">Aktivitas Pembelajaran</strong><a data-toggle-hidden href="{{currPath}}/aktivitas?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								<ul class="list-group-item-text">
 									{% for aktivitas in agenda.AKTIVITAS %}
 									<li>{% if aktivitas.TASK == '1' %}<strong>Task</strong> :{% endif %}{% if aktivitas.PROJECT == '1' %}Project {{ aktivitas.PROJECT }}:{% endif %}{{ aktivitas.TEXT_AKTIVITAS_AGENDA }}</li>
@@ -83,7 +83,7 @@
 								</div>
 							</section>
 							{% else %}
-							<section class="list-group-item-section"><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
+							<section class="list-group-item-section"><a data-toggle-hidden href="{{currPath}}/asesmen?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								{% if agenda.ASESMEN.tes is not empty %}
 								<strong class="text-info">Assesmen - Tes</strong>
 									{% for tes in agenda.ASESMEN.tes %}

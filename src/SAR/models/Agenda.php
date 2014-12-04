@@ -382,7 +382,9 @@ class Agenda
             FROM
                 AKTIVITAS_AGENDA
             WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
+                ID_SUB_KOMPETENSI = :idAgenda
+            ORDER BY
+                ID_AKTIVITAS_AGENDA'
         );
         $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();
@@ -404,30 +406,28 @@ class Agenda
      */
     public function saveAktivitas($idAgenda, $txtAktivitas, $project, $task)
     {
-        $projectInt = ($project = true ? '1': '0');
-        $taskInt = ($task = true ? '1': '0');
         try {
             $query = $this->core->db->prepare(
                 'INSERT INTO
-                    AKTIVITAS_AGENDA
+                    "AKTIVITAS_AGENDA"
                 (
-                    ID_SUB_KOMPETENSI,
-                    TEXT_AKTIVITAS_AGENDA,
-                    PROJECT,
-                    TASK,
+                    "ID_SUB_KOMPETENSI",
+                    "TEXT_AKTIVITAS_AGENDA",
+                    "PROJECT",
+                    "TASK"
                 )
                 VALUES
                 (
                     :idAgenda,
                     :txtAktivitas,
-                    :projectInt,
-                    :taskInt
+                    :project,
+                    :task
                 )'
             );
             $query->bindParam(':idAgenda', $idAgenda);
             $query->bindParam(':txtAktivitas', $txtAktivitas);
-            $query->bindParam(':projectInt', $projectInt);
-            $query->bindParam(':taskInt', $taskInt);
+            $query->bindParam(':project', $project);
+            $query->bindParam(':task', $task);
             $query->execute();
         } catch (PDOException $e) {
             return false;
@@ -513,7 +513,6 @@ class Agenda
      */
     public function saveAsesmen($idAgenda, $txtAsesmen, $jenis)
     {
-        $jenisInt = ($jenis = true ? '1': '0');
         try {
             $query = $this->core->db->prepare(
                 'INSERT INTO
@@ -527,12 +526,12 @@ class Agenda
                 (
                     :idAgenda,
                     :txtAsesmen,
-                    :jenisInt
+                    :jenis
                 )'
             );
             $query->bindParam(':idAgenda', $idAgenda);
             $query->bindParam(':txtAsesmen', $txtAsesmen);
-            $query->bindParam(':jenisInt', $jenisInt);
+            $query->bindParam(':jenis', $jenis);
         } catch (PDOException $e) {
             return false;
         }

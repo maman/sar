@@ -5,6 +5,7 @@
 
 require('bootstrap');
 require('bootstrap-validator');
+require('bootstrap-toggle');
 
 require('./globals/domLoad');
 require('./globals/domReady');

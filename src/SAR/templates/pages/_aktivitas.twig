@@ -1,0 +1,67 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Aktivitas{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Aktivitas</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			{% if not aktivitas %}
+			<div class="list-group">
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Anda belum mempunyai aktivitas untuk agenda ini.</h4>
+					<p class="list-group-item-text">Untuk mulai membuat aktivitas baru klik tombol dibawah, dan isi masukan yang diberikan.</p>
+					<br>
+					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat aktivitas</strong></i></a>
+				</div>
+			</div>
+			{% endif %}
+			<div class="form-group kompetensi">
+				{% if aktivitas %}
+					{% for item in aktivitas %}
+				<div class="indikator clearfix" data-multi-target data-name="indikator">
+					<a href="{{currPath}}/del/{{ item.ID_AKTIVITAS_AGENDA }}?id={{ idAgenda }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<div class="col-md-8">
+						<textarea class="form-control input-lg" disabled name="textIndikator" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable">{{ item.TEXT_AKTIVITAS_AGENDA }}</textarea>
+					</div>
+					<div class="col-md-4">
+						<input type="checkbox" disabled {% if item.TASK == '1' %}checked{% endif %} data-toggle="toggle" data-on="Task" data-off="Non Task" data-size="large" data-onstyle="primary" data-offstyle="danger">
+						<input type="checkbox" disabled {% if item.PROJECT == '1' %}checked{% endif %} data-toggle="toggle" data-on="Project" data-off="Non Project" data-size="large" data-onstyle="primary" data-offstyle="danger">
+					</div>
+				</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+			<form action="#" method="POST">
+				<section class="step">
+					<div class="form-group kompetensi">
+						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
+							<div class="col-md-8">
+								<textarea class="form-control input-lg" name="textAktivitas" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable"></textarea>
+							</div>
+							<div class="col-md-4">
+								<input type="checkbox" name="chkTask" data-toggle="toggle" data-on="Task" data-off="Non Task" data-size="large" data-onstyle="primary" data-offstyle="danger">
+								<input type="checkbox" name="chkProject" data-toggle="toggle" data-on="Project" data-off="Non Project" data-size="large" data-onstyle="primary" data-offstyle="danger">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<input type="submit" class="btn btn-lg btn-success btn-block" value="Tambah Aktivitas">
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Kompetensi', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
+{% endblock %}

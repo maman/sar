@@ -148,3 +148,53 @@ $app->get('/matakuliah/:idMatkul/agenda/indikator/del/:idIndikator', $authentica
         $app->stop();
     }
 });
+
+$app->get('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), function ($idMatkul) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $agenda = new Agenda();
+    $kategori = new Kategori();
+    $idAgenda = $_GET['id'];
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $aktivitas = $agenda->getAktivitasByAgendaID($idAgenda);
+    $allKategori = $kategori->getAllKategoriIndikator();
+    $app->render('pages/_aktivitas.twig', array(
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'idAgenda' => $idAgenda,
+        'aktivitas' => $aktivitas,
+        'currPath' => $currPath
+    ));
+});
+
+$app->post('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), function ($idMatkul) use ($app) {
+    var_dump($_POST);
+    $task = '0';
+    $project = '0';
+    if(isset($_POST['chkTask'])) {
+        $task = '1';
+    }
+    if(isset($_POST['chkProject'])) {
+        $project = '1';
+    }
+    $agenda = new Agenda();
+    // echo('$result = $agenda->saveAktivitas(' . $_POST['idAgenda'] . ', ' . $_POST['textAktivitas'] . ', ' . $project . ', ' . $task . ')');
+    $result = $agenda->saveAktivitas($_POST['idAgenda'], $_POST['textAktivitas'], $project, $task);
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda/aktivitas?id=' . $_POST['idAgenda']);
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/matakuliah/:idMatkul/agenda/aktivitas/del/:idAktivitas', $authenticate($app), function ($idMatkul, $idAktivitas) use ($app) {
+    $agenda = new Agenda();
+    $result = $agenda->deleteAktivitas($idAktivitas);
+    $idAgenda = $_GET['id'];
+    if ($result) {
+        $app->redirect('/matakuliah/'. $idMatkul .'/agenda/aktivitas?id=' . $idAgenda);
+    } else {
+        $app->stop();
+    }
+});
