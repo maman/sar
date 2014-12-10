@@ -1,0 +1,109 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Task for {{ namaMatkul }}{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Task&#47;Project</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="list-group" data-list-toggle>
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Task untuk mata kuliah {{ namaMatkul }}</h4>
+					<p class="list-group-item-text">Daftar ini berdasarkan masukan task&#47;project yang ada pada halaman Agenda. apabila task&#47;project yang anda inginkan belum ada, silahkan edit masukan agenda terkait.</p>
+				</div>
+				{% for task in tasks %}
+				<div class="list-group-item clearfix collapsed list-group-big">
+					<div class="list-group-item-content">
+						<div class="list-group-toggle">
+							<span class="label label-success">{{ task.RANGE_PERTEMUAN }}</span>
+							<section class="list-group-item-section">
+								<strong class="text-info">Sub Kompetensi</strong>
+								<p class="list-group-item-text">{{ task.TEXT_SUB_KOMPETENSI }}</p>
+							</section>
+							<section class="list-group-item-section">
+								{% if task.AKTIVITAS %}
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead class="table-center">
+											<tr>
+												<td><strong>Task&#47;Project</strong></td>
+												<td><strong>Scope</strong></td>
+												<td><strong>Metode</strong></td>
+												<td><strong>Kriteria</strong></td>
+											</tr>
+										</thead>
+										{% for aktivitas in task.AKTIVITAS %}
+										<tr>
+											<td>{{ aktivitas.TEXT_AKTIVITAS_AGENDA }}</td>
+											<td {% if not aktivitas.SCOPE %}style="vertical-align: middle"{% endif %}>
+												{% if aktivitas.SCOPE %}
+												<ul>
+													{% for scope in aktivitas.SCOPE %}
+													<li>{{ scope.TEXT_SCOPE }}</li>
+													{% endfor %}
+												</ul>
+												{% else %}
+												<a href="{{currPath}}/scope?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Scope</a>
+												{% endif %}
+											</td>
+											<td {% if not aktivitas.METODE %}style="vertical-align: middle"{% endif %}>
+												{% if aktivitas.METODE %}
+												<ul>
+													{% for metode in aktivitas.METODE %}
+													<li>{{ metode.TEXT_METODE }}</li>
+													{% endfor %}
+												</ul>
+												{% else %}
+												<a href="{{currPath}}/metode?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Metode</a>
+												{% endif %}
+											</td>
+											<td {% if not aktivitas.KRITERIA %}style="vertical-align: middle"{% endif %}>
+												{% if aktivitas.KRITERIA %}
+												<ul>
+													{% for kriteria in aktivitas.KRITERIA %}
+													<li>{{ kriteria.TEXT_KRITERIA }}</li>
+													{% endfor %}
+												</ul>
+												{% else %}
+												<a href="{{currPath}}/kriteria?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Kriteria</a>
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									</table>
+								</div>
+								{% else %}
+								<section class="list-group-item-section well">
+									<div class="row">
+										<div class="col-md-6 col-md-offset-3">
+											<span class="center-block">Tidak Ada Task&#47;Project didefinisikan</span>
+										</div>
+									</div>
+								</section>
+								{% endif %}
+							</section>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% if agendas %}
+				<div class="darken list-group-item clearfix">
+					<a href="{{currPath}}/new" class="btn btn-lg btn-success col-xs-4 col-xs-offset-4"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <strong>Tambah Agenda</strong></span></a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Task/Project', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit'}  %}
+{% endblock %}
+
+{% block inlinejs %}
+{% endblock %}

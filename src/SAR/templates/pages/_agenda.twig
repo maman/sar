@@ -1,6 +1,6 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}Agenda for {% endblock %}
+{% block pagetitle %}Agenda for {{ namaMatkul }}{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig' with {'state': 'mini'}%}
@@ -23,7 +23,7 @@
 				</div>
 				{% endif %}
 				{% for agenda in agendas %}
-				<div class="list-group-item clearfix collapsed" data-list-toggle-target>
+				<div class="list-group-item clearfix collapsed list-group-big" data-list-toggle-target>
 					<div class="list-group-item-content">
 						<div class="list-group-toggle">
 							<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>

@@ -20,8 +20,8 @@ namespace SAR\models;
 
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
-use SAR\models\Silabus;
 use SAR\models\Kategori;
+use SAR\models\Task;
 use Functional as F;
 
 /**
@@ -127,11 +127,11 @@ class Agenda
                     $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaId($results[$value]['ID_SUB_KOMPETENSI']);
                 } else {
                     $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaIdVerbose($results[$value]['ID_SUB_KOMPETENSI']);
+                    $results[$value]['MODE'] = $mode;
                 }
                 $results[$value]['INDIKATOR'] = $this->getIndikatorByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['AKTIVITAS'] = $this->getAktivitasByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
                 $results[$value]['ASESMEN'] = $this->divideAssesmen($results[$value]['ID_SUB_KOMPETENSI']);
-                $results[$value]['MODE'] = $mode;
             }
             return $results;
         } else {
@@ -442,6 +442,10 @@ class Agenda
      */
     public function deleteAktivitas($idAktivitas)
     {
+        $task = new Task();
+        $task->deleteScopeByAktivitasId($idAktivitas);
+        $task->deleteMetodeByAktivitasId($idAktivitas);
+        $task->deleteKriteriaByAktivitasId($idAktivitas);
         try {
             $query = $this->core->db->prepare(
                 'DELETE FROM

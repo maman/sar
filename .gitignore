@@ -1,6 +1,7 @@
 composer.lock
 node_modules
 bower_components
+.idea
 psysh
 
 npm-debug.log

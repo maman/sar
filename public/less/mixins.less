@@ -38,9 +38,6 @@
 
 /** Toggleable List */
 [data-list-toggle-target] {
-	@media(min-width:768px) {
-		font-size: 1.8rem;
-	}
 	.lh-transition(box-shadow .3s .5s ease-out, max-height .5s ease-in-out, margin .2s .5s ease-in-out, background-image 1s .5s ease-in-out);
 	.lh-background-image(linear-gradient(to top, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0)));
 	overflow: hidden;
@@ -83,6 +80,12 @@ ul.list-group-item-text, ol.list-group-item-text {
 	padding-left: 1em;
 	li {
 		padding-left: 0;
+	}
+}
+
+.list-group-big {
+	@media(min-width:768px) {
+		font-size: 1.8rem;
 	}
 }
 

@@ -158,7 +158,7 @@ $app->get('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), functio
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $aktivitas = $agenda->getAktivitasByAgendaID($idAgenda);
-    $allKategori = $kategori->getAllKategoriIndikator();
+    // $allKategori = $kategori->getAllKategoriIndikator();
     $app->render('pages/_aktivitas.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
