@@ -20,17 +20,22 @@
 use SAR\models\Matkul;
 use SAR\models\Agenda;
 use SAR\models\Kategori;
+use SAR\models\Rps;
 
 $app->get('/matakuliah/:idMatkul/evaluasi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $kategori = new Kategori();
     $agenda = new Agenda();
+    $rps = new Rps();
+    $rps->getRpsByIdMatkul($idMatkul);
     $allKategori = $kategori->getAllKategoriIndikator();
     $groupKategori = $kategori->groupKategoriIndikator();
     $countKategori = count($allKategori);
     $agendas = $agenda->getAgendaByMatkul($idMatkul, 'verbose');
+    $lastEditDate = $rps->agendaLastEdit;
     $app->render('pages/_evaluasi.twig', array(
         'currPath' => $currPath,
+        'lastEditDate' => $lastEditDate,
         'groupKategori' => $groupKategori,
         'countKategori' => $countKategori,
         'agendas' => $agendas

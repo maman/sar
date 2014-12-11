@@ -56,11 +56,11 @@ class Task
      * @param  string $idAktivitas
      * @return mixed
      */
-    private function getScopeByAktivitas($idAktivitas)
+    public function getScopeByAktivitas($idAktivitas)
     {
         $query = $this->core->db->prepare(
             'SELECT
-                SCOPE.TEXT_SCOPE
+                *
             FROM
                 SCOPE
             WHERE
@@ -83,11 +83,11 @@ class Task
      * @param  string $idAktivitas
      * @return mixed
      */
-    private function getMetodeByAktivitas($idAktivitas)
+    public function getMetodeByAktivitas($idAktivitas)
     {
         $query = $this->core->db->prepare(
             'SELECT
-                METODE.TEXT_METODE
+                *
             FROM
                 METODE
             WHERE
@@ -110,11 +110,11 @@ class Task
      * @param  string $idAktivitas
      * @return mixed
      */
-    private function getKriteriaByAktivitas($idAktivitas)
+    public function getKriteriaByAktivitas($idAktivitas)
     {
         $query = $this->core->db->prepare(
             'SELECT
-                KRITERIA.TEXT_KRITERIA
+                *
             FROM
                 KRITERIA
             WHERE
@@ -206,16 +206,16 @@ class Task
         return true;
     }
 
-    public function deleteScopeByAktivitasId($idAgenda)
+    public function deleteScopeByAktivitasId($idAktivitas)
     {
         try {
             $query = $this->core->db->prepare(
                 'DELETE FROM
                     SCOPE
                 WHERE
-                    ID_AKTIVITAS_AGENDA = :idAgenda'
+                    ID_AKTIVITAS_AGENDA = :idAktivitas'
             );
-            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':idAktivitas', $idAktivitas);
             $query->execute();
         } catch (PDOException $e) {
             return false;
@@ -240,7 +240,7 @@ class Task
                 )'
             );
             $query->bindParam(':idAktivitas', $idAktivitas);
-            $query->bindParam(':txtScope', $txtMetode);
+            $query->bindParam(':txtMetode', $txtMetode);
             $query->execute();
             return true;
         } catch (PDOException $e) {
@@ -265,16 +265,16 @@ class Task
         return true;
     }
 
-    public function deleteMetodeByAktivitasId($idAgenda)
+    public function deleteMetodeByAktivitasId($idAktivitas)
     {
         try {
             $query = $this->core->db->prepare(
                 'DELETE FROM
                     METODE
                 WHERE
-                    ID_AKTIVITAS_AGENDA = :idAgenda'
+                    ID_AKTIVITAS_AGENDA = :idAktivitas'
             );
-            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':idAktivitas', $idAktivitas);
             $query->execute();
         } catch (PDOException $e) {
             return false;
@@ -299,7 +299,7 @@ class Task
                 )'
             );
             $query->bindParam(':idAktivitas', $idAktivitas);
-            $query->bindParam(':txtScope', $txtKriteria);
+            $query->bindParam(':txtKriteria', $txtKriteria);
             $query->execute();
             return true;
         } catch (PDOException $e) {
@@ -324,16 +324,16 @@ class Task
         return true;
     }
 
-    public function deleteKriteriaByAktivitasId($idAgenda)
+    public function deleteKriteriaByAktivitasId($idAktivitas)
     {
         try {
             $query = $this->core->db->prepare(
                 'DELETE FROM
                     KRITERIA
                 WHERE
-                    ID_AKTIVITAS_AGENDA = :idAgenda'
+                    ID_AKTIVITAS_AGENDA = :idAktivitas'
             );
-            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':idAktivitas', $idAktivitas);
             $query->execute();
         } catch (PDOException $e) {
             return false;

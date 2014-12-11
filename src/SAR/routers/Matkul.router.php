@@ -29,6 +29,7 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
     $rps = new Rps();
+    $rps->getRpsByIdMatkul($idMatkul);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
@@ -42,9 +43,4 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
         'progress' => $progress,
         'currPath' => $currPath
     ));
-});
-
-/** GET request on `//matakuliah/:idMatkul/rpp` */
-$app->get('/matakuliah/:idMatkul/rpp', $authenticate($app), function ($idMatkul) use ($app) {
-    $app->render('pages/_silabus.twig');
 });

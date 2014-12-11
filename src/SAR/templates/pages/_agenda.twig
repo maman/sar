@@ -121,8 +121,8 @@
 		</div>
 	</div>
 </div>
-{% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit'}  %}
-{% endblock %}
-
-{% block inlinejs %}
+{% if not agendas %}
+	{% set btnDisabled = true %}
+{% endif %}
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit', 'bumper': [currPath, '/bump']|join, 'saver': [currPath, '/submit']|join, 'btnDisabled': btnDisabled }  %}
 {% endblock %}

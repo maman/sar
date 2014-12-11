@@ -242,7 +242,7 @@ class Agenda
     {
         $this->deleteIndikatorByAgendaID($idAgenda);
         $this->deleteAktivitasByAgendaID($idAgenda);
-        $this->deleteAsesmentByAgendaID($idAgenda);
+        $this->deleteAsesmenByAgendaID($idAgenda);
         try {
             $query = $this->core->db->prepare(
                 'DELETE FROM
@@ -536,10 +536,11 @@ class Agenda
             $query->bindParam(':idAgenda', $idAgenda);
             $query->bindParam(':txtAsesmen', $txtAsesmen);
             $query->bindParam(':jenis', $jenis);
+            $query->execute();
+            return true;
         } catch (PDOException $e) {
             return false;
         }
-        return true;
     }
 
     /**
@@ -547,7 +548,7 @@ class Agenda
      * @param  string $idAsesmen
      * @return boolean
      */
-    public function deleteAsesment($idAsesmen)
+    public function deleteAsesmen($idAsesmen)
     {
         try {
             $query = $this->core->db->prepare(
@@ -569,7 +570,7 @@ class Agenda
      * @param  string $idAgenda
      * @return boolean
      */
-    private function deleteAsesmentByAgendaID($idAgenda)
+    private function deleteAsesmenByAgendaID($idAgenda)
     {
         try {
             $query = $this->core->db->prepare(

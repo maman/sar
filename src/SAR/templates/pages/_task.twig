@@ -49,6 +49,7 @@
 													<li>{{ scope.TEXT_SCOPE }}</li>
 													{% endfor %}
 												</ul>
+												<a href="{{currPath}}/scope?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-warning"><i class="fa fa-pencil"></i> Edit Scope</a>
 												{% else %}
 												<a href="{{currPath}}/scope?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Scope</a>
 												{% endif %}
@@ -60,6 +61,7 @@
 													<li>{{ metode.TEXT_METODE }}</li>
 													{% endfor %}
 												</ul>
+												<a href="{{currPath}}/metode?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-warning"><i class="fa fa-pencil"></i> Edit Metode</a>
 												{% else %}
 												<a href="{{currPath}}/metode?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Metode</a>
 												{% endif %}
@@ -71,6 +73,7 @@
 													<li>{{ kriteria.TEXT_KRITERIA }}</li>
 													{% endfor %}
 												</ul>
+												<a href="{{currPath}}/kriteria?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-warning"><i class="fa fa-pencil"></i> Edit Kriteria</a>
 												{% else %}
 												<a href="{{currPath}}/kriteria?id={{ aktivitas.ID_AKTIVITAS_AGENDA }}" class="btn btn-block btn-success"><i class="fa fa-plus"></i> Tambah Kriteria</a>
 												{% endif %}
@@ -102,7 +105,10 @@
 		</div>
 	</div>
 </div>
-{% include 'components/_right-bar.twig' with {'pageTitle': 'Task/Project', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit'}  %}
+{% if not tasks %}
+	{% set btnDisabled = true %}
+{% endif %}
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Task/Project', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit', 'bumper': [currPath, '/bump']|join, 'saver': [currPath, '/submit']|join, 'btnDisabled': btnDisabled }  %}
 {% endblock %}
 
 {% block inlinejs %}

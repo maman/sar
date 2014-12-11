@@ -30,6 +30,7 @@
     "lesshat": "~3.0.2",
     "select2": "~3.5.2",
     "bootstrap-validator": "~0.6.0",
-    "bootstrap-toggle": "~2.0.0"
+    "bootstrap-toggle": "~2.0.0",
+    "bootbox": "~4.3.0"
   }
 }

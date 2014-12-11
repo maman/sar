@@ -1,0 +1,55 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">{{ pageTitle }}</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			{% if not collection %}
+			<div class="list-group">
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Anda belum mempunyai {{ pageTitle }} untuk Task&#47;Project ini.</h4>
+					<p class="list-group-item-text">Untuk mulai membuat {{ pageTitle }} baru klik tombol dibawah, dan isi masukan yang diberikan.</p>
+					<br>
+					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai membuat {{ pageTitle }}</strong></i></a>
+				</div>
+			</div>
+			{% endif %}
+			<div class="form-group kompetensi">
+				{% if collection %}
+					{% for item in collection %}
+				<div class="indikator" data-multi-target data-name="indikator">
+					<a href="{{currPath}}/del/{% if item.ID_SCOPE %}{{ item.ID_SCOPE }}{% elseif item.ID_METODE %}{{ item.ID_METODE }}{% elseif item.ID_KRITERIA %}{{ item.ID_KRITERIA }}{% endif %}?id={{ idAktivitas }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{% if item.TEXT_SCOPE %}{{ item.TEXT_SCOPE }}{% elseif item.TEXT_METODE %}{{ item.TEXT_METODE }}{% elseif item.TEXT_KRITERIA %}{{ item.TEXT_KRITERIA }}{% endif %}</textarea>
+				</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+			<form action="#" method="POST">
+				<section class="step">
+					<div class="form-group kompetensi">
+						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<input type="hidden" name="idAktivitas" value="{{ idAktivitas }}">
+							<textarea class="form-control input-lg" name="text" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<input type="submit" class="btn btn-lg btn-success btn-block" value="Tambah {{ pageTitle }}">
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/_right-bar.twig' with {'pageTitle': pageTitle, 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
+{% endblock %}

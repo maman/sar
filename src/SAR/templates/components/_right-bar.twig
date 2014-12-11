@@ -18,9 +18,12 @@
 				<li class="list-group-item"><small><strong class="text-muted">Status</strong></small><br><span class="text-danger">Unapproved</span></li>
 			</ul>
 			{% if buttonState == 'submit' %}
-			<a href="#" class="{% if (not silabus.kompetensi) or (not silabus.pustaka) %}disabled{% endif %} btn btn-block btn-success btn-lg">Submit</a>
+			<div class="btn-group-vertical btn-block" role="group">
+				<a href="{{ bumper }}" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-primary btn-lg">Save</a>
+				<a href="{{ saver }}" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-success btn-lg">Submit</a>
+			</div>
 			{% elseif buttonState == 'back' %}
-			<a href="{{ breadcrumbs.silabus }}" class="btn btn-block btn-primary btn-lg">Kembali</a>
+			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">Kembali</a>
 			{% else %}
 			{% endif %}
 		</div>

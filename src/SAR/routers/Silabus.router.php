@@ -32,9 +32,10 @@ $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, f
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
-    $new = true;
-    if (!is_null($silabus->silabusID)) {
-        $new = false;
+    $new = false;
+    if (is_null($silabus->silabusID)) {
+        $new = true;
+        $rps->startSilabus($idMatkul);
     }
     $startDate = $rps->silabusStart;
     $lastEditDate = $rps->silabusLastEdit;
@@ -52,6 +53,23 @@ $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, f
             'kompetensi' => $silabus->kompetensi
         )
     ));
+});
+
+/** GET request on `/matakuliah/:idMatkul/silabus/bump` */
+$app->get('/matakuliah/:idMatkul/silabus/bump', $authenticate($app), function ($idMatkul) use ($app) {
+    $rps = new Rps();
+    $rps->getRpsByIdMatkul($idMatkul);
+    $rps->bumpProgress($idMatkul, 'silabus');
+    $app->redirect('/matakuliah/'. $idMatkul);
+});
+
+/** GET request on `/matakuliah/:idMatkul/silabus/submit` */
+$app->get('/matakuliah/:idMatkul/silabus/submit', $authenticate($app), function ($idMatkul) use ($app) {
+    $rps = new Rps();
+    $rps->getRpsByIdMatkul($idMatkul);
+    $rps->submitProgress($idMatkul, 'silabus');
+    $rps->updateProgress($_SESSION['nip']);
+    $app->redirect('/matakuliah/'. $idMatkul);
 });
 
 /** GET request on `/matakuliah/:idMatkul/silabus/new` */
