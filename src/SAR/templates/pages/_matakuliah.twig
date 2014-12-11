@@ -56,7 +56,7 @@
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
 								<a href="#" class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="#" class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
+								<a href="{{ currPath }}/submit" class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
 					</div>
@@ -65,91 +65,8 @@
 			</div>
 		</div>
 		{% else %}
-			{% if matkuls|length >= 5 %}
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading clearfix">
-					<h4 class="pull-left panel-title" style="padding-top: 7.5px">{{ matkuls.NamaMK|upper }}</a></h4>
-					<a href="{{ baseurl }}/matakuliah/{{ matkuls.KDMataKuliah }}" class="btn btn-sm btn-primary pull-right">Rincian</a>
-				</div>
-				<div class="panel-body">
-					<div class="list-group">
-						{% if matkuls.RPSDetails.silabus %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/silabus" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Silabus
-							<span class="pull-right label label-success">finished</span>
-						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/silabus" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Silabus
-							<span class="pull-right label label-danger">unfinished</span>
-						</a>
-						{% endif %}
-						{% if matkuls.RPSDetails.agenda %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/agenda" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Agenda Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Rencana Evaluasi Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/agenda" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Agenda Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Evaluasi Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						{% endif %}
-						{% if matkuls.RPSDetails.project %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/task" class="list-group-item list-group-item-success">
-							<i class="fa fa-exclamation fa-fw text-success"></i> Rencana Task/Project Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Jadwal Aktivitas Belajar
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/task" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Task/Project Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkuls.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Jadwal Aktivitas Belajar
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						{% endif %}
-					</div>
-					<div class="row">
-						<div class="col-lg-6 col-lg-offset-3">
-							<div class="btn-group btn-group-justified">
-								{% if matkuls.RPSDetails.silabus and matkuls.RPSDetails.agenda and matkuls.RPSDetails.project %}
-								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="#" class="btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
-								{% endif %}
-								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="#" class="btn btn-success disabled"><i class="fa fa-cloud"></i> Submit RPS</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-			{% else %}
-				{% for matkul in matkuls %}
-		<div class="col-lg-6">
+			{% for matkul in matkuls %}
+		<div class="{% if matkuls|length <= 4 %}col-lg-12{% else %}col-lg-6{% endif %}">
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">
 					<h4 class="pull-left panel-title" style="padding-top: 7.5px">{{ matkul.NamaMK|upper }}</a></h4>
@@ -157,89 +74,44 @@
 				</div>
 				<div class="panel-body">
 					<div class="list-group">
-						{% if matkul.RPSDetails.silabus %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/silabus" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Silabus
-							<span class="pull-right label label-success">finished</span>
+						<a href="{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}/silabus" class="list-group-item{% if matkul.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
+							{% if matkul.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
+							{% if matkul.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.silabus == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Silabus <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/silabus" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Silabus
-							<span class="pull-right label label-danger">unfinished</span>
+						<a href="{% if matkul.RPSDetails.silabus == 'never' %}#{% else %}{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}/agenda{% endif %}" class="list-group-item{% if matkul.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
+							{% if matkul.RPSDetails.agenda == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Agenda <span class="pull-right label label-danger">unfinished</span>{% endif %}
+							{% if matkul.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.agenda == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Agenda <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/kompetensi" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Kompetensi
-							<span class="pull-right label label-danger">unfinished</span>
+						<a href="{% if matkul.RPSDetails.agenda == 'never' %}#{% else %}{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}/evaluasi{% endif %}" class="list-group-item{% if matkul.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
+							{% if matkul.RPSDetails.agenda == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Rencana Evaluasi <span class="pull-right label label-danger">unfinished</span>{% endif %}
+							{% if matkul.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Rencana Evaluasi <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.agenda == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Rencana Evaluasi <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/pustaka" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Pustaka
-							<span class="pull-right label label-danger">unfinished</span>
+						<a href="{% if matkul.RPSDetails.agenda == 'never' %}#{% else %}{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}/task{% endif %}" class="list-group-item{% if matkul.RPSDetails.project == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.project == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
+							{% if matkul.RPSDetails.project == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Task&#47;Project <span class="pull-right label label-danger">unfinished</span>{% endif %}
+							{% if matkul.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.project == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Task&#47;Project <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
-						{% endif %}
-						{% if matkul.RPSDetails.agenda %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/agenda" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Agenda Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
+						<a href="{% if matkul.RPSDetails.project == 'never' %}#{% else %}{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}/jadwal{% endif %}" class="list-group-item{% if matkul.RPSDetails.project == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.project == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
+							{% if matkul.RPSDetails.project == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Jadwal Aktivitas <span class="pull-right label label-danger">unfinished</span>{% endif %}
+							{% if matkul.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Jadwal Aktivitas <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.project == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Jadwal Aktivitas <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Rencana Evaluasi Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/agenda" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Agenda Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/evaluasi" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Evaluasi Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						{% endif %}
-						{% if matkul.RPSDetails.project %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/task" class="list-group-item list-group-item-success">
-							<i class="fa fa-exclamation fa-fw text-success"></i> Rencana Task/Project Pembelajaran
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-success">
-							<i class="fa fa-check fa-fw text-success"></i> Jadwal Aktivitas Belajar
-							<span class="pull-right label label-success">finished</span>
-							</span>
-						</a>
-						{% else %}
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/task" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Rencana Task/Project Pembelajaran
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						<a href="http://{{ breadcrumbs.matakuliah }}/{{ matkul.KDMataKuliah }}/jadwal" class="list-group-item list-group-item-warning">
-							<i class="fa fa-exclamation fa-fw text-danger"></i> Jadwal Aktivitas Belajar
-							<span class="pull-right label label-danger">unfinished</span>
-							</span>
-						</a>
-						{% endif %}
 					</div>
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
-							<div class="btn-group btn-group-justified">
-								{% if matkul.RPSDetails.silabus and matkul.RPSDetails.agenda and matkul.RPSDetails.project %}
-								<a href="#" class="btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="#" class="btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
-								{% endif %}
-								<a href="#" class="btn btn-primary disabled"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="#" class="btn btn-success disabled"><i class="fa fa-cloud"></i> Submit RPS</a>
+							<div class="btn-group btn-group-justified btn-group-lg">
+								<a href="#" class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
+								<a href="{{ currPath }}/{{ matkul.KDMataKuliah }}/submit" class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-				{% endfor %}
-			{% endif %}
+			{% endfor %}
 		{% endif %}
 	</div>
 </div>

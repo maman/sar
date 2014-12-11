@@ -28,17 +28,20 @@
 								<span class="pull-right text-muted">{{ matkul.percentage }}% Complete</span>
 							</p>
 							<div class="progress progress-striped active">
-                  <div class="progress-bar {% if matkuls.percentage == 0 %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkul.percentage == 0 %}100{% else %}{{ matkul.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width: {% if matkuls.percentage == 0 %}100{% else %}{{ matkuls.percentage }}{% endif %}%">
+                  <div class="progress-bar {% if matkul.percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkul.percentage == '0' %}100{% else %}{{ matkul.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width: {% if matkul.percentage == '0' %}100%{% else %}{{ [matkul.percentage, '%']|join }}{% endif %}">
                       <span class="sr-only">{{ matkul.percentage }}% Complete (success)</span>
                   </div>
               </div>
 						</div>
 					</a>
 				</li>
-					{% if loop.index0 is even %}
 				<li class="divider"></li>
-					{% endif %}
 				{% endfor %}
+				<li>
+					<a href="/matakuliah" class="center-block text-center">
+						<strong>All Matakuliah</strong>
+					</a>
+				</li>
 			</ul>
 			<!-- /.dropdown-tasks -->
 		</li>
@@ -48,7 +51,7 @@
 				<a href="/matakuliah/{{ matkuls.KDMataKuliah }}">
 					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls.NamaMK }}</strong></span>
 					<div class="progress" style="width: 120px">
-						<div class="progress-bar" role="progressbar" aria-valuenow="{% if matkuls.percentage == 0 %}100{% else %}{{ matkuls.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+						<div class="progress-bar {% if matkul.percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkuls.percentage == '0' %}100{% else %}{{ matkuls.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width:{% if matkuls.percentage == '0' %}100%{% else %}{{ [matkuls.percentage, '%']|join }}{% endif %}">
 							{{ matkuls.percentage }}%
 						</div>
 					</div>

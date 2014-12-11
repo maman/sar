@@ -145,7 +145,7 @@ class Rps
     {
         $progress = array(
             'percentage' => 0,
-            'approved' => false,
+            'approved' => 'never',
             'RPSDetails' => array(
                 'silabus' => 'never',
                 'agenda' => 'never',
@@ -188,8 +188,15 @@ class Rps
                 }
             }
             if (!($this->approval) == '0') {
-                $progress['approved'] = true;
-                $percentage += 20;
+                switch($this->approval) {
+                    case '1':
+                        $progress['approved'] = 'wait';
+                        break;
+                    case '2':
+                        $progress['approved'] = 'approved';
+                        $percentage += 20;
+                        break;
+                }
             }
             $progress['percentage'] = $percentage;
         } else {
@@ -368,6 +375,15 @@ class Rps
      */
     public function bumpProgress($idMatkul, $field)
     {
+        switch($this->agenda) {
+            case '1':
+                $progress['RPSDetails']['agenda'] = 'work';
+                break;
+            case '2':
+                $progress['RPSDetails']['agenda'] = 'finish';
+                $percentage += 20;
+                break;
+        }
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -393,6 +409,57 @@ class Rps
      * @return boolean
      */
     public function submitProgress($idMatkul, $field)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'UPDATE
+                    RPS
+                SET
+                    "' . ucfirst($field) . '" = 2
+                WHERE
+                    "KDMataKuliah" = :idMatkul'
+            );
+            $query->bindParam(':idMatkul', $idMatkul);
+            $query->execute();
+            $this->$field = '1';
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function newApproval($nip)
+    {
+        $currDate = date('Y-m-d H:i:s');
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    "APPROVAL"
+                (
+                    "NIP",
+                    "TglMasuk"
+                )
+                VALUES
+                (
+                    :nip,
+                    to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
+                )'
+            );
+            $query->bindParam(':nip', $nip);
+            $query->bindParam(':currDate', $currDate);
+            $query->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Submit RPS
+     * @param  string $idMatkul
+     * @return boolean
+     */
+    public function submitRPS($idMatkul)
     {
         try {
             $query = $this->core->db->prepare(
