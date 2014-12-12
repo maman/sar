@@ -1,0 +1,566 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"new",
+				"newArchive"
+			],
+			[
+				"r",
+				"registerTask"
+			],
+			[
+				"dist",
+				"distDir"
+			],
+			[
+				"tes",
+				"testDir"
+			],
+			[
+				"end",
+				"endDate"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 368.0,
+		"selected_items":
+		[
+			[
+				"lin",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"stop",
+				"Xdebug: Stop Debugging"
+			],
+			[
+				"run",
+				"Xdebug: Breakpoint - Run"
+			],
+			[
+				"xde",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"xdeb",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"start",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"searc",
+				"Search In Project"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"sear",
+				"File: Search Files"
+			],
+			[
+				"ssrub",
+				"Set Syntax: Ruby"
+			],
+			[
+				"ssjso",
+				"Set Syntax: JSON"
+			],
+			[
+				"ins	",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 438.0
+	},
+	"console":
+	{
+		"height": 132.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/Evo/Documents/Hack/pkl-kampus/app",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/assets",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/css",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/fonts",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages"
+	],
+	"file_history":
+	[
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares/Matakuliah.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap/bootstrap.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap/config.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/index.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/base.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_403.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Agenda.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares/Authenticate.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/lib/Core.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/lib/Helpers.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Agenda.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/User.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Task.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Silabus.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Rps.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Matkul.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Login.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Kategori.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Matkul.router.php",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Silabus.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/index.router.php",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/sar.sublime-project",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/Xdebug.sublime-settings",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/User.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_dashboard.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_matakuliah.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/sb-admin-2.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/mixins.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/main.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_sidebar.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_header.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Task.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_asesmen.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_aktivitas.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_task.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_agenda.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Login.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_login.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bower.json",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_right-bar.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/.idea/watcherTasks.xml",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_silabus.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_subtask.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_user.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_pustaka.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_profile.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_silabus-new.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_indikator.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Evaluasi.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_evaluasi.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/sb-variables.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/.idea/dataSources.ids",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/Gruntfile.coffee",
+		"/Users/Evo/Documents/Work/aventdesk-frontend/Gruntfile.js",
+		"/Users/Evo/Documents/Work/aventdesk-frontend/.coffeelint.json",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/multitags.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/listToggler.js",
+		"/Users/Evo/Downloads/2014-12-10/audio_NUC-BRIX-90_v2.command",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/.editorconfig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/package.json",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/css/tmp/.gitignore",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/css/.gitignore",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/.gitignore",
+		"/Users/Evo/Documents/Work/aventdesk-frontend/css/global.sass",
+		"/Users/Evo/Documents/Work/aventdesk-frontend/css/all.css",
+		"/Users/Evo/Library/LaunchAgents/com.docker.boot2docker.plist",
+		"/Users/Evo/com.docker.boot2docker.plist",
+		"/Users/Evo/.inputrc",
+		"/Users/Evo/.gitconfig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/plugins/toggle.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/momentRender.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/toggleButton.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_kompetensi.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/composer.json",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/widgets/_notification-widget.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/error.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/Vagrantfile",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/composer.lock",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/globals/domReady.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/globals/domLoad.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_agenda-new.twig",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/fonts/FontAwesome.otf",
+		"/Users/Evo/.tcsh/tcshrc",
+		"/Users/Evo/.tcsh/completions.tcsh",
+		"/Users/Evo/.tcsh/env.tcsh",
+		"/Users/Evo/.tcsh/keybinds.tcsh",
+		"/Users/Evo/.tcsh/settings.tcsh",
+		"/Users/Evo/.tcshrc",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/plugins/timeline.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-helper.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/plugins/summernote.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/layoutMini.js",
+		"/Users/Evo/Downloads/2014-11-26/cv_4/cv_4.tex",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/LICENSE",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/css/app.min.css",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/README.md",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/bundle.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/.travis.yml",
+		"/Applications/Sublime Text.app/Contents/MacOS/changelog.txt",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_agenda-helper.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-kepustakaan-helper.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bower_components/bootstrap/less/bootstrap.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/variables.less",
+		"/Users/Evo/Public/Projects/dotjs-fork/Rakefile",
+		"/Users/Evo/Public/Projects/dotjs-fork/bin/djsd",
+		"/Users/Evo/Public/Projects/dotjs-fork/ext/dotjs.js",
+		"/Users/Evo/Public/Projects/dotjs-fork/ext/manifest.json",
+		"/Users/Evo/Public/Projects/dotjs-fork/ext/icon48.png",
+		"/Users/Evo/Public/Projects/dotjs-fork/ext/icon128.png",
+		"/Users/Evo/Public/Projects/dotjs-fork/ext/jquery.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-new-helper.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-kompetensi-helper.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/webfonts.less",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/cache/12/b1/d80dd502e188addbdcfccc16f1351c58ce419e88f665053d1371816c83d3.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/formMultiTarget.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/pages/agenda.js",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/formSubmit.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Api.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/formAutosave.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/fonts/fontawesome-webfont.svg",
+		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/AdvancedNewFile/Default (OSX).sublime-keymap",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/widgets/_breadcrumb.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/plugins/select2.less"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+			"<project>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"lg",
+			"md",
+			"<strong>",
+			"<small>",
+			"strong",
+			"hr",
+			"project",
+			"progress",
+			"{{ currPath }}",
+			"$rps",
+			"rps",
+			" ==",
+			"finish",
+			"Task&#47;Project",
+			"task",
+			"agenda",
+			"Silabus",
+			"silabus",
+			"$progress['RPSDetails']['agenda']",
+			"$progress['RPSDetails']['silabus']",
+			"Daftar Mata Kuliah",
+			"table",
+			"asesment",
+			"idAktivitas",
+			"Silabus",
+			"Silabus()",
+			"Agenda()",
+			"idAgenda",
+			"idScope",
+			"scope",
+			"idScope",
+			"scope",
+			"ID",
+			"silabus",
+			"idScope",
+			"Scope",
+			"value",
+			"$key",
+			"SCOPE",
+			"Agenda",
+			"Int",
+			"xs",
+			"Aktivitas",
+			"asesmen",
+			"Asesmen",
+			"$id",
+			"id",
+			"ketegori",
+			"<td",
+			"<td rowspan=\"3\">",
+			"idIndikator",
+			"idAsesmen",
+			"idAktivitas",
+			"idIndikator",
+			"idAktivitas",
+			"jenis",
+			"idAgenda",
+			"line",
+			"rule",
+			"ruler",
+			"width",
+			"comb",
+			"kompetensi",
+			"[type]",
+			"txtIndikator",
+			"[description]",
+			"[type]",
+			"idSilabus",
+			"getsilabusby",
+			"a href=\"{{currPath}}",
+			"tujuan",
+			"pokok-bahasan",
+			"Silabus",
+			"silabus",
+			"session",
+			"wiz",
+			"wizard",
+			"uppercase",
+			"tes",
+			"Tes",
+			"tes",
+			"agendas",
+			"Task",
+			"TASK",
+			"TO_CHAR",
+			"StartDate",
+			"LastEditDate",
+			"Start",
+			"ul",
+			"item",
+			"form-control",
+			"item",
+			" [description]",
+			"idSilabus",
+			"btn-block",
+			"text-info h2",
+			"value=",
+			"kompetensi",
+			"h2",
+			"tujuan",
+			"Tujuan",
+			"tujuan",
+			"di",
+			"&nbsp;&nbsp;",
+			"result",
+			"<a href=\"#\" data-multi-target-close>",
+			"silabus",
+			"pokokBahasan",
+			"{{ loop.index0 }}",
+			"kategori",
+			"plott",
+			"matkul",
+			"($this.data('target'))",
+			"count",
+			"indikator-pencapaian",
+			"currPath",
+			"success",
+			"danger",
+			"exclamation",
+			"a class",
+			"Print RPS",
+			"h6",
+			"span",
+			"progress",
+			"href=\"{{ currPath }}",
+			"progress",
+			"percentage",
+			"results"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Cetak RPS",
+			"/assets/select2x2.png",
+			"/assets/select2.png",
+			"/assets/select2-spinner.gif",
+			"'",
+			"Calibri",
+			"content:''",
+			"Lato",
+			"LucidaGrande",
+			"http://www.jadenforex.com/forex-free-five-dollars-offers",
+			"td",
+			"twelve ",
+			"radius"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 116.0
+	},
+	"project": "sar.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/Hack/pkl-kampus/app/sar.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"restore_index":
+			{
+				"18":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"42":
+				{
+					"group": 0,
+					"index": 1
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 216.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

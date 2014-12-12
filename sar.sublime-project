@@ -8,8 +8,10 @@
     ],
     "settings": {
         "xdebug": {
-            "path_mapping": {"/var/www/": "/Users/Evo/Documents/Hack/pkl-kampus/app/"},
-            "url": "http://localhost:8888/"
+            "path_mapping": {"/var/www": "/Users/Evo/Documents/Hack/pkl-kampus/app"},
+            "url": "http://pkl-kampus.vm/",
+            "super_globals": true,
+            "close_on_stop": true
         }
     }
 }

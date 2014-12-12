@@ -17,6 +17,7 @@
  * @copyright 2014 Achmad Mahardi
  */
 namespace SAR\models;
+
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Matkul as Matkul;
@@ -33,7 +34,7 @@ class User
     private $matkul;
     private $core;
 
-    function __construct()
+    public function __construct()
     {
         $this->core = Slim::getInstance();
     }

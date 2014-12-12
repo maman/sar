@@ -25,6 +25,37 @@
 				</div>
 				<!-- /.panel-heading -->
 				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3 col-sm-3">
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">
+									<strong>Revisi Ke</strong>
+								</div>
+								<div class="panel-body status-body text-center">
+									<h1 class="counter text-center text-info">01</h1>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-9 col-sm-9">
+							<div class="list-group list-noborder">
+								<div class="list-group-item">
+									<small class="text-muted"><strong>Dibuat</strong></small>
+									<br>
+									Abu/2 menit yang lalu
+								</div>
+								<div class="list-group-item">
+									<small class="text-muted"><strong>Diperiksa</strong></small>
+									<br>
+									<span class="text-warning">Menunggu</span>
+								</div>
+								<div class="list-group-item">
+									<small class="text-muted"><strong>Disahkan</strong></small>
+									<br>
+									<span class="text-danger">Belum Disahkan</span>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="list-group">
 						<a href="{{ currPath }}/silabus" class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 							{% if progress.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}

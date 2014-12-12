@@ -117,7 +117,7 @@ class Agenda
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getAgendaByMatkul($idMatkul, $mode = NULL)
+    public function getAgendaByMatkul($idMatkul, $mode = null)
     {
         $kategori = new Kategori();
         $results = $this->getDetailAgendaByMatkul($idMatkul);

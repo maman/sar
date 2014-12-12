@@ -17,6 +17,7 @@
  * @copyright 2014 Achmad Mahardi
  */
 namespace SAR\models;
+
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Kategori;
@@ -41,7 +42,7 @@ class Silabus
     private $assesmentNonTes;
     private $core;
 
-    function __construct($idMatkul)
+    public function __construct($idMatkul)
     {
         $this->core = Slim::getInstance();
         $silabus = $this->getSilabusByMatkul($idMatkul);

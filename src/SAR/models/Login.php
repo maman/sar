@@ -17,6 +17,7 @@
  * @copyright 2014 Achmad Mahardi
  */
 namespace SAR\models;
+
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 
@@ -32,7 +33,7 @@ class Login
     private $matkul;
     private $core;
 
-    function __construct()
+    public function __construct()
     {
         $this->core = Slim::getInstance();
     }
@@ -89,7 +90,7 @@ class Login
                     if ($result['ID_JABATAN_STRUK'] == 1) {
                         $this->role = "kaprodi";
                     } else {
-                    $this->role = "dosen";
+                        $this->role = "dosen";
                     }
                 } else {
                     return false;
