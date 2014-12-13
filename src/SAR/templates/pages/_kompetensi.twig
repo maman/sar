@@ -30,7 +30,7 @@
 					<a href="{{currPath}}/del/{{ kompetensi.ID_KOMPETENSI }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<input type="hidden" name="idKompetensi" value="{{ kompetensi.ID_KOMPETENSI }}">
 					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ kompetensi.NAMA_KOMPETENSI }}</textarea>
-					<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" disabled data-input-autosave data-form-multitag data-placeholder="Kategori">
+					<select multiple name="kategori[]" class="form-control input-plain" disabled data-input-autosave data-form-multitag data-placeholder="Kategori">
 					{% for item in kompetensi.KATEGORI_KOMPETENSI %}
 						<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KATEGORI_KOMPETENSI }}</option>
 					{% endfor %}

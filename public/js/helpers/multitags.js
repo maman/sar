@@ -8,7 +8,11 @@ var $ = require('jquery'),
 
 function format(tags) {
   var originalOption = tags.element;
-  return $(originalOption).data('tagText') + ' (' + tags.text + ')';
+  if ($(originalOption).data('tagText')) {
+    return $(originalOption).data('tagText') + ' (' + tags.text + ')';
+  } else {
+    return tags.text;
+  }
 }
 
 window.multitags = function() {

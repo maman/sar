@@ -1,0 +1,233 @@
+<?php
+
+/**
+ * Approval Class for SAR Application
+ *
+ * this file contains the data access for Approval objects.
+ *
+ * PHP version 5.4
+ *
+ * LICENSE: This source file is subject to version 2 of the GNU General Public
+ * License that is avalaible in the LICENSE file on the project root directory.
+ * If you did not receive a copy of the LICENSE file, please send a note to
+ * 321110001@student.machung.ac.id so I can mail you a copy immidiately.
+ *
+ * @package SAR\models
+ * @author Achmad Mahardi <321110001@student.machung.ac.id>
+ * @copyright 2014 Achmad Mahardi
+ */
+namespace SAR\models;
+
+use Slim\Slim;
+use alfmel\OCI8\PDO as OCI8;
+use SAR\models\Rps;
+
+/**
+* Approval Class
+* @package SAR\models
+*/
+class Approval
+{
+    private $idMatkul;
+    private $nip;
+    private $tglMasuk;
+    private $tglPeriksa;
+    private $tglDisahkan;
+    private $nipPeriksa;
+    private $nipSahkan;
+    private $notePeriksa;
+    private $noteSahkan;
+    private $kodeApproval;
+    private $core;
+
+    public function __construct()
+    {
+        $this->core = Slim::getInstance();
+    }
+
+    private function getTodayDate()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    private function getApprovalByIdMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT TOP 1
+                *
+            FROM
+                Approval
+            WHERE
+                "KDMataKuliah" = :idMatkul
+            ORDER BY
+                "ID_Approval" DESC'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                $this->$idMatkul = $result['KDMataKuliah'];
+                $this->$nip = $result['NIP'];
+                $this->$tglMasuk = $result['TglMasuk'];
+                $this->$tglPeriksa = $result['TglPeriksa'];
+                $this->$tglDisahkan = $result['TglDisahkan'];
+                $this->$nipPeriksa = $result['NIP_Periksa'];
+                $this->$nipSahkan = $result['NIP_Pengesahan'];
+                $this->$notePeriksa = $result['NotePeriksa'];
+                $this->$noteSahkan = $result['NotePengesahan'];
+                $this->$kodeApproval = $result['Approval'];
+            }
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAllApproval()
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                "ID_Approval",
+                "KDMataKuliah",
+                "NIP",
+                TO_CHAR("TglMasuk", \'YYYY-MM-DD HH24:MI:SS\') as "TglMasuk",
+                TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
+                TO_CHAR("TglDisahkan", \'YYYY-MM-DD HH24:MI:SS\') as "TglDisahkan",
+                "NIP_Periksa",
+                "NIP_Pengesahan",
+                "NotePeriksa",
+                "NotePengesahan",
+                "Approval"
+            FROM
+                Approval
+            WHERE
+                "Approval" = 0'
+        );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Create new Approval Entry
+     * @param  string $idMatkul
+     * @param  string $nip
+     * @return boolean
+     */
+    public function createApprovalForMatkul($idMatkul, $nip)
+    {
+        $tglMasuk = $this->getTodayDate();
+        try {
+            $insert = $this->core->db->prepare(
+                'INSERT INTO
+                    Approval
+                (
+                    "KDMataKuliah",
+                    "NIP",
+                    "TglMasuk"
+                )
+                VALUES
+                (
+                    :idMatkul,
+                    :nip,
+                    to_date(:tglMasuk, \'YYYY-MM-DD HH24:MI:SS\')
+                )'
+            );
+            $insert->bindParam(':idMatkul', $idMatkul);
+            $insert->bindParam(':nip', $nip);
+            $insert->bindParam(':tglMasuk', $tglMasuk);
+            $insert->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Perform Periksa on provided $idApproval
+     * @param  string $idApproval
+     * @param  string $nip
+     * @param  string $review [optional - if not provided, then status is ditolak(0)]
+     * @return boolean
+     */
+    public function reviewMatkul($idApproval, $nip, $review = '-')
+    {
+        $rps = new Rps();
+        $tglReview = $this->getTodayDate();
+        $status = 1;
+        if ($review != '-') {
+            $status = '0';
+            $rps->resetAndBump($this->idMatkul);
+        }
+        try {
+            $query = $this->core->db->prepare('
+                UPDATE
+                    Approval
+                SET
+                    "TglPeriksa" = to_date(:tglReview, \'YYYY-MM-DD HH24:MI:SS\'),
+                    "NotePeriksa" = :review,
+                    "NIP_Periksa" = :nip,
+                    "Approval" = :status
+                WHERE
+                    "ID_Approval" = :idApproval
+            ');
+            $query->bindParam(':tglReview', $tglReview);
+            $query->bindParam(':review', $review);
+            $query->bindParam(':nip', $nip);
+            $query->bindParam(':status', $status);
+            $query->bindParam(':idApproval', $idApproval);
+            $query->execute();
+            $this->tglPeriksa = $tglReview;
+            $this->notePeriksa = $review;
+            $this->nipPeriksa = $nip;
+            $this->kodeApproval = $status;
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Perform Approval on provided $idApproval
+     * @param  string $idApproval
+     * @param  string $nip
+     * @param  string $review
+     * @return boolean
+     */
+    public function approveMatkul($idApproval, $nip, $review = '-')
+    {
+        $rps = new Rps();
+        $tglApprove = $this->getTodayDate();
+        try {
+            $query = $this->core->db->prepare('
+                UPDATE
+                    Approval
+                SET
+                    "TglDisahkan" = to_date(:tglApprove, \'YYYY-MM-DD HH24:MI:SS\'),
+                    "NotePengesahan" = :review,
+                    "NIP_Pengesahan" = :nip,
+                    "Approval" = 2
+                WHERE
+                    "ID_Approval" = :idApproval
+            ');
+            $query->bindParam(':tglApprove', $tglApprove);
+            $query->bindParam(':review', $review);
+            $query->bindParam(':nip', $nip);
+            $query->bindParam(':idApproval', $idApproval);
+            $query->execute();
+            $this->tglDisahkan = $tglApprove;
+            $this->noteSahkan = $review;
+            $this->nipSahkan = $nip;
+            $this->kodeApproval = '2';
+            $rps->approve($this->idMatkul);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+}

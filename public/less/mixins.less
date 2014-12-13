@@ -89,6 +89,39 @@ ul.list-group-item-text, ol.list-group-item-text {
 	}
 }
 
+/** Complex lists */
+.complex-list {
+	hr {
+		margin: @padding-large-vertical 0 @padding-small-vertical 0;
+	}
+	.box {
+		border-right: 1px solid @gray-lighter;
+		&:last-of-type {
+			border-right: none;
+		}
+		.box-component {
+			display: block;
+			&.box-title {
+				padding: @padding-small-vertical 0;
+				border-bottom: 1px solid @gray-lighter;
+			}
+			&.box-content {
+				padding: @padding-large-horizontal 0;
+			}
+		}
+	}
+}
+
+/** Page level Form for filter, etc. */
+.page-form {
+	position: absolute;
+	top: 0;
+	right: @padding-large-horizontal;
+	@media(min-width: 1200px) {
+		top: 40px;
+	}
+}
+
 /** Normal color links */
 .normal-link {
 	color: @text-color;

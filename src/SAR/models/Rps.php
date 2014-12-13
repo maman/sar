@@ -42,7 +42,7 @@ class Rps
     private $versi;
     private $core;
 
-    function __construct()
+    public function __construct()
     {
         $this->core = Slim::getInstance();
     }
@@ -77,11 +77,10 @@ class Rps
                 "Silabus",
                 "Agenda",
                 "Project",
+                "Approval",
                 "KDMataKuliah",
-                "KDApproval",
                 TO_CHAR("Silabus_StartDate", \'YYYY-MM-DD HH24:MI:SS\') as "Silabus_StartDate",
                 TO_CHAR("Agenda_StartDate", \'YYYY-MM-DD HH24:MI:SS\') as "Agenda_StartDate",
-                TO_CHAR("Project_StartDate", \'YYYY-MM-DD HH24:MI:SS\') as "Project_StartDate",
                 TO_CHAR("Silabus_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Silabus_LastEdit",
                 TO_CHAR("Agenda_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Agenda_LastEdit",
                 TO_CHAR("Project_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Project_LastEdit",
@@ -99,11 +98,10 @@ class Rps
                 $this->silabus         = $result['Silabus'];
                 $this->agenda          = $result['Agenda'];
                 $this->project         = $result['Project'];
+                $this->approval        = $result['Approval'];
                 $this->idMatkul        = $result['KDMataKuliah'];
-                $this->approval        = $result['KDApproval'];
                 $this->silabusStart    = $result['Silabus_StartDate'];
                 $this->agendaStart     = $result['Agenda_StartDate'];
-                $this->projectStart    = $result['Project_StartDate'];
                 $this->silabusLastEdit = $result['Silabus_LastEdit'];
                 $this->agendaLastEdit  = $result['Agenda_LastEdit'];
                 $this->projectLastEdit = $result['Project_LastEdit'];
@@ -124,16 +122,20 @@ class Rps
      */
     public function createRpsForMatkul($idMatkul)
     {
-        $insert = $this->core->db->prepare(
-            'INSERT INTO
-                RPS
-            ("KDMataKuliah")
-                VALUES
-            (:idMatkul)'
-        );
-        $insert->bindParam(':idMatkul', $idMatkul);
-        $insert->execute();
-        return true;
+        try {
+            $insert = $this->core->db->prepare(
+                'INSERT INTO
+                    RPS
+                ("KDMataKuliah")
+                    VALUES
+                (:idMatkul)'
+            );
+            $insert->bindParam(':idMatkul', $idMatkul);
+            $insert->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     /**
@@ -191,10 +193,11 @@ class Rps
                 switch($this->approval) {
                     case '1':
                         $progress['approved'] = 'wait';
+                        $percentage += 20;
                         break;
                     case '2':
                         $progress['approved'] = 'approved';
-                        $percentage += 20;
+                        $percentage += 40;
                         break;
                 }
             }
@@ -375,15 +378,6 @@ class Rps
      */
     public function bumpProgress($idMatkul, $field)
     {
-        switch($this->agenda) {
-            case '1':
-                $progress['RPSDetails']['agenda'] = 'work';
-                break;
-            case '2':
-                $progress['RPSDetails']['agenda'] = 'finish';
-                $percentage += 20;
-                break;
-        }
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -421,33 +415,7 @@ class Rps
             );
             $query->bindParam(':idMatkul', $idMatkul);
             $query->execute();
-            $this->$field = '1';
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
-
-    public function newApproval($nip)
-    {
-        $currDate = date('Y-m-d H:i:s');
-        try {
-            $query = $this->core->db->prepare(
-                'INSERT INTO
-                    "APPROVAL"
-                (
-                    "NIP",
-                    "TglMasuk"
-                )
-                VALUES
-                (
-                    :nip,
-                    to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
-                )'
-            );
-            $query->bindParam(':nip', $nip);
-            $query->bindParam(':currDate', $currDate);
-            $query->execute();
+            $this->$field = '2';
             return true;
         } catch (PDOException $e) {
             return false;
@@ -459,20 +427,82 @@ class Rps
      * @param  string $idMatkul
      * @return boolean
      */
-    public function submitRPS($idMatkul)
+    public function submitRPS($idMatkul, $nip)
+    {
+        $approval = new Approval();
+        try {
+            $query = $this->core->db->prepare(
+                'UPDATE
+                    RPS
+                SET
+                    "Approval" = 1
+                WHERE
+                    "KDMataKuliah" = :idMatkul'
+            );
+            $query->bindParam(':idMatkul', $idMatkul);
+            $query->execute();
+            $this->approval = '1';
+            $approval->createApprovalForMatkul($idMatkul, $nip);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Change Approval on RPS to True for the provided $idMatkul
+     * @param  string $idMatkul
+     * @return boolean
+     */
+    public function approve($idMatkul)
     {
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
                     RPS
                 SET
-                    "' . ucfirst($field) . '" = 2
+                    "Approval" = 2
                 WHERE
                     "KDMataKuliah" = :idMatkul'
             );
             $query->bindParam(':idMatkul', $idMatkul);
             $query->execute();
-            $this->$field = '1';
+            $this->approval = '2';
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Reset progress and Bump Version
+     * @param  string $idMatkul
+     * @return boolean
+     */
+    public function resetAndBump($idMatkul)
+    {
+        $versi = $this->versi + 1;
+        try {
+            $query = $this->core->db->prepare(
+                'UPDATE
+                    RPS
+                SET
+                    "Silabus" = 0,
+                    "Agenda" = 0,
+                    "Project" = 0,
+                    "Approval" = 0,
+                    "Versi" = :versi
+                WHERE
+                    "KDMataKuliah" = :idMatkul'
+            );
+            $query->bindParam(':versi', $versi);
+            $query->bindParam(':idMatkul', $idMatkul);
+            $query->execute();
+            $this->silabus = '0';
+            $this->agenda = '0';
+            $this->project = '0';
+            $this->approval = '0';
+            $this->versi = $versi;
             return true;
         } catch (PDOException $e) {
             return false;
@@ -488,7 +518,7 @@ class Rps
         $user = new Matkul();
         $matkul = $user->getMatkulByNIP($username);
         if (count($matkul) > 1) {
-            foreach($matkul as $key => $matkul_loop) {
+            foreach ($matkul as $key => $matkul_loop) {
                 if (!$this->getRpsProgress($matkul_loop['KDMataKuliah'])) {
                     $this->createRpsForMatkul($matkul_loop['KDMataKuliah']);
                 }
@@ -497,7 +527,7 @@ class Rps
                 $matkul[$key]['RPSDetails'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['RPSDetails'];
             }
             $_SESSION['matkul'] = $matkul;
-        } else if (count($matkul) == 1) {
+        } elseif (count($matkul) == 1) {
             if (!$this->getRpsProgress($matkul[0]['KDMataKuliah'])) {
                 $this->createRpsForMatkul($matkul[0]['KDMataKuliah']);
             }

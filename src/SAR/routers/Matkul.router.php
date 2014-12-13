@@ -18,13 +18,38 @@
  */
 use SAR\models\Matkul;
 use SAR\models\Rps;
+use Functional as F;
 
 $app->get('/matakuliah', $authenticate($app), function() use ($app) {
     $currPath = $app->request()->getPath();
-    $matkul = new Matkul();
-    $app->render('pages/_matakuliah.twig', array(
-        'currPath' => $currPath
-    ));
+    $rps = new Rps();
+    if (isset($_GET['filter'])) {
+        if ($_GET['filter'] == 'active') {
+            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+                return $item['approved'] == 'never';
+            });
+        } elseif ($_GET['filter'] == 'wait') {
+            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+                return $item['approved'] == 'wait';
+            });
+        } elseif ($_GET['filter'] == 'approved') {
+            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+                return $item['approved'] == 'approved';
+            });
+        } elseif ($_GET['filter'] == 'none') {
+            $results = $_SESSION['matkul'];
+        }
+        $app->render('pages/_matakuliah.twig', array(
+            'filtered' => true,
+            'selected' => $_GET['filter'],
+            'currPath' => $currPath,
+            'results' => $results
+        ));
+    } else {
+        $app->render('pages/_matakuliah.twig', array(
+            'currPath' => $currPath
+        ));
+    }
 });
 
 /** GET request on `/matakuliah/:idmatakuliah` */
@@ -50,4 +75,7 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
 
 $app->get('/matakuliah/:idMatkul/submit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $rps = new Rps();
+    $rps->submitRPS($idMatkul, $_SESSION['nip']);
+    $rps->updateProgress($_SESSION['nip']);
+    $app->redirect('/matakuliah');
 });
