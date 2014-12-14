@@ -13,15 +13,15 @@
 			<h1 class="page-header">Daftar Mata Kuliah</h1>
 			<form action="#" class="page-form form-inline hidden-xs" method="GET">
 				<div class="form-group">
-					<label for="status"></label>
-					<select class="form-control" name="filter" id="status">
+					<label for="status">Filter:</label>
+					<select class="form-control" name="filter" id="status" onchange='this.form.submit()'>
 						<option value="none" {% if selected == 'none' %}selected{% endif %}>All</option>
 						<option value="active" {% if selected == 'active' %}selected{% endif %}>On Progress</option>
-						<option value="wait" {% if selected == 'wait' %}selected{% endif %}>Reviewed</option>
+						<option value="wait" {% if selected == 'wait' %}selected{% endif %}>In Review</option>
 						<option value="approved" {% if selected == 'approved' %}selected{% endif %}>Approved</option>
 					</select>
 				</div>
-				<input type="submit" class="form-control btn btn-primary" value="Filter">
+				<noscript><input type="submit" class="form-control btn btn-primary" value="Filter"></noscript>
 			</form>
 			{% endif %}
 			{% include 'components/widgets/_breadcrumb.twig' %}
@@ -69,8 +69,10 @@
 						</div>
 					</div>
 					<div class="list-group" style="position:relative">
-						{% if progress.approved != 'never' %}
+						{% if isPreview is not defined %}
+							{% if progress.approved != 'never' %}
 						<div style="width:100%;height:100%;position:absolute;top:0;left:0;background:rgba(255,255,255,.5);z-index:1"></div>
+							{% endif %}
 						{% endif %}
 						<a href="{{ currPath }}/silabus" class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 							{% if progress.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
