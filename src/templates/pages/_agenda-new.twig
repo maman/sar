@@ -1,0 +1,53 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Agenda for {{ namaMatkul }} {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Agenda untuk {{ namaMatkul }}</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<form action="#" method="POST" id="agendaForm">
+				{% if idAgenda is defined %}
+				<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
+				{% endif %}
+				<input type="hidden" name="idSilabus" value="{{ idSilabus }}">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="rangePertemuan">Range Pertemuan</label>
+							<input class="form-control input-lg" type="text" name="rangePertemuan" id="rangePertemuan" value="{{ rangePertemuan }}" placeholder="Range Pertemuan">
+						</div>
+						<div class="col-xs-6">
+							<label for="bobot">Bobot Agenda</label>
+							<input class="form-control input-lg" type="text" name="bobot" id="bobot" value="{{ bobot }}" placeholder="Bobot Agenda">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="textSubKompetensi"><h3>Penjelasan Agenda</h3></label>
+					<textarea name="textSubKompetensi" id="textSubKompetensi" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable">{{ txtSubKompetensi }}</textarea>
+				</div>
+				<div class="form-group">
+					<label for="textMateriBelajar"><h3>Penjelasan Materi yang Akan Diajarkan</h3></label>
+					<textarea name="textMateriBelajar" id="textMateriBelajar" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable">{{ txtMateriBelajar }}</textarea>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-4">
+							<input type="submit" class="btn btn-block btn-lg btn-success">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
+{% endblock %}

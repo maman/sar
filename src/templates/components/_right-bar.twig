@@ -1,0 +1,67 @@
+{% if state == 'collapsed' %}
+<div class="sidebar-right collapsed" data-toggle="sidebar-right">
+{% else %}
+<div class="sidebar-right" data-toggle="sidebar-right">
+{% endif %}
+	<div class="panel panel-right">
+		<div class="panel-body">
+			<h4 class="page-header" data-wizard-step-title>{{ pageTitle }}</h4>
+			<p data-wizard-step-explanation>{{ explanation }}</p>
+			<ul class="list-group">
+				<li class="list-group-item"><small><strong class="text-muted">Revisi</strong></small><br>01</li>
+				{% if startDate is defined %}
+				<li class="list-group-item"><small><strong class="text-muted">Start Date</strong></small><br><span data-moment-render>{{ startDate }}</span></li>
+				{% endif %}
+				{% if lastEditDate is defined %}
+				<li class="list-group-item"><small><strong class="text-muted">Last Edit</strong></small><br><span data-moment-render>{% if lastEditDate is not null %}{{ lastEditDate }}{% else %}Never{% endif %}</span></li>
+				{% endif %}
+				<li class="list-group-item"><small><strong class="text-muted">Status</strong></small><br><span class="text-danger">Unapproved</span></li>
+			</ul>
+			{% if buttonState == 'submit' %}
+			<div class="btn-group-vertical btn-block" role="group">
+				<a href="#" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-primary btn-lg" data-alert-box
+					data-alert-title="Konfirmasi"
+					data-html-template="
+						<div class='row'>
+							<div class='col-lg-6'>
+								{# <a href='#' data-alert-box class='btn btn-primary' style='position: absolute;top:-60px;right:60px;'
+									data-alert-title='Bantuan'
+									data-html-template='
+										<h3>Lanjutkan</h3>
+										<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>On Progress</em>. Apabila anda memilih menu ini, maka anda dapat mengedit ulang dan menyesuaikan data yang ada.</p>
+										<h3>Submit</h3>
+										<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>Finished</em>. Pilih menu ini saat anda merasa bahwa data yang diinputkan sudah benar dan sesuai. Setelah anda melakukan proses submit, anda tidak diperkenankan mengubah ulang data yang ada.</p>
+									'
+								><i class='fa fa-question fa-fw'><span class='sr-only'>Help</span></i></a> #}
+								<h3>Lanjutkan</h3>
+								<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>On Progress</em>. Apabila anda memilih menu ini, maka anda dapat mengedit ulang dan menyesuaikan data yang ada.</p>
+							</div>
+							<div class='col-lg-6'>
+								<h3>Submit</h3>
+								<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>Finished</em>. Pilih menu ini saat anda merasa bahwa data yang diinputkan sudah benar dan sesuai. Setelah anda melakukan proses submit, anda tidak diperkenankan mengubah ulang data yang ada.</p>
+							</div>
+						</div>
+						<div class='row'>
+							<div class='col-lg-12'>
+								<hr>
+							</div>
+						</div>
+						<div class='row'>
+							<div class='col-lg-12'>
+								<div class='btn-group btn-group-justified'>
+									<a href='{{ bumper }}' class='btn btn-primary'><i class='fa fa-pencil fa-fw'></i> Lanjutkan lagi nanti</a>
+									<a href='{{ saver }}' class='btn btn-success'><i class='fa fa-check fa-fw'></i> Submit</a>
+								</div>
+							</div>
+						</div>
+					"
+					>Simpan</a>
+				{# <a href="{{ saver }}" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-success btn-lg">Submit</a> #}
+			</div>
+			{% elseif buttonState == 'back' %}
+			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">Kembali</a>
+			{% else %}
+			{% endif %}
+		</div>
+	</div>
+</div>

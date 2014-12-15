@@ -1,0 +1,85 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Pustaka untuk {% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' with {'state': 'mini'}%}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Pustaka</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			{% if not silabus.pustaka %}
+			<div class="list-group">
+				<div class="list-group-item well">
+					<h4 class="list-group-item-heading">Anda belum mempunyai pustaka untuk mata kuliah {{ namaMatkul }}</h4>
+					<p class="list-group-item-text">Untuk mulai memasukkan pustaka baru klik tombol dibawah, dan isi masukan yang diberikan.</p>
+					<br>
+					<a href="#" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Mulai masukkan pustaka</strong></i></a>
+				</div>
+			</div>
+			{% endif %}
+			<div class="form-group kepustakaan">
+				{% if silabus.pustaka %}
+					{% for pustaka in silabus.pustaka %}
+				<div class="pustaka" data-multi-target data-name="pustaka">
+					<a href="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<div class="row">
+						<div class="col-sm-9">
+							<input type="text" class="form-control" disabled name="judul" placeholder="Judul" value="{{ pustaka.JUDUL_PUSTAKA }}">
+						</div>
+						<div class="col-sm-3">
+							<input type="number" class="form-control" disabled name="tahun" placeholder="Tahun Terbit" value="{{ pustaka.TAHUN_TERBIT_PUSTAKA }}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<input type="text" class="form-control" disabled name="penerbit" placeholder="Penerbit" value="{{ pustaka.PENERBIT_PUSTAKA }}">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" disabled name="pengarang" placeholder="Pengarang" value="{{ pustaka.PENGARANG_PUSTAKA }}">
+						</div>
+					</div>
+				</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+			<form action="#" method="POST">
+				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
+					<div class="form-group kepustakaan" data-multi-target-parent>
+						<div class="kepustakaan" data-multi-target>
+							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
+							<div class="row">
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="judul" placeholder="Judul">
+								</div>
+								<div class="col-sm-3">
+									<input type="number" class="form-control" name="tahun" placeholder="Tahun Terbit">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="penerbit" placeholder="Penerbit">
+								</div>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="pengarang" placeholder="Pengarang">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<input type="submit" class="btn btn-lg btn-success btn-block" value="Tambah Pustaka">
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+{% include 'components/_right-bar.twig' with {'pageTitle': 'Pustaka', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'back'}  %}
+{% endblock %}
