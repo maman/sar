@@ -1,6 +1,6 @@
 {
   "name": "pkl-self-assest",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Sistem Informasi untuk tracking RPP dan Self Assest Report untuk dosen",
   "repositories": [
     {
@@ -26,7 +26,7 @@
   },
   "autoload": {
     "psr-0": {
-      "SAR\\": "src/"
+      "SAR\\": "src/lib/"
     }
   },
   "authors": [

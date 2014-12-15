@@ -52,8 +52,8 @@ return array(
     'db.password'          => 'Blink182',
 
     /** Application Paths */
-    'path.middlewares'     => $basedir . 'src/SAR/middlewares/',
-    'path.routes'          => $basedir . 'src/SAR/routers/',
-    'path.templates'       => $basedir . 'src/SAR/templates/',
-    'path.templates.cache' => $basedir . 'src/SAR/templates/cache'
+    'path.middlewares'     => $basedir . 'src/middlewares/',
+    'path.routes'          => $basedir . 'src/routers/',
+    'path.templates'       => $basedir . 'src/templates/',
+    'path.templates.cache' => $basedir . 'src/templates/cache'
 );

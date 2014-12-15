@@ -157,7 +157,9 @@
 	"expanded_folders":
 	[
 		"/Users/Evo/Documents/Hack/pkl-kampus/app",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares",
@@ -168,30 +170,37 @@
 	],
 	"file_history":
 	[
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/multitags.js",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Approval.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/momentRender.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/listToggler.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_right-bar.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_approval.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_review.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Login.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_matakuliah.twig",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/alertBox.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Rps.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Matkul.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Login.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap/bootstrap.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/bower.json",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/README.md",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Approval.router.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Approval.php",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/main.js",
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/multitags.js",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_sidebar.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/sb-admin-2.less",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/mixins.less",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_matakuliah.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_asesmen.twig",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Login.router.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Matkul.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_approval.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/routers/Silabus.router.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap/bootstrap.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Approval.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/User.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Rps.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/sb-variables.less",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/cache/be/92/72f776d8a24c3955a72102fa00b3f82faa16fc46726b1c65b2f3e1b1e798.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/cache/12/b1/d80dd502e188addbdcfccc16f1351c58ce419e88f665053d1371816c83d3.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_kompetensi.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares/Matakuliah.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Login.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/LICENSE",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/bower.json",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_header.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_indikator.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Silabus.php",
@@ -206,9 +215,7 @@
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/fonts/glyphicons-halflings-regular.svg",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/middlewares/Authenticate.php",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/models/Agenda.php",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/README.md",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/sar.sublime-project",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/main.js",
 		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
 		"/Users/Evo/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/bootstrap/config.php",
@@ -227,7 +234,6 @@
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_task.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_agenda.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_login.twig",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/_right-bar.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/.idea/watcherTasks.xml",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_silabus.twig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/pages/_subtask.twig",
@@ -241,7 +247,6 @@
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/Gruntfile.coffee",
 		"/Users/Evo/Documents/Work/aventdesk-frontend/Gruntfile.js",
 		"/Users/Evo/Documents/Work/aventdesk-frontend/.coffeelint.json",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/listToggler.js",
 		"/Users/Evo/Downloads/2014-12-10/audio_NUC-BRIX-90_v2.command",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/.editorconfig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/package.json",
@@ -255,7 +260,6 @@
 		"/Users/Evo/.inputrc",
 		"/Users/Evo/.gitconfig",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/plugins/toggle.less",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/momentRender.js",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/toggleButton.js",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/composer.json",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/widgets/_notification-widget.twig",
@@ -293,9 +297,7 @@
 		"/Users/Evo/Public/Projects/dotjs-fork/ext/icon128.png",
 		"/Users/Evo/Public/Projects/dotjs-fork/ext/jquery.js",
 		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-new-helper.twig",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-kompetensi-helper.twig",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/less/webfonts.less",
-		"/Users/Evo/Documents/Hack/pkl-kampus/app/public/js/helpers/formMultiTarget.js"
+		"/Users/Evo/Documents/Hack/pkl-kampus/app/src/SAR/templates/components/sidebar/_silabus-kompetensi-helper.twig"
 	],
 	"find":
 	{
@@ -314,6 +316,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"percentage",
+			"btn-block ",
 			"$progress",
 			"username",
 			"this->",
@@ -439,9 +443,7 @@
 			"tujuan",
 			"di",
 			"&nbsp;&nbsp;",
-			"result",
-			"<a href=\"#\" data-multi-target-close>",
-			"silabus"
+			"result"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -540,8 +542,36 @@
 		"selected_items":
 		[
 			[
+				"mat",
+				"src/SAR/templates/pages/_matakuliah.twig"
+			],
+			[
+				"login",
+				"src/SAR/routers/Login.router.php"
+			],
+			[
+				"boot",
+				"bootstrap/bootstrap.php"
+			],
+			[
 				"rps",
 				"src/SAR/models/Rps.php"
+			],
+			[
+				"rev",
+				"src/SAR/templates/pages/_review.twig"
+			],
+			[
+				"approv",
+				"src/SAR/templates/pages/_approval.twig"
+			],
+			[
+				"righ",
+				"src/SAR/templates/components/_right-bar.twig"
+			],
+			[
+				"bow",
+				"bower.json"
 			],
 			[
 				"",
@@ -562,10 +592,6 @@
 			[
 				"matak",
 				"src/SAR/templates/pages/_matakuliah.twig"
-			],
-			[
-				"boot",
-				"bootstrap/bootstrap.php"
 			],
 			[
 				"logi",
@@ -630,10 +656,6 @@
 			[
 				"r",
 				"src/SAR/models/Rps.php"
-			],
-			[
-				"mat",
-				"src/SAR/routers/Matkul.router.php"
 			]
 		],
 		"width": 0.0
@@ -703,7 +725,7 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": false,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 216.0,
 	"status_bar_visible": true,
 	"template_settings":

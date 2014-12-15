@@ -203,6 +203,14 @@ module.exports = (grunt) ->
             '!public/js/.git*'
           ]
         ]
+      cache:
+        files: [
+          dot: false
+          src: [
+            'src/templates/cache/*',
+            '!src/templates/cache/.gitignore'
+          ]
+        ]
 
     # Bower
     # =====
