@@ -16,6 +16,7 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
+
 use SAR\models\User;
 use SAR\models\Matkul;
 use SAR\models\Rps;
@@ -26,44 +27,44 @@ use SAR\models\Approval;
 use Functional as F;
 
 $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
-  $currPath = $app->request()->getPath();
-  $approval = new Approval();
-  $user = new User();
-  $matkul = new Matkul();
-  $rps = new Rps();
-  $results = $approval->getAllApproval();
-  foreach ($results as $num => $result) {
-    $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
-    $results[$num]['Versi'] = $rps->versi;
-    $results[$num]['NamaDosen'] = $user->getUser($results[$num]['NIP'])[0]['NAMA'];
-    $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
-    $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
-    $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
-  }
-  if (isset($_GET['filter'])) {
-      if ($_GET['filter'] == 'pending') {
-          $results = F\select($results, function($item, $key, $col) {
-              return $item['Approval'] == '0';
-          });
-      } elseif ($_GET['filter'] == 'approved') {
-          $results = F\select($results, function($item, $key, $col) {
-              return $item['Approval'] == '2';
-          });
-      } elseif ($_GET['filter'] == 'none') {
-          $results = $results;
-      }
-      $app->render('pages/_approval.twig', array(
-          'filtered' => true,
-          'selected' => $_GET['filter'],
-          'currPath' => $currPath,
-          'results' => $results
-      ));
-  } else {
-    $app->render('pages/_approval.twig', array(
-      'currPath' => $currPath,
-      'results' => $results
-    ));
-  }
+    $currPath = $app->request()->getPath();
+    $approval = new Approval();
+    $user = new User();
+    $matkul = new Matkul();
+    $rps = new Rps();
+    $results = $approval->getAllApproval();
+    foreach ($results as $num => $result) {
+        $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
+        $results[$num]['Versi'] = $rps->versi;
+        $results[$num]['NamaDosen'] = $user->getUser($results[$num]['NIP'])[0]['NAMA'];
+        $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
+        $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
+        $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
+    }
+    if (isset($_GET['filter'])) {
+        if ($_GET['filter'] == 'pending') {
+            $results = F\select($results, function ($item, $key, $col) {
+                return $item['Approval'] == '0';
+            });
+        } elseif ($_GET['filter'] == 'approved') {
+            $results = F\select($results, function ($item, $key, $col) {
+                return $item['Approval'] == '2';
+            });
+        } elseif ($_GET['filter'] == 'none') {
+            $results = $results;
+        }
+        $app->render('pages/_approval.twig', array(
+            'filtered' => true,
+            'selected' => $_GET['filter'],
+            'currPath' => $currPath,
+            'results' => $results
+        ));
+    } else {
+        $app->render('pages/_approval.twig', array(
+            'currPath' => $currPath,
+            'results' => $results
+        ));
+    }
 });
 
 $app->get('/approval/:idApproval/approve', $authenticate($app), $kaprodi, function () use ($app) {

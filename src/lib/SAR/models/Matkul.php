@@ -20,12 +20,12 @@ namespace SAR\models;
 
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
-use SAR\models\Helpers;
 use SAR\models\Rps;
+use SAR\helpers\Utilities;
 
 /**
  * Matkul Class
- * @package SAR\models
+ * @package SAR\helpers
  */
 class Matkul
 {
@@ -65,7 +65,7 @@ class Matkul
      */
     public function getMatkulDetails($id)
     {
-        $tahun = new Helpers();
+        $tahun = new Utilities();
         $range = $tahun->getRangeTahunAjaran();
         $results = array();
         $query = $this->core->db->prepare(
@@ -96,7 +96,7 @@ class Matkul
      */
     public function getMatkulByNIP($nip)
     {
-        $tahun = new Helpers();
+        $tahun = new Utilities();
         $range = $tahun->getRangeTahunAjaran();
         $results = array();
         $query = $this->core->db->prepare(

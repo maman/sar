@@ -6,7 +6,7 @@ module.exports = (grunt) ->
   webpack      = require('webpack')
   webpackBower = require('bower-webpack-plugin')
   bower        = './bower_components/'
-  namespace    = './src/SAR/'
+  namespace    = './src/'
 
   # Supercharge
   # ===========
@@ -207,8 +207,8 @@ module.exports = (grunt) ->
         files: [
           dot: false
           src: [
-            'src/templates/cache/*',
-            '!src/templates/cache/.gitignore'
+            namespace + 'templates/cache/*',
+            '!' + namespace + 'templates/cache/.gitignore'
           ]
         ]
 

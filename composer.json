@@ -18,7 +18,8 @@
     "alfmel/pdo-via-oci8": "dev-bugfix",
     "respect/validation": "0.7.*@dev",
     "lstrojny/functional-php": "dev-master",
-    "ensepar/html2pdf": "1.0.1"
+    "itbz/fpdf": "1.7.2",
+    "tecnick.com/tcpdf": "6.*"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*",

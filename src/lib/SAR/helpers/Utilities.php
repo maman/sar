@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Helpers Class for SAR Application
+ * Utilities Class for SAR Application
  *
- * this file contains the helpers function for SAR Application.
+ * this file contains the helpers, utility, and misc function for SAR Application.
  *
  * PHP version 5.4
  *
@@ -12,18 +12,18 @@
  * If you did not receive a copy of the LICENSE file, please send a note to
  * 321110001@student.machung.ac.id so I can mail you a copy immidiately.
  *
- * @package SAR\models
+ * @package SAR\helpers
  * @author Achmad Mahardi <321110001@student.machung.ac.id>
  * @copyright 2014 Achmad Mahardi
  */
-namespace SAR\models;
+namespace SAR\helpers;
 
 /**
 * Helpers Class
 *
 * @package SAR\models
 */
-class Helpers
+class Utilities
 {
     public function getRangeTahunAjaran()
     {
