@@ -53,14 +53,21 @@ class Approval
     private function getApprovalByIdMatkul($idMatkul)
     {
         $query = $this->core->db->prepare(
-            'SELECT TOP 1
+            'SELECT
                 *
             FROM
-                Approval
+            (
+                SELECT
+                    *
+                FROM
+                    Approval
+                WHERE
+                    "KDMataKuliah" = :idMatkul
+                ORDER BY
+                    "ID_Approval" DESC
+            )
             WHERE
-                "KDMataKuliah" = :idMatkul
-            ORDER BY
-                "ID_Approval" DESC'
+                ROWNUM = 1'
         );
         $query->bindParam(':idMatkul', $idMatkul);
         $query->execute();
@@ -100,9 +107,7 @@ class Approval
                 "NotePengesahan",
                 "Approval"
             FROM
-                Approval
-            WHERE
-                "Approval" = 0'
+                Approval'
         );
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
@@ -175,13 +180,12 @@ class Approval
             $query->bindParam(':tglReview', $tglReview);
             $query->bindParam(':review', $review);
             $query->bindParam(':nip', $nip);
-            $query->bindParam(':status', $status);
             $query->bindParam(':idApproval', $idApproval);
             $query->execute();
             $this->tglPeriksa = $tglReview;
             $this->notePeriksa = $review;
             $this->nipPeriksa = $nip;
-            $this->kodeApproval = $status;
+            $this->kodeApproval = '1';
             return true;
         } catch (PDOException $e) {
             return false;

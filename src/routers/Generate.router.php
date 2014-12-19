@@ -26,7 +26,7 @@ use SAR\models\Rps;
  * -*-*-*- BEWARE -*-*-*-
  * HUGE SHITLOADS OF CODE.
  */
-$app->get('/generate', $authenticate($app), function () use ($app) {
+$app->get('/generate/:idMatkul', $authenticate($app), function ($idMatkul) use ($app) {
     // Send PDF Directly to browser A.K.A download
     $app->response->headers->set('Content-Type', 'application/pdf');
     $app->response->headers->set('Content-Transfer-Encoding', 'binary');
@@ -35,11 +35,11 @@ $app->get('/generate', $authenticate($app), function () use ($app) {
     $agenda = new Agenda();
     $rps = new Rps();
 
-    $rps->getRpsByIdMatkul('666'); // TODO: CHANGE THIS!
+    $rps->getRpsByIdMatkul($idMatkul); // TODO: CHANGE THIS!
     $allKategori = $kategori->getAllKategoriIndikator();
     $groupKategori = $kategori->groupKategoriIndikator();
     $countKategori = count($allKategori);
-    $agendas = $agenda->getAgendaByMatkul('666', 'verbose'); // TODO: CHANGE THIS!
+    $agendas = $agenda->getAgendaByMatkul($idMatkul, 'verbose'); // TODO: CHANGE THIS!
 
     $creator = 'Ma Chung Silabus & SAR Management System/TCPDFv6.0';
     $author = 'BUDI';

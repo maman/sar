@@ -1,5 +1,5 @@
 /**
- * main Class for SAR Application
+ * main javascript code for SAR Application
  *
  * this file contains the main javascript files required to construct SAR Application.
  *

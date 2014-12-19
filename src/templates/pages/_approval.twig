@@ -49,21 +49,47 @@
 							<h3 class="list-group-item-heading">{{ result.NamaMatkul }} <small>Versi {{ result.Versi }}</small></h3>
 						</div>
 						<div class="col-md-6">
-							<div class="btn-group btn-group-sm pull-right">
-								<a href="/review/{{ result.KDMataKuliah }}" target="_blank" class="btn btn-primary">Review</a>
-								{% if result.Approval == '0' %}
-								<button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-primary dropdown-toggle">
-									Action
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="{{ currPath }}/{{ result.ID_Approval }}/approve?{{ result.KDMataKuliah }}">Approve</a></li>
-									<li><a href="{{ currPath }}/{{ result.ID_Approval }}/reject?{{ result.KDMataKuliah }}">Reject</a></li>
-								</ul>
-								{% endif %}
+							<div class="btn-toolbar pull-right">
+								<div class="btn-group btn-group-sm">
+									<a href="/review/{{ result.KDMataKuliah }}" target="_blank" class="btn btn-primary">Review</a>
+								</div>
+								<div class="btn-group btn-group-sm">
+									{% if result.Approval == '0' %}
+									<a href="{{ currPath }}/{{ result.ID_Approval }}/approve?id={{ result.KDMataKuliah }}" class="btn btn-success">Approve</a>
+									<a href="#" class="btn btn-danger" data-alert-box
+										data-alert-title="Konfirmasi Reject RPS"
+										data-html-template="
+										<form action='/approval/{{ result.ID_Approval }}/reject' method='POST'>
+											<div class='row' style='margin-bottom: 1em'>
+												<div class='col-lg-12'>
+													<input type='hidden' name='idMatkul' value='{{ result.KDMataKuliah }}'>
+													<label for='review'><span class='sr-only'>Review</span></label>
+													<textarea class='form-control' name='review' id='review' cols='30' rows='10' placeholder='Review'></textarea>
+												</div>
+											</div>
+											<div class='row'>
+												<div class='col-lg-6 col-sm-12 col-lg-offset-3'>
+													<div class='btn-group btn-group-justified'>
+														<a href='#' data-dismiss='modal' class='btn btn-primary'><i class='fa fa-check fa-fw'></i> Cancel</a>
+														<div class='btn-group'><button class='btn btn-danger' type='submit'><i class='fa fa-check fa-fw'></i> Reject</button></div>
+													</div>
+												</div>
+											</div>
+										</form>
+										">Reject</a>
+									{% endif %}
+								</div>
 							</div>
 						</div>
 					</div>
+					{% if result.NotePeriksa %}
+					<hr>
+					<div class="row">
+						<div class="col-md-12">
+							<p>{{ result.NotePeriksa }}</p>
+						</div>
+					</div>
+					{% endif %}
 					<hr>
 					<div class="row">
 						<div class="col-sm-4 list-group-item-text text-center box">
@@ -74,10 +100,24 @@
 							<strong class="text-muted box-component box-title">Periode</strong>
 							<span class="box-component box-content"><i class="fa fa-briefcase fa-fw"></i> Semester {{ result.Semester }}/{{ result.Tahun }}</span>
 						</div>
+						{% if result.NotePeriksa %}
+						<div class="col-sm-4 list-group-item-text text-center box">
+							<strong class="text-muted box-component box-title">Waktu Reject</strong>
+							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglPeriksa }}</span>
+						</div>
+						{% else %}
+							{% if result.Approval == '1' %}
 						<div class="col-sm-4 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Submit</strong>
 							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglMasuk }}</span>
 						</div>
+							{% else %}
+						<div class="col-sm-4 list-group-item-text text-center box">
+							<strong class="text-muted box-component box-title">Waktu Approval</strong>
+							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglDisahkan }}</span>
+						</div>
+							{% endif %}
+						{% endif %}
 					</div>
 				</div>
 				{% endfor %}

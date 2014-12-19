@@ -8,7 +8,7 @@
  * If you did not receive a copy of the LICENSE file, please send a note to
  * 321110001@student.machung.ac.id so I can mail you a copy immidiately.
  *
- * @package helpers
+ * @package components
  * @author Achmad Mahardi <321110001@student.machung.ac.id>
  * @copyright 2014 Achmad Mahardi
  */

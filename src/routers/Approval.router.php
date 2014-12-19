@@ -33,32 +33,39 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
     $matkul = new Matkul();
     $rps = new Rps();
     $results = $approval->getAllApproval();
-    foreach ($results as $num => $result) {
-        $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
-        $results[$num]['Versi'] = $rps->versi;
-        $results[$num]['NamaDosen'] = $user->getUser($results[$num]['NIP'])[0]['NAMA'];
-        $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
-        $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
-        $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
-    }
-    if (isset($_GET['filter'])) {
-        if ($_GET['filter'] == 'pending') {
-            $results = F\select($results, function ($item, $key, $col) {
-                return $item['Approval'] == '0';
-            });
-        } elseif ($_GET['filter'] == 'approved') {
-            $results = F\select($results, function ($item, $key, $col) {
-                return $item['Approval'] == '2';
-            });
-        } elseif ($_GET['filter'] == 'none') {
-            $results = $results;
+    if ($results) {
+        foreach ($results as $num => $result) {
+            $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
+            $results[$num]['Versi'] = $rps->versi;
+            $results[$num]['NamaDosen'] = $user->getUser($results[$num]['NIP'])[0]['NAMA'];
+            $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
+            $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
+            $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
         }
-        $app->render('pages/_approval.twig', array(
-            'filtered' => true,
-            'selected' => $_GET['filter'],
-            'currPath' => $currPath,
-            'results' => $results
-        ));
+        if (isset($_GET['filter'])) {
+            if ($_GET['filter'] == 'pending') {
+                $results = F\select($results, function ($item, $key, $col) {
+                    return $item['Approval'] == '0';
+                });
+            } elseif ($_GET['filter'] == 'approved') {
+                $results = F\select($results, function ($item, $key, $col) {
+                    return $item['Approval'] == '2';
+                });
+            } elseif ($_GET['filter'] == 'none') {
+                $results = $results;
+            }
+            $app->render('pages/_approval.twig', array(
+                'filtered' => true,
+                'selected' => $_GET['filter'],
+                'currPath' => $currPath,
+                'results' => $results
+            ));
+        } else {
+            $app->render('pages/_approval.twig', array(
+                'currPath' => $currPath,
+                'results' => $results
+            ));
+        }
     } else {
         $app->render('pages/_approval.twig', array(
             'currPath' => $currPath,
@@ -67,8 +74,31 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
     }
 });
 
-$app->get('/approval/:idApproval/approve', $authenticate($app), $kaprodi, function () use ($app) {
+$app->get('/approval/:idApproval/approve', $authenticate($app), $kaprodi, function ($idApproval) use ($app) {
+    $rps = new Rps();
+    $approval = new Approval();
+    $result = $rps->approve($_GET['id']);
+    if ($result) {
+        $approval->approveMatkul($idApproval, $_SESSION['nip']);
+        $rps->updateProgress($_SESSION['nip']);
+        $app->redirect('/approval?filter=pending');
+    } else {
+        $app->stop();
+    }
+});
 
+$app->post('/approval/:idApproval/reject', $authenticate($app), $kaprodi, function ($idApproval) use ($app) {
+    $rps = new Rps();
+    $rps->getRpsByIdMatkul($_POST['idMatkul']);
+    $approval = new Approval();
+    $result = $approval->rejectMatkul($idApproval, $_SESSION['nip'], $_POST['review']);
+    if ($result) {
+        $rps->resetAndBump($_POST['idMatkul']);
+        $rps->updateProgress($_SESSION['nip']);
+        $app->redirect('/approval?filter=pending');
+    } else {
+        $app->stop();
+    }
 });
 
 $app->get('/review', $kaprodi, function () use ($app) {

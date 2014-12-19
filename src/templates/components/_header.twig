@@ -20,6 +20,7 @@
 			</a>
 			<ul class="dropdown-menu dropdown-tasks">
 				{% for matkul in matkuls %}
+					{% if matkul.percentage != '100' %}
 				<li>
 					<a href="/matakuliah/{{ matkul.KDMataKuliah }}">
 						<div>
@@ -36,9 +37,10 @@
 					</a>
 				</li>
 				<li class="divider"></li>
+					{% endif %}
 				{% endfor %}
 				<li>
-					<a href="/matakuliah" class="center-block text-center">
+					<a href="/matakuliah?filter=active" class="center-block text-center">
 						<strong>All Matakuliah</strong>
 					</a>
 				</li>

@@ -85,7 +85,7 @@ $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($id
 });
 
 /** POST request on `/matakuliah/:idMatkul/agenda/new` */
-$app->post('/matakuliah/:idMatkul/agenda/new',  $authenticate($app), function ($idMatkul) use ($app) {
+$app->post('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($idMatkul) use ($app) {
     $agenda = new Agenda();
     $rps = new Rps();
     $result = $agenda->saveOrEdit($_POST['idSilabus'], '', $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
