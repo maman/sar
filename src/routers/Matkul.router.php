@@ -20,20 +20,20 @@ use SAR\models\Matkul;
 use SAR\models\Rps;
 use Functional as F;
 
-$app->get('/matakuliah', $authenticate($app), function() use ($app) {
+$app->get('/matakuliah', $authenticate($app), function () use ($app) {
     $currPath = $app->request()->getPath();
     $rps = new Rps();
     if (isset($_GET['filter'])) {
         if ($_GET['filter'] == 'active') {
-            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+            $results = F\select($_SESSION['matkul'], function ($item, $key, $col) {
                 return $item['approved'] == 'never';
             });
         } elseif ($_GET['filter'] == 'wait') {
-            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+            $results = F\select($_SESSION['matkul'], function ($item, $key, $col) {
                 return $item['approved'] == 'wait';
             });
         } elseif ($_GET['filter'] == 'approved') {
-            $results = F\select($_SESSION['matkul'], function($item, $key, $col) {
+            $results = F\select($_SESSION['matkul'], function ($item, $key, $col) {
                 return $item['approved'] == 'approved';
             });
         } elseif ($_GET['filter'] == 'none') {

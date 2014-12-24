@@ -25,15 +25,19 @@
  * Slim accessmatkul Middleware
  */
 
+use Functional as F;
+
 $accessmatkul = function ($route) use ($app) {
     $req = $app->request();
     $idMatkul = $route->getParams();
-    if (!array_search($idMatkul['idMatkul'], $_SESSION['matkul'])) {
-        if ($_SESSION['role'] != 'kaprodi') {
-            $app->log->error(
-                "403: " . $req->getUrl() . $req->getPath()." - SessionDump: [" . var_export($_SESSION, true) . "]"
-            );
-            $app->redirect('/', 403);
+    foreach ($_SESSION['matkul'] as $matkul) {
+        if (!F\contains($matkul, $idMatkul['idMatkul'])) {
+            if ($_SESSION['role'] != 'kaprodi') {
+                $app->log->error(
+                    "403: " . $req->getUrl() . $req->getPath()." - SessionDump: [" . var_export($_SESSION, true) . "]"
+                );
+                $app->redirect('/', 403);
+            }
         }
     }
 };

@@ -432,6 +432,8 @@ class Rps
     public function submitRPS($idMatkul, $nip)
     {
         $approval = new Approval();
+        $this->getRpsByIdMatkul($idMatkul);
+        $versi = $this->versi;
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -444,7 +446,7 @@ class Rps
             $query->bindParam(':idMatkul', $idMatkul);
             $query->execute();
             $this->approval = '1';
-            $approval->createApprovalForMatkul($idMatkul, $nip);
+            $approval->createApprovalForMatkul($idMatkul, $nip, $versi);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -519,26 +521,15 @@ class Rps
     {
         $user = new Matkul();
         $matkul = $user->getMatkulByNIP($username);
-        if (count($matkul) > 1) {
-            foreach ($matkul as $key => $matkul_loop) {
-                if (!$this->getRpsProgress($matkul_loop['KDMataKuliah'])) {
-                    $this->createRpsForMatkul($matkul_loop['KDMataKuliah']);
-                }
-                $matkul[$key]['versi'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['versi'];
-                $matkul[$key]['percentage'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['percentage'];
-                $matkul[$key]['approved'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['approved'];
-                $matkul[$key]['RPSDetails'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['RPSDetails'];
+        foreach ($matkul as $key => $matkul_loop) {
+            if (!$this->getRpsProgress($matkul_loop['KDMataKuliah'])) {
+                $this->createRpsForMatkul($matkul_loop['KDMataKuliah']);
             }
-            $_SESSION['matkul'] = $matkul;
-        } elseif (count($matkul) == 1) {
-            if (!$this->getRpsProgress($matkul[0]['KDMataKuliah'])) {
-                $this->createRpsForMatkul($matkul[0]['KDMataKuliah']);
-            }
-            $matkul[0]['versi'] = $this->getRpsProgress($matkul[0]['KDMataKuliah'])['versi'];
-            $matkul[0]['percentage'] = $this->getRpsProgress($matkul[0]['KDMataKuliah'])['percentage'];
-            $matkul[0]['approved'] = $this->getRpsProgress($matkul[0]['KDMataKuliah'])['approved'];
-            $matkul[0]['RPSDetails'] = $this->getRpsProgress($matkul[0]['KDMataKuliah'])['RPSDetails'];
-            $_SESSION['matkul'] = $matkul[0];
+            $matkul[$key]['versi'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['versi'];
+            $matkul[$key]['percentage'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['percentage'];
+            $matkul[$key]['approved'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['approved'];
+            $matkul[$key]['RPSDetails'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['RPSDetails'];
         }
+        $_SESSION['matkul'] = $matkul;
     }
 }

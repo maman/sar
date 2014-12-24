@@ -110,4 +110,22 @@ class User
         }
         return true;
     }
+
+    public function getUserFromMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                PEGAWAI.NAMA
+            FROM
+                PEGAWAI INNER JOIN PLOTTING
+            ON
+                PEGAWAI.NIP = PLOTTING.NIP
+            WHERE
+                PLOTTING."KDMataKuliah" = :idMatkul'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return $results;
+    }
 }

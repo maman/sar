@@ -13,7 +13,7 @@
 	</div>
 	<ul class="nav navbar-top-links navbar-right">
 		{% if username is not empty %}
-			{% if matkuls is not empty and matkuls['0']|length > 1 %}
+			{% if matkuls is not empty and matkuls|length > 1 %}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-briefcase fa-fw"></i> Lessons <i class="fa fa-caret-down"></i>
@@ -50,11 +50,11 @@
 			{% elseif matkuls is not empty %}
 		<li>
 			<div class="progress-navbar">
-				<a href="/matakuliah/{{ matkuls.KDMataKuliah }}">
-					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls.NamaMK }}</strong></span>
+				<a href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}">
+					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls['0'].NamaMK }}</strong></span>
 					<div class="progress" style="width: 120px">
-						<div class="progress-bar {% if matkul.percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkuls.percentage == '0' %}100{% else %}{{ matkuls.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width:{% if matkuls.percentage == '0' %}100%{% else %}{{ [matkuls.percentage, '%']|join }}{% endif %}">
-							{{ matkuls.percentage }}%
+						<div class="progress-bar {% if matkuls['0'].percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkuls['0'].percentage == '0' %}100{% else %}{{ matkuls['0'].percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width:{% if matkuls['0'].percentage == '0' %}100%{% else %}{{ [matkuls['0'].percentage, '%']|join }}{% endif %}">
+							{{ matkuls['0'].percentage }}%
 						</div>
 					</div>
 				</a>

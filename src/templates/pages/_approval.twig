@@ -103,18 +103,18 @@
 						{% if result.NotePeriksa %}
 						<div class="col-sm-4 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Reject</strong>
-							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglPeriksa }}</span>
+							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglPeriksa }}</span></span>
 						</div>
 						{% else %}
 							{% if result.Approval == '1' %}
 						<div class="col-sm-4 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Submit</strong>
-							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglMasuk }}</span>
+							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglMasuk }}</span></span>
 						</div>
 							{% else %}
 						<div class="col-sm-4 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Approval</strong>
-							<span class="box-component box-content" data-moment-render><i class="fa fa-clock-o fa-fw"></i> {{ result.TglDisahkan }}</span>
+							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglDisahkan }}</span></span>
 						</div>
 							{% endif %}
 						{% endif %}

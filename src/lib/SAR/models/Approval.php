@@ -38,6 +38,7 @@ class Approval
     private $notePeriksa;
     private $noteSahkan;
     private $kodeApproval;
+    private $versi;
     private $core;
 
     public function __construct()
@@ -45,12 +46,27 @@ class Approval
         $this->core = Slim::getInstance();
     }
 
+    public function __get($prop)
+    {
+        if (property_exists($this, $prop)) {
+            return $this->$prop;
+        }
+    }
+
+    public function __set($prop, $val)
+    {
+        if (property_exists($this, $prop)) {
+            $this->$prop = $val;
+        }
+        return $this;
+    }
+
     private function getTodayDate()
     {
         return date('Y-m-d H:i:s');
     }
 
-    private function getApprovalByIdMatkul($idMatkul)
+    public function getApprovalByIdMatkul($idMatkul)
     {
         $query = $this->core->db->prepare(
             'SELECT
@@ -58,7 +74,18 @@ class Approval
             FROM
             (
                 SELECT
-                    *
+                    "ID_Approval",
+                    "KDMataKuliah",
+                    "NIP",
+                    TO_CHAR("TglMasuk", \'YYYY-MM-DD HH24:MI:SS\') as "TglMasuk",
+                    TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
+                    TO_CHAR("TglDisahkan", \'YYYY-MM-DD HH24:MI:SS\') as "TglDisahkan",
+                    "NIP_Periksa",
+                    "NIP_Pengesahan",
+                    "NotePeriksa",
+                    "NotePengesahan",
+                    "Approval",
+                    "Versi"
                 FROM
                     Approval
                 WHERE
@@ -74,16 +101,17 @@ class Approval
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
             foreach ($results as $result) {
-                $this->$idMatkul = $result['KDMataKuliah'];
-                $this->$nip = $result['NIP'];
-                $this->$tglMasuk = $result['TglMasuk'];
-                $this->$tglPeriksa = $result['TglPeriksa'];
-                $this->$tglDisahkan = $result['TglDisahkan'];
-                $this->$nipPeriksa = $result['NIP_Periksa'];
-                $this->$nipSahkan = $result['NIP_Pengesahan'];
-                $this->$notePeriksa = $result['NotePeriksa'];
-                $this->$noteSahkan = $result['NotePengesahan'];
-                $this->$kodeApproval = $result['Approval'];
+                $this->idMatkul = $result['KDMataKuliah'];
+                $this->nip = $result['NIP'];
+                $this->tglMasuk = $result['TglMasuk'];
+                $this->tglPeriksa = $result['TglPeriksa'];
+                $this->tglDisahkan = $result['TglDisahkan'];
+                $this->nipPeriksa = $result['NIP_Periksa'];
+                $this->nipSahkan = $result['NIP_Pengesahan'];
+                $this->notePeriksa = $result['NotePeriksa'];
+                $this->noteSahkan = $result['NotePengesahan'];
+                $this->kodeApproval = $result['Approval'];
+                $this->versi = $result['Versi'];
             }
             return $results;
         } else {
@@ -105,7 +133,8 @@ class Approval
                 "NIP_Pengesahan",
                 "NotePeriksa",
                 "NotePengesahan",
-                "Approval"
+                "Approval",
+                "Versi"
             FROM
                 Approval'
         );
@@ -124,7 +153,7 @@ class Approval
      * @param  string $nip
      * @return boolean
      */
-    public function createApprovalForMatkul($idMatkul, $nip)
+    public function createApprovalForMatkul($idMatkul, $nip, $versi)
     {
         $tglMasuk = $this->getTodayDate();
         try {
@@ -134,18 +163,21 @@ class Approval
                 (
                     "KDMataKuliah",
                     "NIP",
-                    "TglMasuk"
+                    "TglMasuk",
+                    "Versi"
                 )
                 VALUES
                 (
                     :idMatkul,
                     :nip,
-                    to_date(:tglMasuk, \'YYYY-MM-DD HH24:MI:SS\')
+                    to_date(:tglMasuk, \'YYYY-MM-DD HH24:MI:SS\'),
+                    :versi
                 )'
             );
             $insert->bindParam(':idMatkul', $idMatkul);
             $insert->bindParam(':nip', $nip);
             $insert->bindParam(':tglMasuk', $tglMasuk);
+            $insert->bindParam(':versi', $versi);
             $insert->execute();
             return true;
         } catch (PDOException $e) {

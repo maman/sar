@@ -148,17 +148,21 @@ class Task
                 unset($results[$key]['UNIQUE_INDIKATOR']);
                 unset($results[$key]['INDIKATOR']);
                 unset($results[$key]['ASESMEN']);
-                foreach ($results[$key]['AKTIVITAS'] as $keyAct => $valueAct) {
-                    if ($results[$key]['AKTIVITAS'][$keyAct]['TASK'] == '0' && $results[$key]['AKTIVITAS'][$keyAct]['PROJECT'] == '0') {
-                        unset($results[$key]['AKTIVITAS'][$keyAct]);
-                    } else {
-                        $results[$key]['AKTIVITAS'][$keyAct]['SCOPE'] = $this->getScopeByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
-                        $results[$key]['AKTIVITAS'][$keyAct]['METODE'] = $this->getMetodeByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
-                        $results[$key]['AKTIVITAS'][$keyAct]['KRITERIA'] = $this->getKriteriaByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
+                if ($results[$key]['AKTIVITAS']) {
+                    foreach ($results[$key]['AKTIVITAS'] as $keyAct => $valueAct) {
+                        if ($results[$key]['AKTIVITAS'][$keyAct]['TASK'] == '0' && $results[$key]['AKTIVITAS'][$keyAct]['PROJECT'] == '0') {
+                            unset($results[$key]['AKTIVITAS'][$keyAct]);
+                        } else {
+                            $results[$key]['AKTIVITAS'][$keyAct]['SCOPE'] = $this->getScopeByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
+                            $results[$key]['AKTIVITAS'][$keyAct]['METODE'] = $this->getMetodeByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
+                            $results[$key]['AKTIVITAS'][$keyAct]['KRITERIA'] = $this->getKriteriaByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
+                        }
                     }
+                    return $results;
+                } else {
+                    return false;
                 }
             }
-            return $results;
         } else {
             return false;
         }

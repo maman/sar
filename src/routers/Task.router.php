@@ -32,6 +32,9 @@ $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, func
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];
     $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
+    if (!is_array($tasks)) {
+        $tasks = false;
+    }
     if (is_null($rps->projectLastEdit)) {
         $lastEditDate = $rps->agendaLastEdit;
     } else {
