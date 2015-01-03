@@ -66,6 +66,11 @@ class Approval
         return date('Y-m-d H:i:s');
     }
 
+    /**
+     * Get Approval associated with provided Matakuliah ID
+     * @param  string $idMatkul
+     * @return mixed
+     */
     public function getApprovalByIdMatkul($idMatkul)
     {
         $query = $this->core->db->prepare(
@@ -119,6 +124,10 @@ class Approval
         }
     }
 
+    /**
+     * Get All content of Approval table
+     * @return mixed
+     */
     public function getAllApproval()
     {
         $query = $this->core->db->prepare(
@@ -138,6 +147,44 @@ class Approval
             FROM
                 Approval'
         );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Approval History associated with provided Matakuliah ID
+     * @param  string $idMatkul
+     * @return mixed
+     */
+    public function getAllApprovalByMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                "ID_Approval",
+                "KDMataKuliah",
+                "NIP",
+                TO_CHAR("TglMasuk", \'YYYY-MM-DD HH24:MI:SS\') as "TglMasuk",
+                TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
+                TO_CHAR("TglDisahkan", \'YYYY-MM-DD HH24:MI:SS\') as "TglDisahkan",
+                "NIP_Periksa",
+                "NIP_Pengesahan",
+                "NotePeriksa",
+                "NotePengesahan",
+                "Approval",
+                "Versi"
+            FROM
+                Approval
+            WHERE
+                "KDMataKuliah" = :idMatkul
+            ORDER BY
+                "ID_Approval" ASC'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -259,6 +306,70 @@ class Approval
             $rps->approve($this->idMatkul);
             return true;
         } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get Rejection Detail
+     * @param  string $idMatkul
+     * @param  string $versi
+     * @return mixed
+     */
+    public function getRejectDetail($idMatkul, $versi)
+    {
+        $versi = $versi - 1;
+        $query = $this->core->db->prepare('
+            SELECT
+                TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
+                "NIP_Periksa",
+                "NotePeriksa"
+            FROM
+                Approval
+            WHERE
+                "KDMataKuliah" = :idMatkul
+            AND
+                "Versi" = :versi
+        ');
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':versi', $versi);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Approval Detail
+     * @param  string $idMatkul
+     * @return mixed
+     */
+    public function getApprovalDetail($idMatkul)
+    {
+        $result = $this->getApprovalByIdMatkul($idMatkul);
+        if ($result) {
+            $query = $this->core->db->prepare('
+                SELECT
+                    TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
+                    "NIP_Periksa",
+                    "NotePeriksa"
+                FROM
+                    Approval
+                WHERE
+                    "KDMataKuliah" = :idMatkul
+            ');
+            $query->bindParam(':idMatkul', $result['KDMataKuliah']);
+            $query->execute();
+            $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+            if (count($results) > 0) {
+                return $results;
+            } else {
+                return false;
+            }
+        } else {
             return false;
         }
     }

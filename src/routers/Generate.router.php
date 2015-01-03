@@ -47,6 +47,7 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $groupKategori = $kategori->groupKategoriIndikator();
     $countKategori = count($allKategori);
     $matkuls = $matkul->getMatkulDetails($idMatkul);
+    $revs = $approval->getAllApprovalByMatkul($idMatkul);
     $agendas = $agenda->getAgendaByMatkul($idMatkul, 'verbose');
     $approvals = $approval->getApprovalByIdMatkul($idMatkul);
     $dosen = $user->getUserFromMatkul($idMatkul);
@@ -88,6 +89,9 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->SetFont('helvetica', '', 10, '', false);
     $pdf->writeHTMLCell(0, 25, '', '', '<h2>Maklumat Release Dokumen</h2>', 0, 1, 0, true, '', true);
     $pdf->Cell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, false, 'C', 0, '', 1, false, 'M', 'M');
+    $revtable =
+    '<table border="1" width="100%">
+        <thead></thead>';
     $pdf->setY(180);
     $pdf->MultiCell(0, 0, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Jurusan Sistem Informasi Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis.', 0, 'L', 0, 1, '', '', true, null, false);
     $pdf->setY(200);
@@ -98,11 +102,6 @@ Malang', 0, 'L', 0, 1, '', '', true, null, false);
     $pdf->setY(225);
     $pdf->MultiCell(0, 0, 'Copyright © 2010 Jurusan Sistem Informasi Universitas Ma Chung
 Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Chung yang tidak dipublikasikan dan bersifat rahasia.', 0, 'L', 0, 1, '', '', true, null, false);
-    // $pdf->MultiCell(0, 15, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Jurusan Sistem Informasi Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis', 0, false, 'L', false, '', 0, false);
-    // $pdf->MultiCell(80, 5, $txt."\n", 1, 'J', 1, 1, '', '', true);
-    // $pdf->Cell(0, 0, 'Ketua Jurusan Sistem Informasi', false, 1, 'L', false, '', 0, false, 'M', 'M');
-    // $pdf->MultiCell(0, 0, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Jurusan Sistem Informasi Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis', 0, 'L', 0, 0, '', '', true, null, false);
-    // $pdf->Cell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, false, 'C', 0, '', 0, false, 'M', 'M');
 
     // Silabus
     $pdf->setPrintHeader(false);

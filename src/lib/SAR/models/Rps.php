@@ -21,6 +21,7 @@ namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Matkul;
+use SAR\models\Approval;
 
 /**
  * Rps Class
@@ -149,6 +150,9 @@ class Rps
             'percentage' => 0,
             'approved' => 'never',
             'versi' => 0,
+            'tglPeriksa' => '',
+            'nipPeriksa' => '',
+            'notePeriksa' => '',
             'RPSDetails' => array(
                 'silabus' => 'never',
                 'agenda' => 'never',
@@ -157,7 +161,13 @@ class Rps
         );
         $percentage = 0;
         if ($this->getRpsByIdMatkul($idMatkul)) {
-            $progress['versi'] = $this->versi;
+            $approval = new Approval;
+            $versi = $this->versi;
+            $rejectDetail = $approval->getRejectDetail($idMatkul, $versi);
+            $progress['versi'] = $versi;
+            $progress['tglPeriksa'] = $rejectDetail[0]['TglPeriksa'];
+            $progress['nipPeriksa'] = $rejectDetail[0]['NIP_Periksa'];
+            $progress['notePeriksa'] = $rejectDetail[0]['NotePeriksa'];
             if (!($this->silabus) == '0') {
                 switch($this->silabus) {
                     case '1':
@@ -525,6 +535,9 @@ class Rps
             if (!$this->getRpsProgress($matkul_loop['KDMataKuliah'])) {
                 $this->createRpsForMatkul($matkul_loop['KDMataKuliah']);
             }
+            $matkul[$key]['tglPeriksa'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['tglPeriksa'];
+            $matkul[$key]['nipPeriksa'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['nipPeriksa'];
+            $matkul[$key]['notePeriksa'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['notePeriksa'];
             $matkul[$key]['versi'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['versi'];
             $matkul[$key]['percentage'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['percentage'];
             $matkul[$key]['approved'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['approved'];

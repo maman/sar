@@ -51,19 +51,16 @@
 						<div class="col-md-9 col-sm-9">
 							<div class="list-group list-noborder">
 								<div class="list-group-item">
-									<small class="text-muted"><strong>Dibuat</strong></small>
+									<small class="text-muted"><strong>Tanggal Diperiksa</strong></small>
 									<br>
-									Abu/2 menit yang lalu
+									<span data-moment-render>{{ progress.tglPeriksa }}</span>
 								</div>
 								<div class="list-group-item">
-									<small class="text-muted"><strong>Diperiksa</strong></small>
+									<small class="text-muted"><strong>Revisi</strong></small>
 									<br>
-									<span class="text-warning">Menunggu</span>
-								</div>
-								<div class="list-group-item">
-									<small class="text-muted"><strong>Disahkan</strong></small>
-									<br>
-									<span class="text-danger">Belum Disahkan</span>
+									<span>
+										{% if progress.versi > 1 %}{{ progress.notePeriksa }}{% else %}-{% endif %}
+									</span>
 								</div>
 							</div>
 						</div>
@@ -100,14 +97,6 @@
 							{% if progress.RPSDetails.project == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Jadwal Aktivitas <span class="pull-right label label-success">finished</span>{% endif %}
 						</a>
 					</div>
-					{# <div class="row">
-						<div class="col-lg-6 col-lg-offset-3">
-							<div class="btn-group btn-group-justified btn-group-lg">
-								<a href="#" class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
-								<a href="{{ currPath }}/submit" class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
-							</div>
-						</div>
-					</div> #}
 				</div>
 				<!-- /.panel-body -->
 			</div>
@@ -138,6 +127,18 @@
 					{% if matkul.approved == 'wait' %}<a href="{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}" disabled class="btn btn-sm btn-primary pull-right">Menunggu Approval &hellip;</a>{% else %}<a href="{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}" class="btn btn-sm btn-primary pull-right">Rincian</a>{% endif %}
 				</div>
 				<div class="panel-body">
+					{% if matkul.versi > '1' %}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-info">
+								<div class="panel-heading">Revisi</div>
+								<div class="panel-body">
+									<p>{{ matkul.notePeriksa }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
 					<div class="list-group">
 						<div class="list-group-item{% if matkul.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 							{% if matkul.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
@@ -168,7 +169,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
-								<a href="/generate/{{ matkul.KDMataKuliah }}" {% if matkul.approved != 'approved' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
+								<a href="/generate/{{ matkul.KDMataKuliah }}/pdf" {% if matkul.approved != 'approved' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
 								<a href="{{ currPath }}/{{ matkul.KDMataKuliah }}/submit" {% if matkul.approved != 'never' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
