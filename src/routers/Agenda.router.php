@@ -58,6 +58,7 @@ $app->get('/matakuliah/:idMatkul/agenda/bump', $authenticate($app), function ($i
     $rps = new Rps();
     $rps->getRpsByIdMatkul($idMatkul);
     $rps->bumpProgress($idMatkul, 'agenda');
+    $rps->updateProgress($_SESSION['nip']);
     $app->redirect('/matakuliah/'. $idMatkul);
 });
 
@@ -120,7 +121,7 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
 });
 
 /** POST request on `/matakuliah/:idMatkul/agenda/edit?id=:idAgenda` */
-$app->post('/matakuliah/:idMatkul/agenda/edit',  $authenticate($app), function ($idMatkul) use ($app) {
+$app->post('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($idMatkul) use ($app) {
     $agenda = new Agenda();
     $rps = new Rps();
     $result = $agenda->saveOrEdit($_POST['idSilabus'], $_POST['idAgenda'], $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
@@ -217,10 +218,10 @@ $app->get('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), functio
 $app->post('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), function ($idMatkul) use ($app) {
     $task = '0';
     $project = '0';
-    if(isset($_POST['chkTask'])) {
+    if (isset($_POST['chkTask'])) {
         $task = '1';
     }
-    if(isset($_POST['chkProject'])) {
+    if (isset($_POST['chkProject'])) {
         $project = '1';
     }
     $rps = new Rps();
@@ -273,7 +274,7 @@ $app->get('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function 
 $app->post('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function ($idMatkul) use ($app) {
     var_dump($_POST);
     $jenis = '0';
-    if(isset($_POST['jenisAsesmen'])) {
+    if (isset($_POST['jenisAsesmen'])) {
         $jenis = '1';
     }
     $rps = new Rps();
