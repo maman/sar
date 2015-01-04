@@ -34,13 +34,13 @@
 					{% endfor %}
 				{% endif %}
 			</div>
-			<form action="#" method="POST">
+			<form action="#" method="POST" data-toggle="validator">
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
 							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
-							<textarea data-input-autosave class="form-control input-lg" name="textIndikator" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select name="indikator" class="form-control input-plain" data-form-multitag data-placeholder="Kategori">
+							<textarea class="form-control input-lg" name="textIndikator" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable" required></textarea>
+							<select name="indikator" class="form-control input-plain" data-form-multitag data-placeholder="Kategori" required>
 							{% for item in allKategori %}
 								<option value="{{ item.ID_KETERANGAN }}" data-tag-text="{{ item.NAMA }}">{{ item.ID_KETERANGAN }}</option>
 							{% endfor %}

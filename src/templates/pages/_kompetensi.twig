@@ -39,13 +39,13 @@
 					{% endfor %}
 				{% endif %}
 			</div>
-			<form action="#" method="POST">
+			<form action="#" method="POST" data-toggle="validator">
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
 							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
-							<textarea data-input-autosave class="form-control input-lg" name="text" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
-							<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" data-input-autosave data-form-multitag data-placeholder="Kategori">
+							<textarea class="form-control input-lg" name="text" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable" data-error="Kompetensi tidak boleh kosong" required></textarea>
+							<select multiple name="kategori[]" data-id="[kategori][]" class="form-control input-plain" data-form-multitag data-placeholder="Kategori" required>
 							{% for item in kategori %}
 								<option value="{{ item.ID_KATEGORI_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KATEGORI_KOMPETENSI }}">{{ item.ID_KATEGORI_KOMPETENSI }}</option>
 							{% endfor %}

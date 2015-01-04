@@ -33,12 +33,12 @@
 					{% endfor %}
 				{% endif %}
 			</div>
-			<form action="#" method="POST">
+			<form action="#" method="POST" data-toggle="validator">
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
 							<input type="hidden" name="idAktivitas" value="{{ idAktivitas }}">
-							<textarea class="form-control input-lg" name="text" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable"></textarea>
+							<textarea class="form-control input-lg" name="text" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable" required></textarea>
 						</div>
 					</div>
 					<div class="form-group">

@@ -38,13 +38,13 @@
 					{% endfor %}
 				{% endif %}
 			</div>
-			<form action="#" method="POST">
+			<form action="#" method="POST" data-toggle="validator">
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
 							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
 							<div class="col-md-10">
-								<textarea class="form-control input-lg" name="textAsesmen" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable"></textarea>
+								<textarea class="form-control input-lg" name="textAsesmen" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable" required></textarea>
 							</div>
 							<div class="col-md-2">
 								<input type="checkbox" name="jenisAsesmen" data-toggle="toggle" data-on="Tes" data-off="Non Tes" data-size="large" data-onstyle="success" data-offstyle="primary">
