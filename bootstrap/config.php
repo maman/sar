@@ -30,7 +30,7 @@ return array(
 
     /** Application Settings */
     'app.base.url'         => 'pkl-kampus.vm',
-    'app.environment'      => 'production',
+    'app.environment'      => 'development',
     'app.log'              => $basedir . 'logs/app-' . date('Y-m-d') . '.log',
     'app.cookie.lifetime'  => '20 minutes',
     'app.cookie.path'      => '/',

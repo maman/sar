@@ -75,10 +75,13 @@ $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($id
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $silabus = new Silabus($idMatkul);
+    $kategori = new Kategori();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $app->render('pages/_agenda-new.twig', array(
+        'isEdit' => false,
         'idSilabus' => $silabus->silabusID,
+        'kompetensi' => $kategori->getAllKompetensiByMatkul($idMatkul),
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'currPath' => $currPath
@@ -89,7 +92,7 @@ $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($id
 $app->post('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($idMatkul) use ($app) {
     $agenda = new Agenda();
     $rps = new Rps();
-    $result = $agenda->saveOrEdit($_POST['idSilabus'], '', $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
+    $result = $agenda->saveOrEdit($_POST['idSilabus'], '', $_POST['rangePertemuan'], $_POST['bobot'], $_POST['kompetensi'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
     if ($result) {
         $rps->editAgenda($idMatkul);
         $app->redirect('/matakuliah/'. $idMatkul .'/agenda');
@@ -103,17 +106,20 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $agenda = new Agenda();
+    $kategori = new Kategori();
     $idAgenda = $_GET['id'];
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $detailAgenda = $agenda->getDetailAgenda($idAgenda);
     $app->render('pages/_agenda-new.twig', array(
+        'isEdit' => true,
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'idAgenda' => $idAgenda,
         'idSilabus' => $detailAgenda[0]['ID_SILABUS'],
         'rangePertemuan' => $detailAgenda[0]['RANGE_PERTEMUAN'],
         'bobot' => $detailAgenda[0]['BOBOT'],
+        'kompetensi' => $kategori->getAssociatedKompetensiVerbose($idMatkul, $idAgenda),
         'txtSubKompetensi' => $detailAgenda[0]['TEXT_SUB_KOMPETENSI'],
         'txtMateriBelajar' => $detailAgenda[0]['TEXT_MATERI_BELAJAR'],
         'currPath' => $currPath
@@ -124,7 +130,7 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
 $app->post('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($idMatkul) use ($app) {
     $agenda = new Agenda();
     $rps = new Rps();
-    $result = $agenda->saveOrEdit($_POST['idSilabus'], $_POST['idAgenda'], $_POST['rangePertemuan'], $_POST['bobot'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
+    $result = $agenda->saveOrEdit($_POST['idSilabus'], $_POST['idAgenda'], $_POST['rangePertemuan'], $_POST['bobot'], $_POST['kompetensi'], $_POST['textSubKompetensi'], $_POST['textMateriBelajar']);
     if ($result) {
         $rps->editAgenda($idMatkul);
         $app->redirect('/matakuliah/'. $idMatkul .'/agenda');
@@ -204,7 +210,6 @@ $app->get('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), functio
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $aktivitas = $agenda->getAktivitasByAgendaID($idAgenda);
-    // $allKategori = $kategori->getAllKategoriIndikator();
     $app->render('pages/_aktivitas.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
@@ -226,7 +231,6 @@ $app->post('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), functi
     }
     $rps = new Rps();
     $agenda = new Agenda();
-    // echo('$result = $agenda->saveAktivitas(' . $_POST['idAgenda'] . ', ' . $_POST['textAktivitas'] . ', ' . $project . ', ' . $task . ')');
     $result = $agenda->saveAktivitas($_POST['idAgenda'], $_POST['textAktivitas'], $project, $task);
     if ($result) {
         $rps->editAgenda($idMatkul);
@@ -260,7 +264,6 @@ $app->get('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function 
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $asesmen = $agenda->getAsesmenByAgendaID($idAgenda);
-    // $allKategori = $kategori->getAllKategoriIndikator();
     $app->render('pages/_asesmen.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
@@ -272,14 +275,12 @@ $app->get('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function 
 
 /** POST request on `/matakuliah/:idMatkul/agenda/aktivitas?id=:idAgenda` */
 $app->post('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function ($idMatkul) use ($app) {
-    var_dump($_POST);
     $jenis = '0';
     if (isset($_POST['jenisAsesmen'])) {
         $jenis = '1';
     }
     $rps = new Rps();
     $agenda = new Agenda();
-    // echo('$result = $agenda->saveAsesmen(' . $_POST['idAgenda'] . ', ' . $_POST['textAsesmen'] . ', ' . $jenis . ')');
     $result = $agenda->saveAsesmen($_POST['idAgenda'], $_POST['textAsesmen'], $jenis);
     if ($result) {
         $rps->editAgenda($idMatkul);

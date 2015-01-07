@@ -127,7 +127,7 @@
 					{% if matkul.approved == 'wait' %}<a href="{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}" disabled class="btn btn-sm btn-primary pull-right">Menunggu Approval &hellip;</a>{% else %}<a href="{{ baseurl }}/matakuliah/{{ matkul.KDMataKuliah }}" class="btn btn-sm btn-primary pull-right">Rincian</a>{% endif %}
 				</div>
 				<div class="panel-body">
-					{% if matkul.versi > '1' %}
+					{% if matkul.versi > '1' and matkul.approved != 'approved'%}
 					<div class="row">
 						<div class="col-md-12">
 							<div class="panel panel-info">

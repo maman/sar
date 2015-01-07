@@ -79,6 +79,21 @@ class User
     }
 
     /**
+     * Get Name from NIP
+     * @param  string $nip
+     * @return string
+     */
+    public function getUserName($nip)
+    {
+        $results = $this->getUser($nip);
+        if ($results) {
+            return $results[0]['NAMA'];
+        } else {
+            return 'Not Defined';
+        }
+    }
+
+    /**
      * Get User Details
      *
      * Get all user details, including mata kuliah and user detail

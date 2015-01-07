@@ -125,8 +125,10 @@ class Agenda
             foreach ($results as $value => $agenda) {
                 if (is_null($mode)) {
                     $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaId($results[$value]['ID_SUB_KOMPETENSI']);
+                    $results[$value]['ASSOC_KOMPETENSI'] = $kategori->getAssociatedKompetensi($results[$value]['ID_SUB_KOMPETENSI']);
                 } else {
                     $results[$value]['UNIQUE_INDIKATOR'] = $kategori->getAgendaKategoriByAgendaIdVerbose($results[$value]['ID_SUB_KOMPETENSI']);
+                    $results[$value]['ASSOC_KOMPETENSI'] = $kategori->getAssociatedKompetensi($results[$value]['ID_SUB_KOMPETENSI']);
                     $results[$value]['MODE'] = $mode;
                 }
                 $results[$value]['INDIKATOR'] = $this->getIndikatorByAgendaID($results[$value]['ID_SUB_KOMPETENSI']);
@@ -164,17 +166,59 @@ class Agenda
         }
     }
 
+    public function saveKompetensi($idAgenda, $idKompetensi)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'INSERT INTO
+                    KOMPETENSI_AGENDA
+                (
+                    ID_KOMPETENSI,
+                    ID_SUB_KOMPETENSI
+                )
+                VALUES
+                (
+                    :idKompetensi,
+                    :idAgenda
+                )'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->bindParam(':idKompetensi', $idKompetensi);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteKompetensi($idAgenda)
+    {
+        try {
+            $query = $this->core->db->prepare(
+                'DELETE FROM
+                    KOMPETENSI_AGENDA
+                WHERE
+                    ID_SUB_KOMPETENSI = :idAgenda'
+            );
+            $query->bindParam(':idAgenda', $idAgenda);
+            $query->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Save or Edit Agenda entries.
      * @param  string $idSilabus
      * @param  string $idAgenda
      * @param  string $rangePertemuan
      * @param  string $bobot
+     * @param  array  $kompetensi
      * @param  string $txtSubKompetensi
      * @param  string $txtMateriBelajar
      * @return boolean
      */
-    public function saveOrEdit($idSilabus, $idAgenda, $rangePertemuan, $bobot, $txtSubKompetensi, $txtMateriBelajar)
+    public function saveOrEdit($idSilabus, $idAgenda, $rangePertemuan, $bobot, $kompetensi, $txtSubKompetensi, $txtMateriBelajar)
     {
         if ($idAgenda == '') {
             try {
@@ -195,14 +239,22 @@ class Agenda
                         :txtMateriBelajar,
                         :rangePertemuan,
                         :bobot
-                    )'
+                    )
+                    RETURNING
+                        ID_SUB_KOMPETENSI
+                    INTO
+                        :idAgenda'
                 );
                 $query->bindParam(':idSilabus', $idSilabus);
+                $query->bindParam(':idAgenda', $idAgenda, \PDO::PARAM_STR, 8);
                 $query->bindParam(':txtSubKompetensi', $txtSubKompetensi);
                 $query->bindParam(':txtMateriBelajar', $txtMateriBelajar);
                 $query->bindParam(':rangePertemuan', $rangePertemuan);
                 $query->bindParam(':bobot', $bobot);
                 $query->execute();
+                foreach ($kompetensi as $item) {
+                    $this->saveKompetensi($idAgenda, $item);
+                }
                 return true;
             } catch (PDOExcetion $e) {
                 return false;
@@ -226,6 +278,10 @@ class Agenda
                 $query->bindParam(':rangePertemuan', $rangePertemuan);
                 $query->bindParam(':bobot', $bobot);
                 $query->execute();
+                $this->deleteKompetensi($idAgenda);
+                foreach ($kompetensi as $item) {
+                    $this->saveKompetensi($idAgenda, $item);
+                }
                 return true;
             } catch (PDOException $e) {
                 return false;
@@ -252,6 +308,7 @@ class Agenda
             );
             $query->bindParam(':idAgenda', $idAgenda);
             $query->execute();
+            $this->deleteKompetensi($idAgenda);
         } catch (PDOException $e) {
             return false;
         }

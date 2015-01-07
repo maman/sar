@@ -141,6 +141,7 @@ module.exports = (grunt) ->
             'windows.jquery': 'jquery'
             'windows.jQuery': 'jquery'
           )
+          new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /id/)
         ]
       stats: false
       dist:

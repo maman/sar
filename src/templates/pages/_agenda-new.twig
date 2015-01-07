@@ -31,6 +31,16 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="kompetensi"><h3>Referensi Kompetensi</h3></label>
+					<div class="help-block with-errors">
+						<select multiple name="kompetensi[]" class="form-control input-plain form-lg" data-form-multitag data-placeholder="Kategori" required>
+						{% for item in kompetensi %}
+							<option value="{{ item.ID_KOMPETENSI }}" data-tag-text="{{ item.NAMA_KOMPETENSI }}" {% if item.SELECTED %}selected{% endif %}>{{ item.ID_KOMPETENSI }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="textSubKompetensi"><h3>Penjelasan Agenda</h3></label>
 					<div class="help-block with-errors"></div>
 					<textarea name="textSubKompetensi" id="textSubKompetensi" cols="30" rows="10" class="form-control input-lg input-plain" data-multiline="disable" data-error="Penjelasan agenda tidak boleh kosong" required>{{ txtSubKompetensi }}</textarea>

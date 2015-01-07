@@ -29,6 +29,7 @@ use SAR\models\Rps;
 class Approval
 {
     private $idMatkul;
+    private $idApproval;
     private $nip;
     private $tglMasuk;
     private $tglPeriksa;
@@ -107,6 +108,7 @@ class Approval
         if (count($results) > 0) {
             foreach ($results as $result) {
                 $this->idMatkul = $result['KDMataKuliah'];
+                $this->idApproval = $result['ID_Approval'];
                 $this->nip = $result['NIP'];
                 $this->tglMasuk = $result['TglMasuk'];
                 $this->tglPeriksa = $result['TglPeriksa'];

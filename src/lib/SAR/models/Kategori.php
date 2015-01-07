@@ -3,7 +3,7 @@
 /**
  * Kategori Class for SAR Application
  *
- * this file contains the data access for Kategori objects.
+ * this file contains the data access for Kompetensi & Kategori objects.
  *
  * PHP version 5.4
  *
@@ -48,6 +48,84 @@ class Kategori
             $this->$prop = $val;
         }
         return $this;
+    }
+
+    public function getAllKompetensiByMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                KOMPETENSI.ID_KOMPETENSI,
+                KOMPETENSI.NAMA_KOMPETENSI
+            FROM
+                SILABUS INNER JOIN KOMPETENSI
+            ON
+                SILABUS.ID_SILABUS = KOMPETENSI.ID_SILABUS
+            WHERE
+                SILABUS.ID_MATAKULIAH = :idMatkul'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Associated Kompetensi ID from Agenda
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getAssociatedKompetensi($idAgenda)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                KOMPETENSI.ID_KOMPETENSI,
+                KOMPETENSI.NAMA_KOMPETENSI
+            FROM
+                KOMPETENSI INNER JOIN KOMPETENSI_AGENDA
+            ON
+                KOMPETENSI.ID_KOMPETENSI = KOMPETENSI_AGENDA.ID_KOMPETENSI
+            WHERE
+                "ID_SUB_KOMPETENSI" = :idAgenda'
+        );
+        $query->bindParam(':idAgenda', $idAgenda);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get Associated Kompetensi from Agenda & Matkul, Verbosely
+     * @param  string $idMatkul
+     * @param  string $idAgenda
+     * @return mixed
+     */
+    public function getAssociatedKompetensiVerbose($idMatkul, $idAgenda)
+    {
+        $allKompetensi = $this->getAllKompetensiByMatkul($idMatkul);
+        $currentKompetensi = $this->getAssociatedKompetensi($idAgenda);
+        if ($currentKompetensi) {
+            foreach ($allKompetensi as $keyAll => $valAll) {
+                foreach ($currentKompetensi as $keyCurr => $valCurr) {
+                    if ($valCurr['ID_KOMPETENSI'] == $valAll['ID_KOMPETENSI']) {
+                        $allKompetensi[$keyAll]['SELECTED'] = true;
+                        break;
+                    } else {
+                        $allKompetensi[$keyAll]['SELECTED'] = false;
+                    }
+                }
+            }
+            return $allKompetensi;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -239,7 +317,7 @@ class Kategori
     public function groupKategoriIndikator()
     {
         $indikator = $this->getAllKategoriIndikator();
-        $results = F\group($indikator, function($kategori) {
+        $results = F\group($indikator, function ($kategori) {
             return $kategori['KATEGORI'];
         });
         foreach ($results as $key => $value) {

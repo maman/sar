@@ -3,7 +3,10 @@
 /**
  * Generate router for SAR Application
  *
- * this file contains route definition and logic for `/generate` route.
+ * this file contains route definition and logic for `/generate` route, which
+ * responsible to exporting the data inside SAR application into a easy-to-read
+ * format, such as PDF. Please note that this file is literally a huge know-it-all
+ * php file, and still unoptimized.
  *
  * PHP version 5.4
  *
@@ -18,12 +21,13 @@
  */
 
 use SAR\helpers\SARPdf;
-
+use SAR\models\Silabus;
 use SAR\models\Matkul;
 use SAR\models\User;
 use SAR\models\Agenda;
 use SAR\models\Kategori;
 use SAR\models\Rps;
+use SAR\models\Task;
 use SAR\models\Approval;
 
 /**
@@ -40,16 +44,21 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $kategori = new Kategori();
     $agenda = new Agenda();
     $rps = new Rps();
+    $task = new Task();
     $approval = new Approval();
+    $silabus = new Silabus($idMatkul);
 
     $rps->getRpsByIdMatkul($idMatkul);
     $allKategori = $kategori->getAllKategoriIndikator();
     $groupKategori = $kategori->groupKategoriIndikator();
     $countKategori = count($allKategori);
+    $kompetensi = $silabus->kompetensi;
     $matkuls = $matkul->getMatkulDetails($idMatkul);
     $revs = $approval->getAllApprovalByMatkul($idMatkul);
+    $agendaSimple = $agenda->getAgendaByMatkul($idMatkul);
     $agendas = $agenda->getAgendaByMatkul($idMatkul, 'verbose');
     $approvals = $approval->getApprovalByIdMatkul($idMatkul);
+    $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
     $dosen = $user->getUserFromMatkul($idMatkul);
 
     $creator = 'Ma Chung Silabus & SAR Management System/TCPDFv6.0';
@@ -63,6 +72,11 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->SetTitle($title);
     $pdf->SetMargins('20', '20', '20', true);
     $pdf->SetAutoPageBreak(true);
+
+    // Passing Variables
+    $pdf->idMatkul = $idMatkul;
+    $pdf->groupKategori = $groupKategori;
+    $pdf->countKategori = $countKategori;
 
     // Cover
     $pdf->setPrintHeader(false);
@@ -109,12 +123,194 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $pdf->SetFont('helvetica', '', 10, '', false);
     $pdf->writeHTMLCell(0, 8, '', '', '<h2>Silabus Kurikulum</h2>', 0, 1, 0, true, '', true);
     $pdf->SetFont('helvetica', '', 14, '', false);
+    $pdf->writeHTMLCell(0, 15, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+    $pdf->setCellHeightRatio(2.5);
+    $sill =
+    '<table width="100%">
+        <tr>
+            <td width="20%"><strong><u>Semester</u></strong></td>
+            <td width="3%">:</td>
+            <td width="77%">Ganjil 2014</td>
+        </tr>
+        <tr>
+            <td width="20%"><strong><u>Tujuan</u></strong></td>
+            <td width="3%">:</td>
+            <td width="77%">' . $silabus->tujuan . '</td>
+        </tr>
+        <tr>
+            <td width="20%"><strong><u>Kompetensi</u></strong></td>
+            <td width="3%">:</td>
+            <td width="77%"></td>
+        </tr>
+        <tr>
+            <td width="100%" colspan="2"><ol>';
+    foreach ($silabus->kompetensi as $kompetensi) {
+        $sill .=
+        '           <li>
+        ';
+        $sill .= $kompetensi['NAMA_KOMPETENSI'] . ' (';
+        foreach ($kompetensi['KATEGORI_KOMPETENSI'] as $kategori) {
+            if ($kategori['SELECTED'] === true) {
+                $sill .= $kategori['ID_KATEGORI_KOMPETENSI'] . ',';
+            }
+        }
+        $sill .= ')
+                    </li>
+        ';
+    }
+        $sill .=
+        '   </ol></td>
+        </tr>
+        <tr>
+            <td width="20%"><strong><u>Pokok Bahasan</u></strong></td>
+            <td width="3%">:</td>
+            <td width="77%"></td>
+        </tr>
+        <tr>
+            <td width="100%" colspan="2">' . $silabus->pokokBahasan . '</td>
+        </tr>
+        <tr>
+            <td width="20%"><strong><u>Daftar Pustaka</u></strong></td>
+            <td width="3%">:</td>
+            <td width="100%"></td>
+        </tr>
+        <tr>
+            <td width="100%" colspan="2"><ol>';
+    foreach ($silabus->pustaka as $pustaka) {
+        $sill .= '<li><strong>' . $pustaka['PENGARANG_PUSTAKA'] . ', </strong><em>' . $pustaka['JUDUL_PUSTAKA'] . '</em>, ' . $pustaka['PENERBIT_PUSTAKA'] . ', ' . $pustaka['TAHUN_TERBIT_PUSTAKA'] . '</li>';
+    }
+        $sill .=
+        '   </ol></td>
+        </tr>
+        <tr>
+            <td width="20%"><strong><u>Team Teaching</u></strong></td>
+            <td width="3%">:</td>
+            <td width="77%"></td>
+        </tr>
+        <tr>
+            <td width="100%" colspan="2"><ol>';
+    foreach ($dosen as $user) {
+        $sill .= '<li>' . $user['NAMA'] . '</li>';
+    }
+        $sill .=
+        '   </ol></td>
+        </tr>
+    </table>';
+    $pdf->SetFont('helvetica', '', 10, '', false);
+    $pdf->setListIndentWidth(3.15);
+    $pdf->writeHTMLCell(0, 0, '', '', $sill, 0, 1, 0, true, '', true);
+
+    // Agenda
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(true);
+    $pdf->AddPage('L', 'A4');
+    $pdf->setPageOrientation('L', true, '60');
+    $pdf->setCellHeightRatio(1.25);
+    $agenda =
+    '<table border="1" width="100%">
+        <thead>
+            <tr>
+                <td rowspan="2" align="center" width="5%">
+                    <strong><span></span>Pertemuan Ke</strong>
+                </td>
+                <td rowspan="2" align="center" width="20%">
+                    <strong><span></span>Sub-Kompetensi</strong>
+                </td>
+                <td rowspan="2" align="center" width="20%">
+                    <strong><span></span>Pustaka</strong>
+                </td>
+                <td rowspan="2" align="center" width="20%">
+                    <strong><span></span>Indikator Pencapaian</strong>
+                </td>
+                <td rowspan="2" align="center" width="20%">
+                    <strong><span></span>Aktivitas Pembelajaran</strong>
+                </td>
+                <td colspan="2" align="center" width="15%">
+                    <strong><span></span>Assesmen</strong>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" width="10%">
+                    <strong><span></span>Bentuk/Unsur</strong>
+                </td>
+                <td align="center" width="5%">
+                    <strong><span></span>Bobot</strong>
+                </td>
+            </tr>
+        </thead>';
+    foreach ($agendaSimple as $item) {
+        $agenda .=
+        '<tr nobr="true">
+            <td align="center" width="5%">' . $item['RANGE_PERTEMUAN'] . '</td>
+            <td width="20%">' . $item['TEXT_SUB_KOMPETENSI'] . '</td>
+            <td width="20%">' . $item['TEXT_MATERI_BELAJAR'] . '</td>
+            <td width="20%">
+                <ul>';
+        foreach ($item['INDIKATOR'] as $indikator) {
+            $agenda .=
+            '<li>' . $indikator['TEXT_INDIKATOR'] . '(' . $indikator['INDIKATOR'][0]['ID_KETERANGAN'] . ')</li>';
+        }
+            $agenda .=
+            '   </ul>
+            </td>
+            <td width="20%">
+                <ul>';
+        foreach ($item['AKTIVITAS'] as $aktivitas) {
+            if ($aktivitas['TASK'] == '1') {
+                $agenda .= '<li><strong>Task: </strong>';
+            } elseif ($aktivitas['PROJECT'] == '1') {
+                $agenda .= '<li><strong>Project: </strong>';
+            } else {
+                $agenda .= '<li>';
+            }
+            $agenda .= $aktivitas['TEXT_AKTIVITAS_AGENDA'] . '</li>';
+        }
+            $agenda .=
+            '   </ul>
+            </td>
+            <td width="10%">';
+        if (is_array($item['ASESMEN'])) {
+            foreach ($item['ASESMEN'] as $asesmenKey => $asesmenVal) {
+                if ($asesmenKey == 'tes' && count($asesmenVal) > 0) {
+                    $agenda .= 'Tes :
+                    <ul>';
+                    foreach ($asesmenVal as $tes) {
+                        $agenda .= '<li>' . $tes['NAMA_ASSESMENT_SUB_KOMPETENSI'] . '</li>';
+                    }
+                    $agenda .=
+                    '</ul>';
+                } elseif ($asesmenKey == 'nontes' && count($asesmenVal) > 0) {
+                    $agenda .= 'Non Tes:
+                    <ul>';
+                    foreach ($asesmenVal as $nontes) {
+                        $agenda .= '<li>' . $nontes['NAMA_ASSESMENT_SUB_KOMPETENSI'] . '</li>';
+                    }
+                    $agenda .=
+                    '</ul>';
+                }
+            }
+        }
+            $agenda .=
+            '</td>
+            <td align="center" width="5%">' . $item['BOBOT'] . '</td>
+        </tr>';
+    }
+    $agenda .=
+    '</table>';
+    $pdf->SetFont('helvetica', '', 10, '', false);
+    $pdf->writeHTMLCell(0, 8, '', '', '<h2>Agenda Pembelajaran</h2>', 0, 1, 0, true, '', true);
+    $pdf->SetFont('helvetica', '', 14, '', false);
     $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+    $pdf->SetFont('dejavusans', '', 7, '', false);
+    $pdf->setListIndentWidth(3.15);
+    $pdf->writeHTMLCell(0, 0, '', '', $agenda, 0, 1, 0, true, '', true);
 
     // Evaluasi
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(true);
     $pdf->AddPage('L', 'A4');
+    $pdf->setPageOrientation('L', true, '60');
+    $pdf->setCellHeightRatio(1.25);
     $evaluasi =
     '<table border="1" width="100%">
         <thead>
@@ -204,8 +400,154 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Evaluasi Pembelajaran</h2>', 0, 1, 0, true, '', true);
     $pdf->SetFont('helvetica', '', 14, '', false);
     $pdf->writeHTMLCell(0, 10, '', '', '<h3>Kertakes, 6SKS</h3>', 0, 1, 0, true, '', true);
-    $pdf->SetFont('dejavusans', '', 8, '', false);
+    $pdf->SetFont('dejavusans', '', 7, '', false);
+    $pdf->setListIndentWidth(3.15);
     $pdf->writeHTMLCell(0, 0, '', '', $evaluasi, 0, 1, 0, true, '', true);
+
+    // Task/Project
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(true);
+    $pdf->AddPage('L', 'A4');
+    $pdf->setPageOrientation('L', true, '60');
+    $pdf->setCellHeightRatio(2.5);
+    $taskpro =
+    '<table border="1" width="100%">
+        <thead>
+            <tr>
+                <td width="5%" align="center"><strong>Pertemuan Ke</strong></td>
+                <td width="19%" align="center"><strong>Sub Kompetensi</strong></td>
+                <td width="19%" align="center"><strong>Task/Project</strong></td>
+                <td width="19%" align="center"><strong>Scope Task/Project</strong></td>
+                <td width="19%" align="center"><strong>Metode Pengerjaan Task/Project</strong></td>
+                <td width="19%" align="center"><strong>Kriteria Luaran</strong></td>
+            </tr>
+        </thead>';
+    foreach ($tasks as $task) {
+        $counter = false;
+        foreach ($task['AKTIVITAS'] as $aktivitas) {
+            $taskpro .=
+            '<tr>';
+            if ($counter === false) {
+                $taskpro .=
+                '<td width="5%" rowspan="' . count($task['AKTIVITAS']) . '">' . $task['RANGE_PERTEMUAN'] . '</td>
+                <td width="19%" rowspan="' . count($task['AKTIVITAS']) . '">' . $task['TEXT_SUB_KOMPETENSI'] . '</td>';
+            }
+            $taskpro .=
+                '<td width="19%">' . $aktivitas['TEXT_AKTIVITAS_AGENDA'] . '</td>
+                <td width="19%">';
+            if (is_array($aktivitas['SCOPE'])) {
+                $taskpro .=
+                    '<ul>';
+                foreach ($aktivitas['SCOPE'] as $scope) {
+                    $taskpro .= '<li>' . $scope['TEXT_SCOPE'] . '</li>';
+                }
+                $taskpro .=
+                    '</ul>';
+            }
+            $taskpro .=
+                '</td>
+                <td width="19%">';
+            if (is_array($aktivitas['METODE'])) {
+                $taskpro .=
+                    '<ul>';
+                foreach ($aktivitas['METODE'] as $metode) {
+                    $taskpro .= '<li>' . $metode['TEXT_METODE'] . '</li>';
+                }
+                $taskpro .=
+                    '</ul>';
+            }
+            $taskpro .=
+                '</td>
+                <td width="19%">';
+            if (is_array($aktivitas['KRITERIA'])) {
+                $taskpro .=
+                    '<ul>';
+                foreach ($aktivitas['KRITERIA'] as $kriteria) {
+                    $taskpro .= '<li>' . $kriteria['TEXT_KRITERIA'] . '</li>';
+                }
+                $taskpro .=
+                    '</ul>';
+            }
+            $taskpro .=
+                '</td>
+            </tr>';
+            $counter = true;
+        }
+    }
+    $taskpro .=
+    '</table>';
+    $pdf->SetFont('helvetica', '', 10, '', false);
+    $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Evaluasi Pembelajaran</h2>', 0, 1, 0, true, '', true);
+    $pdf->SetFont('helvetica', '', 14, '', false);
+    $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+    $pdf->SetFont('dejavusans', '', 7, '', false);
+    $pdf->setListIndentWidth(3.15);
+    $pdf->writeHTMLCell(0, 0, '', '', $taskpro, 0, 1, 0, true, '', true);
+
+    // Uraian Task/Project
+    foreach ($tasks as $task) {
+        foreach ($task['AKTIVITAS'] as $aktivitas) {
+            $pdf->setPrintHeader(false);
+            $pdf->setPrintFooter(true);
+            $pdf->AddPage('P', 'A4');
+            $pdf->setPageOrientation('P', true, '60');
+            $pdf->setCellHeightRatio(2.5);
+            $pdf->SetFont('helvetica', '', 10, '', false);
+            $pdf->writeHTMLCell(0, 8, '', '', '<h2>Uraian Task/Project</h2>', 0, 1, 0, true, '', true);
+            $pdf->SetFont('helvetica', '', 14, '', false);
+            $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+            $uraian =
+            '<table width="100%">
+                <tr>
+                    <td width="20%"><strong><u>Task/Project</u></strong></td>
+                    <td width="3%">:</td>
+                    <td width="77%">' . $aktivitas['TEXT_AKTIVITAS_AGENDA'] . '</td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong><u>Scope</u></strong></td>
+                    <td width="3%">:</td>
+                    <td width="77%">' . $aktivitas['TEXT_AKTIVITAS_AGENDA'] . '</td>
+                </tr>
+                <tr>
+                    <td width="100%" colspan="2"><ul>';
+            foreach ($aktivitas['SCOPE'] as $scope) {
+                $uraian .= '<li>' . $scope['TEXT_SCOPE'] . '</li>';
+            }
+                $uraian .=
+                '   </ul></td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong><u>Metodologi</u></strong></td>
+                    <td width="3%">:</td>
+                    <td width="77%"></td>
+                </tr>
+                <tr>
+                    <td width="100%" colspan="2"><ul>';
+            foreach ($aktivitas['METODE'] as $metode) {
+                $uraian .= '<li>' . $metode['TEXT_METODE'] . '</li>';
+            }
+                $uraian .=
+                '   </ul></td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong><u>Kriteria Keluaran</u></strong></td>
+                    <td width="3%">:</td>
+                    <td width="77%"></td>
+                </tr>
+                <tr>
+                    <td width="100%" colspan="2"><ul>';
+            foreach ($aktivitas['KRITERIA'] as $kriteria) {
+                $uraian .= '<li>' . $kriteria['TEXT_KRITERIA'] . '</li>';
+            }
+                $uraian .=
+                '   </ul></td>
+                </tr>
+            </table>';
+            $pdf->SetFont('helvetica', '', 10, '', false);
+            $pdf->setListIndentWidth(3.15);
+            $pdf->writeHTMLCell(0, 0, '', '', $uraian, 0, 1, 0, true, '', true);
+        }
+    }
 
     // BRING THE FUCKERS DOOOOOWN
     $pdf->output($title, 'I');
