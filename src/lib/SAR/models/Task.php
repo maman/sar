@@ -158,11 +158,11 @@ class Task
                             $results[$key]['AKTIVITAS'][$keyAct]['KRITERIA'] = $this->getKriteriaByAktivitas($results[$key]['AKTIVITAS'][$keyAct]['ID_AKTIVITAS_AGENDA']);
                         }
                     }
-                    return $results;
                 } else {
                     return false;
                 }
             }
+            return $results;
         } else {
             return false;
         }
