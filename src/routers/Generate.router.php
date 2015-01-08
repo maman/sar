@@ -34,7 +34,7 @@ use SAR\models\Approval;
  * -*-*-*- BEWARE -*-*-*-
  * HUGE SHITLOADS OF CODE.
  */
-$app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) use ($app) {
+$app->get('/generate/:idMatkul/pdf', function ($idMatkul) use ($app) {
     // Send PDF Directly to browser A.K.A download
     $app->response->headers->set('Content-Type', 'application/pdf');
     $app->response->headers->set('Content-Transfer-Encoding', 'binary');
@@ -82,12 +82,16 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->phase = 'cover';
     $pdf->setPrintHeader(false);
     $pdf->AddPage('P', 'A4');
+    $pdf->SetFont('helvetica', 'B', 14, '', false);
+    $pdf->SetY(20);
+    $pdf->Cell(0, 15, 'Rencana Pembelajaran Mata Kuliah', 0, false, 'L', 0, '', 0, false, 'M', 'M');
+    $pdf->SetY(28);
+    $pdf->SetFont('helvetica', 'B', 20, '', false);
+    $pdf->Cell(0, 15, $matkuls[0]['NamaMK'], 0, false, 'L', 0, '', 0, false, 'M', 'M');
+    $pdf->SetY(40);
     $pdf->SetFont('helvetica', '', 10, '', false);
-    $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Pembelajaran Mata Kuliah</h2>', 0, 1, 0, true, '', true);
-    $pdf->SetFont('helvetica', '', 16, '', false);
-    $pdf->writeHTMLCell(0, 10, '', '', '<h2>' . $matkuls[0]['NamaMK'] . '</h2>', 0, 1, 0, true, '', true);
-    $pdf->SetFont('helvetica', '', 10, '', false);
-    $pdf->writeHTMLCell(0, 10, '', '', $approval->tglDisahkan . ' Release ' . $approval->versi, 0, 1, 0, true, '', true);
+    $pdf->Cell(0, 15, $approval->tglDisahkan . ' Release ' . $approval->versi, 0, false, 'L', 0, '', 0, false, 'M', 'M');
+    $pdf->SetY(48);
     $pdf->writeHTMLCell(0, 10, '', '', '<strong>Disiapkan:</strong>', 0, 1, 0, true, '', true);
     $listDosen =
     '<p>';

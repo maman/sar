@@ -454,6 +454,7 @@ class Approval
                 TO_CHAR("TglMasuk", \'YYYY\') = :dateData
         ');
         $query->bindParam(':dateData', $date);
+        $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return count($results);
     }

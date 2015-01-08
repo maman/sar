@@ -17,9 +17,37 @@
  * @license GNU General Public License v2
  */
 
+use SAR\helpers\Utilities;
+use SAR\models\Approval;
+use SAR\models\Matkul;
+
 /** GET request on `/` */
 $app->get('/', function () use ($app) {
     $req = $app->request();
+    $approval = new Approval();
+    $util = new Utilities();
+    $matkul = new Matkul();
+    $matkulYear = $matkul->getMatkulYear();
+    $range = $util->getRangeTahunAjaran();
+    $results = $approval->getAllApproval();
+    $matkulData = array();
+    $chartData = array();
+    foreach ($matkulYear as $yearKey => $yearVal) {
+        $matkulCount = $matkul->getMatkulYearCount($yearVal['TahunAjaranMK']);
+        array_push($matkulData, array(
+            'year' => $yearVal['TahunAjaranMK'],
+            'jumlah' => $matkulCount,
+        ));
+    }
+    foreach ($range as $rangeKey => $rangeVal) {
+        $approved = $approval->getApprovedCount($rangeVal);
+        $rejected = $approval->getRejectedCount($rangeVal);
+        array_push($chartData, array(
+            'year' => $rangeVal,
+            'approved' => $approved,
+            'rejected' => $rejected
+        ));
+    }
     if (isset($_SESSION['username'])) {
         if (!isset($_SESSION['matkul'])) {
             $app->flash('errors', "Not Yet Plotted");
@@ -27,5 +55,8 @@ $app->get('/', function () use ($app) {
             $app->redirect('/login');
         }
     }
-    $app->render('pages/_dashboard.twig');
+    $app->render('pages/_dashboard.twig', array(
+        'chartData' => $chartData,
+        'matkulData' => $matkulData
+    ));
 });

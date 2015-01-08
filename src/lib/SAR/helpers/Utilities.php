@@ -29,6 +29,7 @@ class Utilities
     {
         $tahun = array();
         $tahun['start'] = date('Y', strtotime('-1 year'));
+        $tahun['current'] = date('Y');
         $tahun['end'] = date('Y', strtotime('+1 year'));
         return $tahun;
     }

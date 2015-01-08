@@ -217,4 +217,41 @@ class Matkul
             return 'Not Defined';
         }
     }
+
+    /**
+     * Get Matakuliah by year
+     * @return array
+     */
+    public function getMatkulYear()
+    {
+        $query = $this->core->db->prepare(
+            'SELECT DISTINCT
+                MATAKULIAH."TahunAjaranMK"
+            FROM MATAKULIAH'
+        );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return $results;
+    }
+
+    /**
+     * Get Matakuliah count by Year
+     * @param  string $year in Y format
+     * @return int
+     */
+    public function getMatkulYearCount($year)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                MATAKULIAH
+            WHERE
+                "TahunAjaranMK" = :yearData'
+        );
+        $query->bindParam(':yearData', $year);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return count($results);
+    }
 }

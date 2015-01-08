@@ -24,6 +24,7 @@ use SAR\models\Silabus;
 use SAR\models\Agenda;
 use SAR\models\Task;
 use SAR\models\Approval;
+use SAR\helpers\Utilities;
 use Functional as F;
 
 $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
@@ -105,7 +106,7 @@ $app->get('/review', $kaprodi, function () use ($app) {
     $app->redirect('/approval');
 });
 
-$app->get('/review/:idMatkul', $authenticate($app), $kaprodi, function ($idMatkul) use ($app) {
+$app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
     $rps = new Rps();
