@@ -102,10 +102,31 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->AddPage('P', 'A4');
     $pdf->SetFont('helvetica', '', 10, '', false);
     $pdf->writeHTMLCell(0, 25, '', '', '<h2>Maklumat Release Dokumen</h2>', 0, 1, 0, true, '', true);
-    $pdf->Cell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, false, 'C', 0, '', 1, false, 'M', 'M');
+    // $pdf->Cell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, false, 'C', 0, '', 1, false, 'M', 'M');
+    $pdf->MultiCell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, 'C', 0, 1, '', '', true, null, false);
     $revtable =
     '<table border="1" width="100%">
-        <thead></thead>';
+        <thead>
+            <tr style="background-color:#d0d0d0">
+                <td width="15%" align="center"><strong>Revisi Dokumen</strong></td>
+                <td width="15%" align="center"><strong>Tanggal</strong></td>
+                <td width="70%" align="center"><strong>Alasan Perubahan</strong></td>
+            </tr>
+        </thead>';
+    foreach ($revs as $rev) {
+        if ($rev['Approval'] == '1') {
+            $currRev = $rev['Versi'];
+            $revtable .=
+            '<tr>
+                <td width="15%">Revisi ' . $currRev . '</td>
+                <td width="15%">' . $rev['TglPeriksa'] . '</td>
+                <td width="70%">' . $rev['NotePeriksa'] . '</td>
+            </tr>';
+        }
+    }
+    $revtable .=
+    '</table>';
+    $pdf->writeHTMLCell(0, 0, '', '', $revtable, 0, 1, 0, true, '', true);
     $pdf->setY(180);
     $pdf->MultiCell(0, 0, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Jurusan Sistem Informasi Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis.', 0, 'L', 0, 1, '', '', true, null, false);
     $pdf->setY(200);
@@ -114,7 +135,7 @@ Fakultas Sains dan Teknologi
 Universitas Ma Chung
 Malang', 0, 'L', 0, 1, '', '', true, null, false);
     $pdf->setY(225);
-    $pdf->MultiCell(0, 0, 'Copyright © 2010 Jurusan Sistem Informasi Universitas Ma Chung
+    $pdf->MultiCell(0, 0, 'Copyright © ' . date('Y') . ' Jurusan Sistem Informasi Universitas Ma Chung
 Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Chung yang tidak dipublikasikan dan bersifat rahasia.', 0, 'L', 0, 1, '', '', true, null, false);
 
     // Silabus
@@ -209,7 +230,7 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $agenda =
     '<table border="1" width="100%">
         <thead>
-            <tr>
+            <tr style="background-color:#d0d0d0">
                 <td rowspan="2" align="center" width="5%">
                     <strong><span></span>Pertemuan Ke</strong>
                 </td>
@@ -229,7 +250,7 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
                     <strong><span></span>Assesmen</strong>
                 </td>
             </tr>
-            <tr>
+            <tr style="background-color:#d0d0d0">
                 <td align="center" width="10%">
                     <strong><span></span>Bentuk/Unsur</strong>
                 </td>
@@ -314,7 +335,7 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $evaluasi =
     '<table border="1" width="100%">
         <thead>
-            <tr>
+            <tr style="background-color:#d0d0d0">
                 <td rowspan="3" align="center" width="5%">
                     <strong><span></span>Pertemuan Ke</strong>
                 </td>
@@ -331,14 +352,14 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
                     <strong><span style="font-size:5px">'. str_repeat('&nbsp;<br>', 1) .'</span>%</strong>
                 </td>
             </tr>
-            <tr>';
+            <tr style="background-color:#d0d0d0">';
     foreach ($groupKategori as $key => $value) {
         $evaluasi .=
                 '<td colspan="' . $value['LENGTH'] . '" align="center"><strong>' . $key . '</strong></td>';
     }
     $evaluasi .=
             '</tr>
-            <tr>';
+            <tr style="background-color:#d0d0d0">';
     foreach ($groupKategori as $item) {
         foreach ($item as $keyItem => $valueItem) {
             if (is_array($valueItem)) {
@@ -413,7 +434,7 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $taskpro =
     '<table border="1" width="100%">
         <thead>
-            <tr>
+            <tr style="background-color:#d0d0d0">
                 <td width="5%" align="center"><strong>Pertemuan Ke</strong></td>
                 <td width="19%" align="center"><strong>Sub Kompetensi</strong></td>
                 <td width="19%" align="center"><strong>Task/Project</strong></td>
@@ -477,7 +498,7 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
     $taskpro .=
     '</table>';
     $pdf->SetFont('helvetica', '', 10, '', false);
-    $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Evaluasi Pembelajaran</h2>', 0, 1, 0, true, '', true);
+    $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Task/Project Pembelajaran</h2>', 0, 1, 0, true, '', true);
     $pdf->SetFont('helvetica', '', 14, '', false);
     $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
     $pdf->SetFont('dejavusans', '', 7, '', false);

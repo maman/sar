@@ -52,6 +52,9 @@
 							<div class="btn-toolbar pull-right">
 								<div class="btn-group btn-group-sm">
 									<a href="/review/{{ result.KDMataKuliah }}" target="_blank" class="btn btn-primary">Review</a>
+									{% if result.Approval == '2' %}
+									<a href="/generate/{{ result.KDMataKuliah }}/pdf" target="_blank" class="btn btn-primary">Print</a>
+									{% endif %}
 								</div>
 								<div class="btn-group btn-group-sm">
 									{% if result.Approval == '0' %}

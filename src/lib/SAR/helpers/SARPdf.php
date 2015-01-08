@@ -3,8 +3,7 @@
 /**
  * SARPdf Class for SAR Application
  *
- * this file extends the PDF Generation function from TCPDF
- * to enable custom header & footer for SAR Application.
+ * this file extends TCPDF to enable custom header & footer for SAR Application.
  *
  * PHP version 5.4
  *
@@ -57,25 +56,23 @@ class SARPdf extends \TCPDF
             $user = new User;
             $approval->getApprovalByIdMatkul($this->idMatkul);
             $allKategori = $kategori->getAllKategori();
-            $this->SetY(-25);
+            $this->SetY(-30);
             $this->SetFont('helvetica', '', 6, '', false);
             $this->setListIndentWidth(0);
             $table =
             '<table border="1" width="100%">
                 <thead>
                     <tr style="background-color:#d0d0d0">
-                        <td width="17.5%"><strong>Dokumen</strong></td>
-                        <td width="17.5%"><strong>Dibuat</strong></td>
-                        <td width="17.5%"><strong>Diperiksa</strong></td>
-                        <td width="17.5%"><strong>Disahkan</strong></td>
+                        <td width="23.33%"><strong>Dokumen</strong></td>
+                        <td width="23.33%"><strong>Dibuat</strong></td>
+                        <td width="23.33%"><strong>Disahkan</strong></td>
                         <td width="30%"><strong>Keterangan</strong></td>
                     </tr>
                 </thead>
                 <tr>
-                    <td width="17.5%">Nomer: <br><strong>' . $approval->idApproval . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglMasuk . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglPeriksa . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglDisahkan . '</strong></td>
+                    <td width="23.33%">Nomer: <br><strong>' . $approval->idApproval . '</strong></td>
+                    <td width="23.33%">Tanggal: <br><strong>' . $approval->tglMasuk . '</strong></td>
+                    <td width="23.33%">Tanggal: <br><strong>' . $approval->tglDisahkan . '</strong></td>
                     <td width="30%" rowspan="2"><ul style="list-style-type:none;margin:0;padding:0">';
             foreach ($allKategori as $item) {
                 // @codingStandardsIgnoreStart
@@ -86,10 +83,9 @@ class SARPdf extends \TCPDF
                     '</ul></td>
                 </tr>
                 <tr>
-                    <td width="17.5%">Revisi: <br><br><strong>' . $approval->versi . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nip) . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipPeriksa) . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipSahkan) . '</strong></td>
+                    <td width="23.33%">Revisi: <br><br><strong>' . $approval->versi . '</strong></td>
+                    <td width="23.33%">Oleh: <br><br><strong>' . $user->getUserName($approval->nip) . '</strong></td>
+                    <td width="23.33%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipSahkan) . '</strong></td>
                 </tr>
             </table>';
             $this->writeHTMLCell(0, 0, '', '', $table, 0, 1, 0, true, '', true);
@@ -99,17 +95,16 @@ class SARPdf extends \TCPDF
             $user = new User;
             $approval->getApprovalByIdMatkul($this->idMatkul);
             $allKategori = $kategori->getAllKategori();
-            $this->SetY(-25);
+            $this->SetY(-30);
             $this->SetFont('helvetica', '', 6, '', false);
             $this->setListIndentWidth(0);
             $table =
             '<table border="1" width="100%">
                 <thead>
                     <tr style="background-color:#d0d0d0">
-                        <td width="17.5%"><strong>Dokumen</strong></td>
-                        <td width="17.5%"><strong>Dibuat</strong></td>
-                        <td width="17.5%"><strong>Diperiksa</strong></td>
-                        <td width="17.5%"><strong>Disahkan</strong></td>
+                        <td width="23.33%"><strong>Dokumen</strong></td>
+                        <td width="23.33%"><strong>Dibuat</strong></td>
+                        <td width="23.33%"><strong>Disahkan</strong></td>
                         <td width="30%" colspan="' . count($this->groupKategori) . '">
                             <strong>Keterangan: ';
             foreach ($this->groupKategori as $groupKey => $groupVal) {
@@ -120,10 +115,9 @@ class SARPdf extends \TCPDF
                     </tr>
                 </thead>
                 <tr>
-                    <td width="17.5%">Nomer: <br><strong>' . $approval->idApproval . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglMasuk . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglPeriksa . '</strong></td>
-                    <td width="17.5%">Tanggal: <br><strong>' . $approval->tglDisahkan . '</strong></td>';
+                    <td width="23.33%">Nomer: <br><strong>' . $approval->idApproval . '</strong></td>
+                    <td width="23.33%">Tanggal: <br><strong>' . $approval->tglMasuk . '</strong></td>
+                    <td width="23.33%">Tanggal: <br><strong>' . $approval->tglDisahkan . '</strong></td>';
             foreach ($this->groupKategori as $groupKey => $groupVal) {
                 $table .=
                     '<td width="' . 30/count($this->groupKategori) . '%" rowspan="2">';
@@ -136,10 +130,9 @@ class SARPdf extends \TCPDF
             $table .=
                 '</tr>
                 <tr>
-                    <td width="17.5%">Revisi: <br><br><strong>' . $approval->versi . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nip) . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipPeriksa) . '</strong></td>
-                    <td width="17.5%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipSahkan) . '</strong></td>
+                    <td width="23.33%">Revisi: <br><br><strong>' . $approval->versi . '</strong></td>
+                    <td width="23.33%">Oleh: <br><br><strong>' . $user->getUserName($approval->nip) . '</strong></td>
+                    <td width="23.33%">Oleh: <br><br><strong>' . $user->getUserName($approval->nipSahkan) . '</strong></td>
                 </tr>
             </table>';
             $this->writeHTMLCell(0, 0, '', '', $table, 0, 1, 0, true, '', true);

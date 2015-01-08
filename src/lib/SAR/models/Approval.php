@@ -147,7 +147,9 @@ class Approval
                 "Approval",
                 "Versi"
             FROM
-                Approval'
+                Approval
+            ORDER BY
+                "ID_Approval" DESC'
         );
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
