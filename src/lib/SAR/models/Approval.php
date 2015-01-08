@@ -21,6 +21,9 @@ namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Rps;
+use SAR\models\Matkul;
+use SAR\models\User;
+use SAR\helpers\Utilities;
 
 /**
 * Approval Class
@@ -376,5 +379,82 @@ class Approval
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get All Approved Matakuliah Approval for
+     * archiving purpose.
+     * @param  boolean $current limit to current year range. defaults to true.
+     * @return array
+     */
+    public function getAllApprovedMatkul($current = true)
+    {
+        $approval = array();
+        $matkul = new Matkul;
+        $user = new User;
+        $result = $matkul->getAllMatkul($current);
+        foreach ($result as $matakuliah) {
+            $approvalDetail = $this->getApprovalByIdMatkul($matakuliah['KDMataKuliah']);
+            $namaMatkul = $matakuliah['NamaMK'];
+            if ($approvalDetail) {
+                foreach ($approvalDetail as $keyDetail => $valDetail) {
+                    unset($approvalDetail[$keyDetail]['TglPeriksa']);
+                    unset($approvalDetail[$keyDetail]['NIP_Periksa']);
+                    unset($approvalDetail[$keyDetail]['NotePeriksa']);
+                    unset($approvalDetail[$keyDetail]['NotePengesahan']);
+                    unset($approvalDetail[$keyDetail]['Approval']);
+                    $approvalDetail[$keyDetail]['namaMataKuliah'] = $namaMatkul;
+                    $approvalDetail[$keyDetail]['namaSubmitter'] = $user->getUserName($approvalDetail[$keyDetail]['NIP']);
+                    $approvalDetail[$keyDetail]['namaApprover'] = $user->getUserName($approvalDetail[$keyDetail]['NIP_Pengesahan']);
+                }
+                array_push($approval, $approvalDetail);
+            }
+        }
+        return $approval;
+    }
+
+    /**
+     * Get Approved Approval count for provided Year
+     * @param  date $date in Y format
+     * @return int
+     */
+    public function getApprovedCount($date)
+    {
+        $query = $this->core->db->prepare('
+            SELECT
+                *
+            FROM
+                Approval
+            WHERE
+                "Approval" = 2
+            AND
+                TO_CHAR("TglMasuk", \'YYYY\') = :dateData
+        ');
+        $query->bindParam(':dateData', $date);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return count($results);
+    }
+
+    /**
+     * Get Rejected Approval count for provided Year
+     * @param  date $date in Y format
+     * @return int
+     */
+    public function getRejectedCount($date)
+    {
+        $query = $this->core->db->prepare('
+            SELECT
+                *
+            FROM
+                Approval
+            WHERE
+                "Approval" = 1
+            AND
+                TO_CHAR("TglMasuk", \'YYYY\') = :dateData
+        ');
+        $query->bindParam(':dateData', $date);
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return count($results);
     }
 }

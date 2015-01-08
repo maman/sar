@@ -29,11 +29,6 @@ use SAR\helpers\Utilities;
  */
 class Matkul
 {
-    private $idMatkul;
-    private $syaratMatkul;
-    private $namaMatkul;
-    private $semesterMatkul;
-    private $tahunMatkul;
     private $core;
 
     public function __construct()
@@ -57,31 +52,80 @@ class Matkul
     }
 
     /**
-     * Get Mata Kuliah Details
-     *
-     * Get Mata Kuliah Details from KDMataKuliah
-     * @param  string $id
+     * Get All Recorded matakuliah
+     * @param  boolean $current limit year range. defaults to true.
      * @return array
      */
-    public function getMatkulDetails($id)
+    public function getAllMatkul($current = true)
     {
         $tahun = new Utilities();
         $range = $tahun->getRangeTahunAjaran();
         $results = array();
-        $query = $this->core->db->prepare(
-            'SELECT
-                *
-            FROM
-                "MATAKULIAH"
-            WHERE
-                "MATAKULIAH"."KDMataKuliah" = :id
-                AND "MATAKULIAH"."TahunAjaranMK"
-                BETWEEN :tahunMulai
-                AND :tahunSelesai'
-        );
-        $query->bindParam(':id', $id);
-        $query->bindParam(':tahunMulai', $range['start']);
-        $query->bindParam(':tahunSelesai', $range['end']);
+        if ($current) {
+            $query = $this->core->db->prepare(
+                'SELECT
+                    *
+                FROM
+                    "MATAKULIAH"
+                WHERE
+                    "MATAKULIAH"."TahunAjaranMK"
+                    BETWEEN :tahunMulai
+                    AND :tahunSelesai'
+            );
+            $query->bindParam(':tahunMulai', $range['start']);
+            $query->bindParam(':tahunSelesai', $range['end']);
+        } else {
+            $query = $this->core->db->prepare(
+                'SELECT
+                    *
+                FROM
+                    "MATAKULIAH"'
+            );
+        }
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return $results;
+    }
+
+    /**
+     * Get Mata Kuliah Details
+     *
+     * Get Mata Kuliah Details from KDMataKuliah
+     * @param  string  $id
+     * @param  boolean $current limit year range. defaults to true.
+     * @return array
+     */
+    public function getMatkulDetails($id, $current = true)
+    {
+        $tahun = new Utilities();
+        $range = $tahun->getRangeTahunAjaran();
+        $results = array();
+        if ($current) {
+            $query = $this->core->db->prepare(
+                'SELECT
+                    *
+                FROM
+                    "MATAKULIAH"
+                WHERE
+                    "MATAKULIAH"."KDMataKuliah" = :id
+                    AND "MATAKULIAH"."TahunAjaranMK"
+                    BETWEEN :tahunMulai
+                    AND :tahunSelesai'
+            );
+            $query->bindParam(':id', $id);
+            $query->bindParam(':tahunMulai', $range['start']);
+            $query->bindParam(':tahunSelesai', $range['end']);
+        } else {
+            $query = $this->core->db->prepare(
+                'SELECT
+                    *
+                FROM
+                    "MATAKULIAH"
+                WHERE
+                    "MATAKULIAH"."KDMataKuliah" = :id'
+            );
+            $query->bindParam(':id', $id);
+        }
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
@@ -155,6 +199,22 @@ class Matkul
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Get Matakuliah name from idMatkul
+     * @param  string  $idMatkul
+     * @param  boolean $current  defaults to true
+     * @return string
+     */
+    public function getMatkulName($idMatkul, $current = true)
+    {
+        $results = $this->getMatkulDetails($idMatkul, $current);
+        if ($results) {
+            return $results[0]['NamaMK'];
+        } else {
+            return 'Not Defined';
         }
     }
 }

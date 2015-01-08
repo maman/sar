@@ -39,7 +39,7 @@ class SARPdf extends \TCPDF
     public function Footer()
     {
     // @codingStandardsIgnoreEnd
-        if ($this->page == 1 || $this->page == 2) {
+        if ($this->phase == 'cover') {
             $this->SetY(-25);
             $this->SetFont('helvetica', 'B', 10, '', false);
             $this->Cell(0, 15, 'SIFAT RAHASIA', 0, false, 'C', 0, '', 0, false, 'M', 'M');
@@ -49,8 +49,9 @@ class SARPdf extends \TCPDF
             $this->Cell(0, 15, 'Khusus diproduksi dan didistribusikan kepada', 0, false, 'C', 0, '', 0, false, 'M', 'M');
             $this->SetY(-15);
             $this->Cell(0, 15, 'yang berhak mengetahui di lingkungan Jurusan Sistem Informasi Universitas Ma Chung', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+            $this->phase = '';
             // @codingStandardsIgnoreEnd
-        } elseif ($this->page == 3) {
+        } elseif ($this->phase == 'silabus') {
             $approval = new Approval;
             $kategori = new Kategori;
             $user = new User;
@@ -89,6 +90,7 @@ class SARPdf extends \TCPDF
                 </tr>
             </table>';
             $this->writeHTMLCell(0, 0, '', '', $table, 0, 1, 0, true, '', true);
+            $this->phase = '';
         } else {
             $approval = new Approval;
             $kategori = new Kategori;
@@ -136,6 +138,7 @@ class SARPdf extends \TCPDF
                 </tr>
             </table>';
             $this->writeHTMLCell(0, 0, '', '', $table, 0, 1, 0, true, '', true);
+            $this->phase = '';
         }
     }
 }

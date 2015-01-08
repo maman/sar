@@ -25,10 +25,11 @@ require('./globals/globalFunction');
 require('./globals/domLoad');
 require('./globals/domReady');
 
+require('./components/alertBox');
+require('./components/dataTables');
 require('./components/layoutMini');
 require('./components/listToggler');
 require('./components/multitags');
 require('./components/momentRender');
-require('./components/alertBox');
 
 console.log('ready to dispatch.');

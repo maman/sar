@@ -79,6 +79,7 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->countKategori = $countKategori;
 
     // Cover
+    $pdf->phase = 'cover';
     $pdf->setPrintHeader(false);
     $pdf->AddPage('P', 'A4');
     $pdf->SetFont('helvetica', '', 10, '', false);
@@ -102,7 +103,6 @@ $app->get('/generate/:idMatkul/pdf', $authenticate($app), function ($idMatkul) u
     $pdf->AddPage('P', 'A4');
     $pdf->SetFont('helvetica', '', 10, '', false);
     $pdf->writeHTMLCell(0, 25, '', '', '<h2>Maklumat Release Dokumen</h2>', 0, 1, 0, true, '', true);
-    // $pdf->Cell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, false, 'C', 0, '', 1, false, 'M', 'M');
     $pdf->MultiCell(0, 15, 'Seluruh release dari dokumen ini didaftar berdasar kronologisnya', 0, 'C', 0, 1, '', '', true, null, false);
     $revtable =
     '<table border="1" width="100%">
@@ -139,6 +139,7 @@ Malang', 0, 'L', 0, 1, '', '', true, null, false);
 Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Chung yang tidak dipublikasikan dan bersifat rahasia.', 0, 'L', 0, 1, '', '', true, null, false);
 
     // Silabus
+    $pdf->phase = 'silabus';
     $pdf->setPrintHeader(false);
     $pdf->AddPage('P', 'A4');
     $pdf->SetFont('helvetica', '', 10, '', false);
@@ -572,4 +573,48 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
 
     // BRING THE FUCKERS DOOOOOWN
     $pdf->output($title, 'I');
+});
+
+$app->get('/generate/:idMatkul/pdf/per-page', $authenticate($app), function ($idMatkul) use ($app) {
+    $app->response->headers->set('Content-Type', 'application/pdf');
+    $app->response->headers->set('Content-Transfer-Encoding', 'binary');
+
+    $matkul = new Matkul();
+    $user = new User();
+    $kategori = new Kategori();
+    $agenda = new Agenda();
+    $rps = new Rps();
+    $task = new Task();
+    $approval = new Approval();
+    $silabus = new Silabus($idMatkul);
+
+    $rps->getRpsByIdMatkul($idMatkul);
+    $allKategori = $kategori->getAllKategoriIndikator();
+    $groupKategori = $kategori->groupKategoriIndikator();
+    $countKategori = count($allKategori);
+    $kompetensi = $silabus->kompetensi;
+    $matkuls = $matkul->getMatkulDetails($idMatkul);
+    $revs = $approval->getAllApprovalByMatkul($idMatkul);
+    $agendaSimple = $agenda->getAgendaByMatkul($idMatkul);
+    $agendas = $agenda->getAgendaByMatkul($idMatkul, 'verbose');
+    $approvals = $approval->getApprovalByIdMatkul($idMatkul);
+    $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
+    $dosen = $user->getUserFromMatkul($idMatkul);
+
+    $creator = 'Ma Chung Silabus & SAR Management System/TCPDFv6.0';
+    $author = 'Ma Chung Silabus & SAR Management System';
+    $title = 'RPS Mata Kuliah ' . $matkuls[0]['NamaMK'] . ' ' . $matkuls[0]['TahunAjaranMK'];
+
+    // We use TCPDF to render.
+    $pdf = new SARPdf();
+    $pdf->SetCreator($creator);
+    $pdf->SetAuthor($author);
+    $pdf->SetTitle($title);
+    $pdf->SetMargins('20', '20', '20', true);
+    $pdf->SetAutoPageBreak(true);
+
+    // Passing Variables
+    $pdf->idMatkul = $idMatkul;
+    $pdf->groupKategori = $groupKategori;
+    $pdf->countKategori = $countKategori;
 });

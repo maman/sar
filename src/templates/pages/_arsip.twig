@@ -1,0 +1,48 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Arsip{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' %}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Arsip Matakuliah</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover" data-render-table>
+					<thead>
+						<tr>
+							<th class="text-center text-bold" valign="center">Nama Matakuliah</th>
+							<th class="text-center text-bold" valign="center">Submitter</th>
+							<th class="text-center text-bold" valign="center">Tanggal Submit</th>
+							<th class="text-center text-bold" valign="center">Approver</th>
+							<th class="text-center text-bold" valign="center">Tanggal Approve</th>
+							<th class="text-center text-bold" valign="center" style="width:100px">Task</th>
+						</tr>
+					</thead>
+					{% for item in results %}
+					<tr>
+						<td class="text-center" valign="center">{{ item.0.namaMataKuliah }}</td>
+						<td valign="center">{{ item.0.namaSubmitter }}</td>
+						<td class="text-center" valign="center"><span data-moment-render>{{ item.0.TglMasuk }}</span></td>
+						<td valign="center">{{ item.0.namaApprover }}</td>
+						<td class="text-center" valign="center"><span data-moment-render>{{ item.0.TglDisahkan }}</span></td>
+						<td class="text-center" class="text-center" valign="center" style="width:100px">
+							<div class="btn-group btn-group-sm">
+								<a href="/review/{{ item.0.KDMataKuliah }}" target="_blank" class="btn btn-primary">Review</a>
+								<a href="/generate/{{ item.0.KDMataKuliah }}/pdf" target="_blank" class="btn btn-primary">Print</a>
+							</div>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 /**
- * momentRender Class for SAR Application
+ * dataTables Class for SAR Application
  *
- * this file defines momentRender components for SAR Application.
+ * this file defines dataTables components for SAR Application.
  *
  * LICENSE: This source file is subject to version 2 of the GNU General Public
  * License that is avalaible in the LICENSE file on the project root directory.
@@ -18,21 +18,13 @@
 
 'use strict';
 
-var moment = require('moment');
+var tables = require('datatables-bootstrap3-plugin');
 
 $(document).ready(function() {
-  moment.locale('id');
-  $('[data-moment-render]').each(function(index) {
+  $('[data-render-table]').each(function(index) {
     var $this = $(this);
-    var $text = $this.text();
-    var $time = moment($text);
-
-    if ($time > moment().add(6, 'months')) {
-      $this.text($time.format('Do MMMM'));
-    } else if ($time > moment().add(3, 'days')) {
-      $this.text($time.format('dddd, Do MMMM'));
-    } else {
-      $this.text($time.fromNow());
-    }
+    $this.DataTable({
+      'pagingType': 'simple_numbers'
+    });
   });
 });
