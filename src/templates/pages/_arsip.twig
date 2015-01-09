@@ -9,6 +9,19 @@
 		<div class="col-lg-12">
 			<h1 class="page-header">Arsip Matakuliah</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
+			{% if not username is empty %}
+			<div class="page-form form-inline hidden-xs">
+				<div class="btn-group">
+					{% if isCurrent %}
+					<a href="/arsip" class="btn btn-default">Semua</a>
+					<a href="/arsip?current" class="btn btn-primary">Milik Saya</a>
+					{% else %}
+					<a href="/arsip" class="btn btn-primary">Semua</a>
+					<a href="/arsip?current" class="btn btn-default">Milik Saya</a>
+					{% endif %}
+				</div>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 	<div class="row">

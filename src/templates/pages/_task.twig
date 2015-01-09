@@ -105,7 +105,7 @@
 		</div>
 	</div>
 </div>
-{% if not tasks %}
+{% if not tasks or not isComplete %}
 	{% set btnDisabled = true %}
 {% endif %}
 {% include 'components/_right-bar.twig' with {'pageTitle': 'Task/Project', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit', 'bumper': [currPath, '/bump']|join, 'saver': [currPath, '/submit']|join, 'btnDisabled': btnDisabled }  %}

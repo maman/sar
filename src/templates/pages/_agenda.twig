@@ -133,7 +133,7 @@
 		</div>
 	</div>
 </div>
-{% if not agendas %}
+{% if not agendas or not isComplete %}
 	{% set btnDisabled = true %}
 {% endif %}
 {% include 'components/_right-bar.twig' with {'pageTitle': 'Agenda', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit', 'bumper': [currPath, '/bump']|join, 'saver': [currPath, '/submit']|join, 'btnDisabled': btnDisabled }  %}

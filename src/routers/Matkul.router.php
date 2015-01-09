@@ -77,5 +77,5 @@ $app->get('/matakuliah/:idMatkul/submit', $authenticate($app), $accessmatkul, fu
     $rps = new Rps();
     $rps->submitRPS($idMatkul, $_SESSION['nip']);
     $rps->updateProgress($_SESSION['nip']);
-    $app->redirect('/matakuliah');
+    $app->redirect('/matakuliah?filter=wait');
 });

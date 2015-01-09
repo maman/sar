@@ -19,17 +19,37 @@
 
 use SAR\models\Approval;
 use SAR\models\Rps;
+use Functional as F;
 
 $app->get('/arsip', function () use ($app) {
     $currPath = $app->request()->getPath();
     $approval = new Approval();
+    $results = $approval->getAllApprovedMatkul(false);
     if (isset($_SESSION['nip'])) {
-        $results = $approval->getAllApprovedMatkul(true);
+        if (isset($_GET['current'])) {
+            $filtered = F\select($results, function ($item, $key, $val) {
+                return $item[0]['NIP'] == $_SESSION['nip'];
+            });
+            $results = $filtered;
+            $app->render('pages/_arsip.twig', array(
+                'currPath' => $currPath,
+                'results' => $results,
+                'isCurrent' => 'true'
+            ));
+        } else {
+            $app->render('pages/_arsip.twig', array(
+                'currPath' => $currPath,
+                'results' => $results
+            ));
+        }
     } else {
-        $results = $approval->getAllApprovedMatkul(false);
+        if (isset($_GET['current'])) {
+            $app->render('pages/_404.twig');
+        } else {
+            $app->render('pages/_arsip.twig', array(
+                'currPath' => $currPath,
+                'results' => $results
+            ));
+        }
     }
-    $app->render('pages/_arsip.twig', array(
-        'currPath' => $currPath,
-        'results' => $results
-    ));
 });

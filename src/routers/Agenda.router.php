@@ -21,6 +21,7 @@ use SAR\models\Silabus;
 use SAR\models\Agenda;
 use SAR\models\Kategori;
 use SAR\models\Rps;
+use Functional as F;
 
 /** GET request on `/matakuliah/:idMatkul/agenda` */
 $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
@@ -41,10 +42,16 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
     }
     $startDate = $rps->agendaStart;
     $lastEditDate = $rps->agendaLastEdit;
+    $completionArray = array();
+    foreach ($agendas as $item) {
+        array_push($completionArray, F\truthy($item));
+    }
+    $isComplete = F\truthy($completionArray);
     $app->render('pages/_agenda.twig', array(
         'idMatkul' => $idMatkul,
         'startDate' => $startDate,
         'lastEditDate' => $lastEditDate,
+        'isComplete' => $isComplete,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
@@ -122,7 +129,8 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
         'kompetensi' => $kategori->getAssociatedKompetensiVerbose($idMatkul, $idAgenda),
         'txtSubKompetensi' => $detailAgenda[0]['TEXT_SUB_KOMPETENSI'],
         'txtMateriBelajar' => $detailAgenda[0]['TEXT_MATERI_BELAJAR'],
-        'currPath' => $currPath
+        'currPath' => $currPath,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda'
     ));
 });
 
@@ -169,6 +177,7 @@ $app->get('/matakuliah/:idMatkul/agenda/indikator', $authenticate($app), functio
         'idAgenda' => $idAgenda,
         'indikator' => $indikator,
         'allKategori' => $allKategori,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda',
         'currPath' => $currPath
     ));
 });
@@ -212,6 +221,7 @@ $app->get('/matakuliah/:idMatkul/agenda/aktivitas', $authenticate($app), functio
     $aktivitas = $agenda->getAktivitasByAgendaID($idAgenda);
     $app->render('pages/_aktivitas.twig', array(
         'idMatkul' => $idMatkul,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda',
         'namaMatkul' => $namaMatkul,
         'idAgenda' => $idAgenda,
         'aktivitas' => $aktivitas,
@@ -269,6 +279,7 @@ $app->get('/matakuliah/:idMatkul/agenda/asesmen', $authenticate($app), function 
         'namaMatkul' => $namaMatkul,
         'idAgenda' => $idAgenda,
         'asesmen' => $asesmen,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda',
         'currPath' => $currPath
     ));
 });

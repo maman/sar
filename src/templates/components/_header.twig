@@ -13,6 +13,41 @@
 	</div>
 	<ul class="nav navbar-top-links navbar-right">
 		{% if username is not empty %}
+			{% if role == 'kaprodi' %}
+		{# <li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="fa fa-edit fa-fw"></i> Approval <i class="fa fa-caret-down"></i>
+			</a>
+			<ul class="dropdown-menu dropdown-tasks">
+				{% for matkul in matkuls %}
+					{% if matkul.percentage != '100' %}
+						<li>
+							<a href="/matakuliah/{{ matkul.KDMataKuliah }}">
+								<div>
+									<p>
+										<strong>{{ matkul.NamaMK }}</strong>
+										<span class="pull-right text-muted">{{ matkul.percentage }}% Complete</span>
+									</p>
+									<div class="progress progress-striped active">
+										<div class="progress-bar {% if matkul.percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkul.percentage == '0' %}100{% else %}{{ matkul.percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width: {% if matkul.percentage == '0' %}100%{% else %}{{ [matkul.percentage, '%']|join }}{% endif %}">
+											<span class="sr-only">{{ matkul.percentage }}% Complete (success)</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="divider"></li>
+					{% endif %}
+				{% endfor %}
+				<li>
+					<a href="/matakuliah?filter=active" class="center-block text-center">
+						<strong>All Matakuliah</strong>
+					</a>
+				</li>
+			</ul>
+			<!-- /.dropdown-tasks -->
+		</li> #}
+			{% endif %}
 			{% if matkuls is not empty and matkuls|length > 1 %}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">

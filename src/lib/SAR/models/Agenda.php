@@ -331,7 +331,9 @@ class Agenda
             FROM
                 INDIKATOR_AGENDA
             WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
+                ID_SUB_KOMPETENSI = :idAgenda
+            ORDER BY
+                INDIKATOR_AGENDA.ID_INDIKATOR ASC'
         );
         $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();
@@ -441,7 +443,7 @@ class Agenda
             WHERE
                 ID_SUB_KOMPETENSI = :idAgenda
             ORDER BY
-                ID_AKTIVITAS_AGENDA'
+                AKTIVITAS_AGENDA.ID_AKTIVITAS_AGENDA'
         );
         $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();
@@ -553,7 +555,9 @@ class Agenda
             FROM
                 ASESMEN_AGENDA
             WHERE
-                ID_SUB_KOMPETENSI = :idAgenda'
+                ID_SUB_KOMPETENSI = :idAgenda
+            ORDER BY
+                ID_ASSESMENT_SUB_KOMPETENSI'
         );
         $query->bindParam(':idAgenda', $idAgenda);
         $query->execute();

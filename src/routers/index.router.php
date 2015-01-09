@@ -49,7 +49,8 @@ $app->get('/', function () use ($app) {
         ));
     }
     if (isset($_SESSION['username'])) {
-        if (!isset($_SESSION['matkul'])) {
+        $matkulCount = count($_SESSION['matkul']);
+        if (!isset($_SESSION['matkul']) || $matkulCount < 1) {
             $app->flash('errors', "Not Yet Plotted");
             $app->log->notice("NOT PLOTTED: " . $_SESSION['username'] . " from " . $req->getIp());
             $app->redirect('/login');

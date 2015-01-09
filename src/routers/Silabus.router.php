@@ -39,9 +39,17 @@ $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, f
     }
     $startDate = $rps->silabusStart;
     $lastEditDate = $rps->silabusLastEdit;
+    $isComplete = true;
+    if ($silabus->pustaka === false || $silabus->kompetensi === false) {
+        $isComplete = false;
+    }
+    if ($new) {
+        $app->redirect('/matakuliah/' . $idMatkul . '/silabus/new');
+    }
     $app->render('pages/_silabus.twig', array(
         'currPath' => $currPath,
         'isNew' => $new,
+        'isComplete' => $isComplete,
         'startDate' => $startDate,
         'lastEditDate' => $lastEditDate,
         'namaMatkul' => $namaMatkul,
@@ -100,6 +108,7 @@ $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatk
     $silabus = new Silabus($idMatkul);
     $result = $silabus->saveOrEdit($idMatkul, '', $_POST['pokok-bahasan'], $_POST['tujuan']);
     if ($result) {
+        $rps = new Rps();
         $rps->editSilabus($idMatkul);
         $app->redirect('/matakuliah/'. $idMatkul .'/silabus');
     } else {
@@ -123,6 +132,7 @@ $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatk
     } else {
         $app->render('pages/_silabus-new.twig', array(
             'currPath' => $currPath,
+            'btnPath' => '/matakuliah/'. $idMatkul . '/silabus',
             'namaMatkul' => $namaMatkul,
             'silabus' => array(
                 'idSilabus' => $silabus->silabusID,
@@ -156,6 +166,7 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $acce
     $app->render('pages/_kompetensi.twig', array(
         'kategori' => $kategori->getAllKategori(),
         'currPath' => $currPath,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/silabus',
         'silabus' => array(
             'idSilabus' => $silabus->silabusID,
             'kompetensi' => $silabus->kompetensi
@@ -192,12 +203,15 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authent
 $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $silabus = new Silabus($idMatkul);
+    $currYear = date('Y');
     $app->render('pages/_pustaka.twig', array(
         'currPath' => $currPath,
         'silabus' => array(
             'idSilabus' => $silabus->silabusID,
             'pustaka' => $silabus->pustaka
-        )
+        ),
+        'currYear' => $currYear,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/silabus'
     ));
 });
 

@@ -298,7 +298,10 @@ class Kategori
                 KATEGORI_INDIKATOR_AGENDA INNER JOIN INDIKATOR_AGENDA
             ON
                 KATEGORI_INDIKATOR_AGENDA.ID_KETERANGAN = INDIKATOR_AGENDA.ID_KETERANGAN
-            WHERE INDIKATOR_AGENDA.ID_INDIKATOR = :idIndikator'
+            WHERE
+                INDIKATOR_AGENDA.ID_INDIKATOR = :idIndikator
+            ORDER BY
+                INDIKATOR_AGENDA.ID_INDIKATOR ASC'
         );
         $query->bindParam(':idIndikator', $idIndikator);
         $query->execute();

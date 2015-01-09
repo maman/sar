@@ -86,7 +86,7 @@
 		</div>
 	</div>
 </div>
-{% if isNew %}
+{% if isNew or not isComplete %}
 	{% set btnDisabled = true %}
 {% endif %}
 {% include 'components/_right-bar.twig' with {'pageTitle': 'Silabus', 'explanation': 'Berisi tentang ... mata kuliah', 'buttonState': 'submit', 'bumper': [currPath, '/bump']|join, 'saver': [currPath, '/submit']|join, 'btnDisabled': btnDisabled } %}

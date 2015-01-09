@@ -19,6 +19,7 @@
 use SAR\models\Matkul;
 use SAR\models\Task;
 use SAR\models\Rps;
+use Functional as F;
 
 /** GET request on `/matakuliah/:idMatkul/task` */
 $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
@@ -40,6 +41,15 @@ $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, func
     } else {
         $lastEditDate = $rps->projectLastEdit;
     }
+    $completionArray = array();
+    foreach ($tasks as $itemKey => $itemVal) {
+        foreach ($itemVal['AKTIVITAS'] as $actKey => $actVal) {
+            unset($tasks[$itemKey]['AKTIVITAS'][$actKey]['PROJECT']);
+            unset($tasks[$itemKey]['AKTIVITAS'][$actKey]['TASK']);
+            array_push($completionArray, F\truthy($tasks[$itemKey]['AKTIVITAS'][$actKey]));
+        }
+    }
+    $isComplete = F\truthy($completionArray);
     $app->render('pages/_task.twig', array(
         'idMatkul' => $idMatkul,
         'lastEditDate' => $lastEditDate,
@@ -47,6 +57,7 @@ $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, func
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
         'tasks' => $tasks,
+        'isComplete' => $isComplete,
         'currPath' => $currPath
     ));
 });
@@ -86,6 +97,7 @@ $app->get('/matakuliah/:idMatkul/task/scope', $authenticate($app), $accessmatkul
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath
     ));
 });
@@ -135,6 +147,7 @@ $app->get('/matakuliah/:idMatkul/task/metode', $authenticate($app), $accessmatku
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath
     ));
 });
@@ -184,6 +197,7 @@ $app->get('/matakuliah/:idMatkul/task/kriteria', $authenticate($app), $accessmat
         'semesterMatkul' => $semesterMatkul,
         'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath
     ));
 });
@@ -205,7 +219,7 @@ $app->post('/matakuliah/:idMatkul/task/kriteria', $authenticate($app), function 
 $app->get('/matakuliah/:idMatkul/task/kriteria/del/:idKriteria', $authenticate($app), function ($idMatkul, $idKriteria) use ($app) {
     $rps = new Rps();
     $task = new Task();
-    $result = $task->deleteScopeById($idKriteria);
+    $result = $task->deleteKriteriaById($idKriteria);
     $idAktivitas = $_GET['id'];
     if ($result) {
         $rps->editProject($idMatkul);

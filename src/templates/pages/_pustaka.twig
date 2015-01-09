@@ -50,23 +50,31 @@
 			</div>
 			<form action="#" method="POST" data-toggle="validator">
 				<section class="step" data-wizard-pages data-step-title="Kepustakaan" data-step-explanation="Berisi tentang asdasdas dari mata kuliah yang sedang dijabarkan" data-cycle-hash="kepustakaan">
-					<div class="form-group kepustakaan" data-multi-target-parent>
+					<div class="kepustakaan" data-multi-target-parent>
 						<div class="kepustakaan" data-multi-target>
 							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
 							<div class="row">
 								<div class="col-sm-9">
-									<input type="text" class="form-control" name="judul" placeholder="Judul" required>
+									<div class="form-group">
+										<input type="text" class="form-control" name="judul" placeholder="Judul" required>
+									</div>
 								</div>
 								<div class="col-sm-3">
-									<input type="number" class="form-control" name="tahun" placeholder="Tahun Terbit" required>
+									<div class="form-group">
+										<input type="number" class="form-control" min="1980" max="{{ currYear }}" name="tahun" placeholder="Tahun Terbit" required>
+									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="penerbit" placeholder="Penerbit" required>
+									<div class="form-group">
+										<input type="text" class="form-control" name="penerbit" placeholder="Penerbit" required>
+									</div>
 								</div>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="pengarang" placeholder="Pengarang" required>
+									<div class="form-group">
+										<input type="text" class="form-control" name="pengarang" placeholder="Pengarang" required>
+									</div>
 								</div>
 							</div>
 						</div>
