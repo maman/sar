@@ -29,7 +29,7 @@
 							<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
 							{% if agenda.ASESMEN.tes is not empty %}<span class="label label-info">Asesmen Tes</span>{% endif %}
 							{% if agenda.ASESMEN.nontes is not empty %}<span class="label label-info">Asesmen Non Tes</span>{% endif %}
-							<span class="label label-danger">{{ agenda.BOBOT }}</span>
+							<span class="label label-danger">{{ agenda.BOBOT }}%</span>
 							<section class="list-group-item-section">
 								<strong class="text-info">Sub Kompetensi</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								<p class="list-group-item-text">{{ agenda.TEXT_SUB_KOMPETENSI|raw }}</p>
@@ -119,7 +119,7 @@
 						</div>
 						<hr class="mini">
 						<div class="btn-group btn-group-xs pull-right" style="z-index:99">
-							<a href="{{currPath}}/del/{{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> <span class="text-allcaps">Delete</span></a>
+							<a href="#" data-alert-single data-link="{{currPath}}/del/{{ agenda.ID_SUB_KOMPETENSI }}" data-alert-message="Hapus Agenda<br>{{ agenda.TEXT_SUB_KOMPETENSI|raw }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> <span class="text-allcaps">Delete</span></a>
 						</div>
 					</div>
 				</div>

@@ -46,6 +46,7 @@
 			{% endif %}
 			{% if buttonState == 'submit' %}
 			<div class="btn-group-vertical btn-block" role="group">
+				{% if not btnDisabled %}
 				<a href="#" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-primary btn-lg" data-alert-box
 					data-alert-title="Konfirmasi"
 					data-html-template="
@@ -83,10 +84,13 @@
 						</div>
 					"
 					>Simpan</a>
+				{% else %}
+				<a href="{{ bumper }}" class="btn btn-primary btn-lg"><i class='fa fa-pencil fa-fw'></i> Simpan Draft</a>
+				{% endif %}
 				{# <a href="{{ saver }}" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-success btn-lg">Submit</a> #}
 			</div>
 			{% elseif buttonState == 'back' %}
-			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">Selesai</a>
+			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">{% if isBack %}Selesai{% else %}Simpan{% endif %}</a>
 			{% else %}
 			{% endif %}
 		</div>

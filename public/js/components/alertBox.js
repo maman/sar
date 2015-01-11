@@ -35,3 +35,16 @@ $(document).on('click.sar.alert-box', '[data-alert-box]', function(e) {
   box.modal('show');
   fun.adjustModal();
 });
+
+$(document).on('click.sar.alert-box-single', '[data-alert-single]', function(e) {
+  var $this = $(this);
+  var $link = $this.data('link');
+  var $msg = $this.data('alertMessage');
+  if ($this.is('a')) e.preventDefault();
+  bootbox.confirm($msg, function (result){
+    if (result) {
+      document.location=$link;
+    }
+  });
+  fun.adjustModal();
+});

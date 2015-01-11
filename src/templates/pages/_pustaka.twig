@@ -27,7 +27,7 @@
 				{% if silabus.pustaka %}
 					{% for pustaka in silabus.pustaka %}
 				<div class="pustaka" data-multi-target data-name="pustaka">
-					<a href="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a href="#" data-alert-single data-link="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" data-alert-message="Hapus Pustaka - {{ pustaka.JUDUL_PUSTAKA }}?" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<div class="row">
 						<div class="col-sm-9">
 							<input type="text" class="form-control" disabled name="judul" placeholder="Judul" value="{{ pustaka.JUDUL_PUSTAKA }}">

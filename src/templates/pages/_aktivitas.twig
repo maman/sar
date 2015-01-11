@@ -27,7 +27,7 @@
 				{% if aktivitas %}
 					{% for item in aktivitas %}
 				<div class="indikator clearfix" data-multi-target data-name="indikator">
-					<a href="{{currPath}}/del/{{ item.ID_AKTIVITAS_AGENDA }}?id={{ idAgenda }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a href="#" data-alert-single data-link="{{currPath}}/del/{{ item.ID_AKTIVITAS_AGENDA }}?id={{ idAgenda }}" data-alert-message="Hapus Aktivitas<br><strong><em>{{ item.TEXT_AKTIVITAS_AGENDA }}</em></strong>" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<div class="col-md-8">
 						<textarea class="form-control input-lg" disabled name="textIndikator" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable">{{ item.TEXT_AKTIVITAS_AGENDA }}</textarea>
 					</div>

@@ -1,6 +1,6 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}Error 403{% endblock %}
+{% block pagetitle %}Tidak Diijinkan{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -11,9 +11,9 @@
 					<h3 class="panel-title">Error 403</h3>
 				</div>
 				<div class="panel-body">
-					<p>The current url <code>{{ url }}</code> is restricted to a specific user.</p>
-					<p>To access this resource, Log out and Log in again with a previlleged user.</p>
-					<a href="/" class="btn btn-warning btn-block">Return to Homepage</a>
+					<p>url dengan alamat <code>{{ url }}</code> hanya boleh diakses oleh user tertentu.</p>
+					<p>untuk masuk dalam halaman ini, silahkan lakukan <em>Log Out</em> dan <em>Log In</em> dengan user yang bersangkutan.</p>
+					<a href="/" class="btn btn-warning btn-block">Kembali ke Halaman Utama</a>
 				</div>
 			</div>
 		</div>

@@ -27,7 +27,7 @@ $app->notFound(function () use ($app) {
 });
 
 /** HTTP 500 */
-$app->error(function(\Exception $e) use ($app) {
+$app->error(function (\Exception $e) use ($app) {
     if ($app['mode'] === 'development') {
         echo($e->getMessage());
         debug_print_backtrace();

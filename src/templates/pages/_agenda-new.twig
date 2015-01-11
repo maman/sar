@@ -26,7 +26,10 @@
 					</div>
 					<div class="col-xs-6 form-group">
 						<label for="bobot">Bobot Agenda</label>
-						<input class="form-control input-lg" type="text" name="bobot" id="bobot" value="{{ bobot }}" placeholder="Bobot Agenda" pattern="^((100)|(\d{0,2}))%$" data-error="Persentase tidak boleh kosong" data-match-error="format tidak dikenal" required>
+						<div class="input-group input-group-lg">
+							<input class="form-control" type="text" name="bobot" id="bobot" value="{{ bobot }}" placeholder="Bobot Agenda" pattern="^((100)|(\d{0,2}))$" data-remote="http://{{ baseUrl }}/api/v1/agenda/checkPercentage/{{ idMatkul }}" data-error="Persentase tidak boleh kosong" data-pattern-error="Format tidak dikenal" data-remote-error="Persentase total {{ namaMatkul }} melebihi 100%" required>
+							<span class="input-group-addon">%</span>
+						</div>
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>

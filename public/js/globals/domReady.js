@@ -30,6 +30,7 @@ var domReady = function() {
         }
       });
     }
+    $('[data-toggle="tooltip"]').tooltip();
   });
 };
 

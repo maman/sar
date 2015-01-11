@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			{% if idMatkul is defined %}
-			<h1 class="page-header">Detail progress untuk {{ namaMatkul }}</h1>
+			<h1 class="page-header">Detail untuk {{ namaMatkul }}</h1>
 			{% else %}
 			<h1 class="page-header">Daftar Mata Kuliah</h1>
 			<form action="#" class="page-form form-inline hidden-xs" method="GET">
@@ -38,7 +38,7 @@
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3 col-sm-3">
+						<div class="col-md-3 col-xs-12">
 							<div class="panel panel-info">
 								<div class="panel-heading text-center">
 									<strong>Revisi Ke</strong>
@@ -48,19 +48,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-9 col-sm-9">
-							<div class="list-group list-noborder">
-								<div class="list-group-item">
-									<small class="text-muted"><strong>Tanggal Diperiksa</strong></small>
-									<br>
-									<span data-moment-render>{{ progress.tglPeriksa }}</span>
+						<div class="col-md-9 col-xs-12">
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">
+									<strong>Catatan Revisi Terakhir</strong>
 								</div>
-								<div class="list-group-item">
-									<small class="text-muted"><strong>Revisi</strong></small>
-									<br>
-									<span>
-										{% if progress.versi > 1 %}{{ progress.notePeriksa }}{% else %}-{% endif %}
-									</span>
+								<div class="panel-body">
+									<p>{% if progress.versi > 1 %}{{ progress.notePeriksa }}{% else %}-{% endif %}</p>
 								</div>
 							</div>
 						</div>
@@ -77,7 +71,7 @@
 						<a href="{{ currPath }}/silabus" class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if progress.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if progress.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if progress.RPSDetails.silabus == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Silabus <span class="pull-right label label-success">finished</span>{% endif %}
 						{% if progress.RPSDetails.silabus == 'finish' %}
 						</div>
@@ -87,10 +81,10 @@
 						{% if progress.RPSDetails.agenda == 'finish' %}
 						<div class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
 						{% else %}
-						<a href="{% if progress.RPSDetails.silabus == 'never' %}#{% else %}{{ currPath }}/agenda{% endif %}" class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
+						<a href="{% if progress.RPSDetails.silabus == 'never' or progress.RPSDetails.silabus == 'work' %}#{% else %}{{ currPath }}/agenda{% endif %}" class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.agenda == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Agenda <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if progress.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if progress.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if progress.RPSDetails.agenda == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Agenda <span class="pull-right label label-success">finished</span>{% endif %}
 						{% if progress.RPSDetails.agenda == 'finish' %}
 						</div>
@@ -100,10 +94,10 @@
 						{% if progress.RPSDetails.project == 'finish' %}
 						<div class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
 						{% else %}
-						<a href="{% if progress.RPSDetails.agenda == 'never' %}#{% else %}{{ currPath }}/task{% endif %}" class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
+						<a href="{% if progress.RPSDetails.agenda == 'never' or progress.RPSDetails.agenda == 'work' %}#{% else %}{{ currPath }}/task{% endif %}" class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.project == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Task&#47;Project <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if progress.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if progress.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if progress.RPSDetails.project == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Task&#47;Project <span class="pull-right label label-success">finished</span>{% endif %}
 						{% if progress.RPSDetails.project == 'finish' %}
 						</div>
@@ -135,7 +129,7 @@
 					<h4 class="list-group-item-heading">Maaf, Tidak ada hasil {{ namaMatkul }}</h4>
 					<p class="list-group-item-text">Filter yang anda berikan tidak membuahkan hasil. Coba ganti atau hilangkan filter dengan memilih tombol dibawah</p>
 					<br>
-					<a href="/matakuliah" class="btn btn-large btn-success"><i class="fa fa-plus"> <strong>Kembali</strong></i></a>
+					<a href="/matakuliah" class="btn btn-large btn-success"><i class="fa fa-minus"> <strong>Hilangkan Filter</strong></i></a>
 				</div>
 			</div>
 		</div>
@@ -163,24 +157,24 @@
 					<div class="list-group">
 						<div class="list-group-item{% if matkul.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 							{% if matkul.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if matkul.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if matkul.RPSDetails.silabus == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Silabus <span class="pull-right label label-success">finished</span>{% endif %}
 						</div>
 						<div class="list-group-item{% if matkul.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
 							{% if matkul.RPSDetails.agenda == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Agenda <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if matkul.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if matkul.RPSDetails.agenda == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Agenda <span class="pull-right label label-success">finished</span>{% endif %}
 						</div>
 						<div class="list-group-item{% if matkul.RPSDetails.project == 'never' %} list-group-item-warning{% elseif matkul.RPSDetails.project == 'work' %} list-group-item-info{% elseif matkul.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
 							{% if matkul.RPSDetails.project == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Task&#47;Project <span class="pull-right label label-danger">unfinished</span>{% endif %}
-							{% if matkul.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">writing &hellip;</span>{% endif %}
+							{% if matkul.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">draft</span>{% endif %}
 							{% if matkul.RPSDetails.project == 'finish' %}<i class="fa fa-check fa-fw text-success"><span class="sr-only">Selesai: </span></i> Task&#47;Project <span class="pull-right label label-success">finished</span>{% endif %}
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
-								<a href="/generate/{{ matkul.KDMataKuliah }}/pdf" {% if matkul.approved != 'approved' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Cetak RPS</a>
+								<a href="/dokumen/{{ matkul.KDMataKuliah }}" {% if matkul.approved != 'approved' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Dokumen RPS</a>
 								<a href="{{ currPath }}/{{ matkul.KDMataKuliah }}/submit" {% if matkul.approved != 'never' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>

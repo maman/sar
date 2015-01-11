@@ -122,6 +122,7 @@ $app->get('/review', $kaprodi, function () use ($app) {
 });
 
 $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
+    $req = $app->request();
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
     $rps = new Rps();
@@ -129,7 +130,15 @@ $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
     $agenda = new Agenda();
     $task = new Task();
     $rps->getRpsByIdMatkul($idMatkul);
-    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $matkulDetails = $matkul->getMatkulDetails($idMatkul);
+    if ($matkulDetails) {
+        $details = $matkulDetails[0];
+    } else {
+        $app->render('pages/_500.twig', array(
+            'url' => $req->getUrl() . $req->getPath()
+        ), 500);
+        $app->stop();
+    }
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
     $tahunMatkul = $details['TahunAjaranMK'];

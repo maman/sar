@@ -27,7 +27,7 @@
 				{% if asesmen %}
 					{% for item in asesmen %}
 				<div class="indikator clearfix" data-multi-target data-name="indikator">
-					<a href="{{currPath}}/del/{{ item.ID_ASSESMENT_SUB_KOMPETENSI }}?id={{ idAgenda }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a href="#" data-alert-single data-link="{{currPath}}/del/{{ item.ID_ASSESMENT_SUB_KOMPETENSI }}?id={{ idAgenda }}" data-alert-message="Hapus Asesmen<br><strong><em>{{ item.NAMA_ASSESMENT_SUB_KOMPETENSI }}</em></strong>" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<div class="col-md-10">
 						<textarea class="form-control input-lg" disabled name="textAsesmen" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable">{{ item.NAMA_ASSESMENT_SUB_KOMPETENSI }}</textarea>
 					</div>

@@ -27,7 +27,7 @@
 				{% if collection %}
 					{% for item in collection %}
 				<div class="indikator" data-multi-target data-name="indikator">
-					<a href="{{currPath}}/del/{% if item.ID_SCOPE %}{{ item.ID_SCOPE }}{% elseif item.ID_METODE %}{{ item.ID_METODE }}{% elseif item.ID_KRITERIA %}{{ item.ID_KRITERIA }}{% endif %}?id={{ idAktivitas }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a href="#" data-alert-single data-link="{{currPath}}/del/{% if item.ID_SCOPE %}{{ item.ID_SCOPE }}{% elseif item.ID_METODE %}{{ item.ID_METODE }}{% elseif item.ID_KRITERIA %}{{ item.ID_KRITERIA }}{% endif %}?id={{ idAktivitas }}" data-alert-message="Hapus {% if item.ID_SCOPE %}Scope{% elseif item.ID_METODE %}Metode{% elseif item.ID_KRITERIA %}Kriteria{% endif %}<br><strong><em>{% if item.ID_SCOPE %}{{ item.TEXT_SCOPE }}{% elseif item.ID_METODE %}{{ item.TEXT_METODE }}{% elseif item.ID_KRITERIA %}{{ item.TEXT_KRITERIA }}{% endif %}</em></strong>?" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{% if item.TEXT_SCOPE %}{{ item.TEXT_SCOPE }}{% elseif item.TEXT_METODE %}{{ item.TEXT_METODE }}{% elseif item.TEXT_KRITERIA %}{{ item.TEXT_KRITERIA }}{% endif %}</textarea>
 				</div>
 					{% endfor %}

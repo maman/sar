@@ -141,6 +141,19 @@ class Agenda
         }
     }
 
+    public function getAgendaPercentage($idMatkul)
+    {
+        $agendas = $this->getAgendaByMatkul($idMatkul);
+        if ($agendas) {
+            $bobot = F\pluck($agendas, 'BOBOT');
+            $totalValue = F\sum($bobot);
+            array_push($bobot, array('total' => $totalValue));
+            return $bobot;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Get Detail Agenda from the provided $idAgenda
      * @param  string $idAgenda

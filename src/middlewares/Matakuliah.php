@@ -30,14 +30,21 @@ use Functional as F;
 $accessmatkul = function ($route) use ($app) {
     $req = $app->request();
     $idMatkul = $route->getParams();
+    $truth = array();
     foreach ($_SESSION['matkul'] as $matkul) {
-        if (!F\contains($matkul, $idMatkul['idMatkul'])) {
-            if ($_SESSION['role'] != 'kaprodi') {
-                $app->log->error(
-                    "403: " . $req->getUrl() . $req->getPath()." - SessionDump: [" . var_export($_SESSION, true) . "]"
-                );
-                $app->redirect('/', 403);
-            }
-        }
+        array_push($truth, F\contains($matkul, $idMatkul['idMatkul']));
+    }
+    if (!F\contains($truth, true)) {
+        // if ($_SESSION['role'] != 'kaprodi') {
+        $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Matakuliah ini');
+        $app->render('pages/_403.twig', array(
+            'url' => $req->getUrl() . $req->getPath()
+        ), 403);
+        $app->log->error(
+            "403: " . $req->getUrl() . $req->getPath() ." - User " . $_SESSION['username'] . " Not Authorized to accessing matakuliah with ID " . $idMatkul['idMatkul']
+        );
+        $app->stop();
+            // $app->redirect('/', 403);
+        // }
     }
 };

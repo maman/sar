@@ -94,7 +94,9 @@ $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($id
         'kompetensi' => $kategori->getAllKompetensiByMatkul($idMatkul),
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
-        'currPath' => $currPath
+        'currPath' => $currPath,
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda',
+        'isBack' => true
     ));
 });
 
@@ -133,7 +135,8 @@ $app->get('/matakuliah/:idMatkul/agenda/edit', $authenticate($app), function ($i
         'txtSubKompetensi' => $detailAgenda[0]['TEXT_SUB_KOMPETENSI'],
         'txtMateriBelajar' => $detailAgenda[0]['TEXT_MATERI_BELAJAR'],
         'currPath' => $currPath,
-        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda'
+        'btnPath' => '/matakuliah/'. $idMatkul . '/agenda',
+        'isBack' => true
     ));
 });
 

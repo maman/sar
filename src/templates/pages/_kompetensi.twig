@@ -27,7 +27,7 @@
 				{% if silabus.kompetensi %}
 					{% for kompetensi in silabus.kompetensi %}
 				<div class="kompetensi" data-multi-target data-name="kompetensi">
-					<a href="{{currPath}}/del/{{ kompetensi.ID_KOMPETENSI }}" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a data-alert-single data-link="{{currPath}}/del/{{ kompetensi.ID_KOMPETENSI }}" href="#" class="multi-close" data-alert-message="Hapus Kompetensi - {{ kompetensi.NAMA_KOMPETENSI }}?"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<input type="hidden" name="idKompetensi" value="{{ kompetensi.ID_KOMPETENSI }}">
 					<textarea class="form-control input-lg" disabled name="text" data-id="[text]" rows="3" placeholder="lorem" data-multiline="disable">{{ kompetensi.NAMA_KOMPETENSI }}</textarea>
 					<select multiple name="kategori[]" class="form-control input-plain" disabled data-input-autosave data-form-multitag data-placeholder="Kategori">

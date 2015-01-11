@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Document router for SAR Application
+ * Dokumen router for SAR Application
  *
  * this file contains route definition and logic for `/dokumen` route.
  *
