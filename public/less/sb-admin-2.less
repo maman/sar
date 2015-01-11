@@ -10,7 +10,8 @@
 @import "plugins/datatables.less";
 @import "plugins/centerModal.less";
 @import "plugins/select2.less";
-@import "plugins/timeline.less";
+@import "plugins/textEditor.less";
+// @import "plugins/timeline.less";
 @import "plugins/toggle.less";
 
 // Additional Components
@@ -51,23 +52,30 @@ body {
 #page-wrapper {
 	padding: 0 15px;
     // min-height: 568px;
-    background-color: white;
+  background-color: white;
+  &.full-page-force {
+  	margin: 0;
   }
+}
 
-  @media(min-width:768px) {
-  	#page-wrapper {
-  		position: inherit;
-  		margin: 0 0 0 250px;
-  		padding: 0 30px;
-  		border-left: 1px solid darken(@gray-lightest, 6.5%);
-  		.transition(margin .1s ease-in-out);
-  		&.full-page {
-  			.transition(margin .3s ease-in-out);
-  			margin: 0 300px 0 50px;
-  			border-right: 1px solid @gray-lighter;
-  		}
-  	}
-  }
+@media(min-width:768px) {
+	#page-wrapper {
+		position: inherit;
+		margin: 0 0 0 250px;
+		padding: 0 30px;
+		border-left: 1px solid darken(@gray-lightest, 6.5%);
+		.transition(margin .1s ease-in-out);
+		&.full-page {
+			.transition(margin .3s ease-in-out);
+			margin: 0 300px 0 50px;
+			border-right: 1px solid @gray-lighter;
+		}
+		&.full-page-force {
+			margin: 0 0 0 50px;
+			padding: 0;
+		}
+	}
+}
 
 // Navigation
 

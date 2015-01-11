@@ -27,9 +27,11 @@ $(document).on('click.sar.alert-box', '[data-alert-box]', function(e) {
   var $title = $this.data('alertTitle');
   var $template = $this.data('htmlTemplate');
   if ($this.is('a')) e.preventDefault();
-  bootbox.dialog({
+  var box = bootbox.dialog({
     title: $title,
-    message: $template
+    message: $template,
+    show: false
   });
+  box.modal('show');
   fun.adjustModal();
 });

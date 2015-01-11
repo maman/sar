@@ -17,7 +17,8 @@
     "tests"
   ],
   "resolutions": {
-    "jquery": ">= 1.9.0"
+    "jquery": ">= 1.9.0",
+    "components-font-awesome": "4.2.x"
   },
   "dependencies": {
     "bootstrap": "~3.2.0",

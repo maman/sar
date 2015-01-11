@@ -5,18 +5,45 @@
 {% endif %}
 	<div class="panel panel-right">
 		<div class="panel-body">
-			<h4 class="page-header" data-wizard-step-title>{{ pageTitle }}</h4>
-			<p data-wizard-step-explanation>{{ explanation }}</p>
+			<h4 class="page-header">{{ pageTitle }}</h4>
+			<p>{{ explanation }}</p>
 			<ul class="list-group">
-				<li class="list-group-item"><small><strong class="text-muted">Revisi</strong></small><br>01</li>
 				{% if startDate is defined %}
 				<li class="list-group-item"><small><strong class="text-muted">Start Date</strong></small><br><span data-moment-render>{{ startDate }}</span></li>
 				{% endif %}
 				{% if lastEditDate is defined %}
 				<li class="list-group-item"><small><strong class="text-muted">Last Edit</strong></small><br><span data-moment-render>{% if lastEditDate is not null %}{{ lastEditDate }}{% else %}Never{% endif %}</span></li>
 				{% endif %}
-				<li class="list-group-item"><small><strong class="text-muted">Status</strong></small><br><span class="text-danger">Unapproved</span></li>
 			</ul>
+			{% if isReview %}
+				{% if idApproval or role == "kaprodi"%}
+			<div class="btn-group btn-group-justified btn-block" role="group">
+				<a href="/approval/{{ idApproval }}/approve?id={{ idMatkul }}" class="btn btn-success btn-lg">Approve</a>
+				<a href="#" class="btn btn-lg btn-danger" data-alert-box data-editor-enabled="true"
+					data-alert-title="Konfirmasi Reject RPS"
+					data-html-template="
+					<form action='/approval/{{ idApproval }}/reject' method='POST'>
+						<div class='row' style='margin-bottom: 1em'>
+							<div class='col-lg-12'>
+								<input type='hidden' name='idMatkul' value='{{ idMatkul }}'>
+								<label for='review'><span class='sr-only'>Review</span></label>
+								<textarea class='form-control' name='review' id='review' cols='30' rows='10' placeholder='Review' data-render-editor></textarea>
+							</div>
+						</div>
+						<div class='row'>
+							<div class='col-lg-6 col-sm-12 col-lg-offset-3'>
+								<div class='btn-group btn-group-justified'>
+									<a href='#' data-dismiss='modal' class='btn btn-primary'><i class='fa fa-check fa-fw'></i> Cancel</a>
+									<div class='btn-group'><button class='btn btn-danger' type='submit'><i class='fa fa-check fa-fw'></i> Reject</button></div>
+								</div>
+							</div>
+						</div>
+					</form>
+					">Reject</a>
+			</div>
+				{% endif %}
+			<a href="#" onclick="window.close();return false;" class="btn btn-block btn-primary btn-lg">Kembali</a>
+			{% endif %}
 			{% if buttonState == 'submit' %}
 			<div class="btn-group-vertical btn-block" role="group">
 				<a href="#" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-primary btn-lg" data-alert-box
@@ -33,12 +60,12 @@
 										<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>Finished</em>. Pilih menu ini saat anda merasa bahwa data yang diinputkan sudah benar dan sesuai. Setelah anda melakukan proses submit, anda tidak diperkenankan mengubah ulang data yang ada.</p>
 									'
 								><i class='fa fa-question fa-fw'><span class='sr-only'>Help</span></i></a> #}
-								<h3>Lanjutkan</h3>
+								<h3>Draft</h3>
 								<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>On Progress</em>. Apabila anda memilih menu ini, maka anda dapat mengedit ulang dan menyesuaikan data yang ada.</p>
 							</div>
 							<div class='col-lg-6'>
 								<h3>Submit</h3>
-								<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>Finished</em>. Pilih menu ini saat anda merasa bahwa data yang diinputkan sudah benar dan sesuai. Setelah anda melakukan proses submit, anda tidak diperkenankan mengubah ulang data yang ada.</p>
+								<p>Sistem akan menyimpan isi dari masukan, dan melakukan <em>update</em> status menjadi <em>Finished</em>. Pilih menu ini saat anda merasa bahwa data yang diinputkan sudah benar dan sesuai. Setelah anda melakukan proses submit, anda <b>tidak diperkenankan mengubah ulang</b> data yang ada.</p>
 							</div>
 						</div>
 						<div class='row'>
@@ -49,7 +76,7 @@
 						<div class='row'>
 							<div class='col-lg-12'>
 								<div class='btn-group btn-group-justified'>
-									<a href='{{ bumper }}' class='btn btn-primary'><i class='fa fa-pencil fa-fw'></i> Lanjutkan lagi nanti</a>
+									<a href='{{ bumper }}' class='btn btn-primary'><i class='fa fa-pencil fa-fw'></i> Draft</a>
 									<a href='{{ saver }}' class='btn btn-success'><i class='fa fa-check fa-fw'></i> Submit</a>
 								</div>
 							</div>
@@ -59,7 +86,7 @@
 				{# <a href="{{ saver }}" class="{% if btnDisabled %}disabled {% endif %}btn btn-block btn-success btn-lg">Submit</a> #}
 			</div>
 			{% elseif buttonState == 'back' %}
-			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">Kembali</a>
+			<a href="{{ btnPath }}" class="btn btn-block btn-primary btn-lg">Selesai</a>
 			{% else %}
 			{% endif %}
 		</div>

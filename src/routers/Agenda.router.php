@@ -42,11 +42,14 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
     }
     $startDate = $rps->agendaStart;
     $lastEditDate = $rps->agendaLastEdit;
-    $completionArray = array();
-    foreach ($agendas as $item) {
-        array_push($completionArray, F\truthy($item));
+    $isComplete = false;
+    if ($agendas) {
+        $completionArray = array();
+        foreach ($agendas as $item) {
+            array_push($completionArray, F\truthy($item));
+        }
+        $isComplete = F\truthy($completionArray);
     }
-    $isComplete = F\truthy($completionArray);
     $app->render('pages/_agenda.twig', array(
         'idMatkul' => $idMatkul,
         'startDate' => $startDate,

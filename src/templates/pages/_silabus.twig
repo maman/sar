@@ -28,7 +28,7 @@
 					<div class="list-group-toggle">
 						<section class="list-group-item-section">
 							<strong class="text-info h3 sheet-heading">Tujuan <a href="{{ currPath }}/edit" class="btn btn-warning pull-right">Edit</a></strong>
-							<p class="list-group-item-text">{{ silabus.tujuan }}</p>
+							<p class="list-group-item-text">{{ silabus.tujuan|raw }}</p>
 						</section>
 						<section class="list-group-item-section">
 							{% if silabus.kompetensi %}
@@ -57,7 +57,7 @@
 						</section>
 						<section class="list-group-item-section">
 							<strong class="text-info h3 sheet-heading">Pokok Bahasan <a href="{{ currPath }}/edit" class="btn btn-warning pull-right">Edit</a></strong>
-							<p class="list-group-item-text">{{ silabus.pokokBahasan }}</p>
+							<p class="list-group-item-text">{{ silabus.pokokBahasan|raw }}</p>
 						</section>
 						<section class="list-group-item-section">
 							{% if silabus.pustaka %}

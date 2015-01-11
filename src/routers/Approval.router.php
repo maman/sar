@@ -34,6 +34,7 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
     $matkul = new Matkul();
     $rps = new Rps();
     $results = $approval->getAllApproval();
+    $flash = $app->view()->getData('flash');
     if ($results) {
         foreach ($results as $num => $result) {
             $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
@@ -42,6 +43,12 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
             $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
             $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
             $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
+        }
+        if (isset($flash['msg'])) {
+            $msg = $flash['msg'];
+            $app->view->appendData(array(
+                'msg' => $msg
+            ));
         }
         if (isset($_GET['filter'])) {
             if ($_GET['filter'] == 'pending') {
@@ -78,10 +85,14 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
 $app->get('/approval/:idApproval/approve', $authenticate($app), $kaprodi, function ($idApproval) use ($app) {
     $rps = new Rps();
     $approval = new Approval();
+    $matkul = new Matkul();
     $result = $rps->approve($_GET['id']);
+    $matkulName = $matkul->getMatkulName($_GET['id']);
+    $result = true;
     if ($result) {
         $approval->approveMatkul($idApproval, $_SESSION['nip']);
         $rps->updateProgress($_SESSION['nip']);
+        $app->flash('msg', 'Request untuk mata kuliah ' . $matkulName . ' berhasil diapprove');
         $app->redirect('/approval?filter=pending');
     } else {
         $app->stop();
@@ -92,10 +103,14 @@ $app->post('/approval/:idApproval/reject', $authenticate($app), $kaprodi, functi
     $rps = new Rps();
     $rps->getRpsByIdMatkul($_POST['idMatkul']);
     $approval = new Approval();
+    $matkul = new Matkul();
     $result = $approval->rejectMatkul($idApproval, $_SESSION['nip'], $_POST['review']);
+    $matkulName = $matkul->getMatkulName($_POST['idMatkul']);
+    $result = true;
     if ($result) {
         $rps->resetAndBump($_POST['idMatkul']);
         $rps->updateProgress($_SESSION['nip']);
+        $app->flash('msg', 'Request untuk mata kuliah ' . $matkulName . ' direject');
         $app->redirect('/approval?filter=pending');
     } else {
         $app->stop();
@@ -103,7 +118,7 @@ $app->post('/approval/:idApproval/reject', $authenticate($app), $kaprodi, functi
 });
 
 $app->get('/review', $kaprodi, function () use ($app) {
-    $app->redirect('/approval');
+    $app->redirect('/approval?filter=pending');
 });
 
 $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
@@ -120,6 +135,12 @@ $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
     $tahunMatkul = $details['TahunAjaranMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
     $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
+    if (isset($_GET['id'])) {
+        $idApproval = $_GET['id'];
+        $app->view->appendData(array(
+            'idApproval' => $idApproval
+        ));
+    }
     $app->render('pages/_review.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,

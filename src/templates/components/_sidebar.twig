@@ -17,14 +17,17 @@
 				</form>
 				<!-- /input-group -->
 			</li> #}
-			{% if username and matkuls is not empty %}
 			<li>
 				<a href="/"><i class="fa fa-dashboard fa-fw"></i> <span>Home</span></a>
 			</li>
-			<li>
+			{% if username and matkuls is not empty %}
+			{# <li>
 				<a class="" href="/berita"><i class="fa fa-comments fa-fw"></i> <span>Berita</span></a>
-			</li>
+			</li> #}
 			<li>
+				<a class="" href="/matakuliah?filter=active"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span></a>
+			</li>
+			{# <li>
 				<a class="" href="#"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
@@ -37,7 +40,7 @@
 						<a href="/matakuliah?filter=approved"><i class="fa fa-archive fa-fw"></i> <span>Arsip</span></a>
 					</li>
 				</ul>
-			</li>
+			</li> #}
 			<li>
 				<a class="" href="#"><i class="fa fa-line-chart fa-fw"></i> <span>Self Assest Report</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">

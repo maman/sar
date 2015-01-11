@@ -39,6 +39,7 @@ var domLoad = function() {
       }
       if (height < 1) height = 1;
       if (height > topOffset) {
+          $('#framewrap').css('min-height', (height) + 'px');
           $('#page-wrapper').css('min-height', (height) + 'px');
       }
   });

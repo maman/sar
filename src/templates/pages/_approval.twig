@@ -22,6 +22,17 @@
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
+	{% if msg %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<strong>Sukses</strong><br>
+				{{ msg }}
+			</div>
+		</div>
+	</div>
+	{% endif %}
 	<div class="row">
 		{% if filtered %}
 			{% set filter = results %}
@@ -51,9 +62,9 @@
 						<div class="col-md-6">
 							<div class="btn-toolbar pull-right">
 								<div class="btn-group btn-group-sm">
-									<a href="/review/{{ result.KDMataKuliah }}" target="_blank" class="btn btn-primary">Review</a>
+									<a href="/review/{{ result.KDMataKuliah }}?id={{ result.ID_Approval }}" target="_blank" class="btn btn-primary">Review</a>
 									{% if result.Approval == '2' %}
-									<a href="/generate/{{ result.KDMataKuliah }}/pdf" target="_blank" class="btn btn-primary">Print</a>
+									<a href="/dokumen/{{ result.KDMataKuliah }}" target="_blank" class="btn btn-primary">Dokumen</a>
 									{% endif %}
 								</div>
 								<div class="btn-group btn-group-sm">
@@ -109,7 +120,7 @@
 							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglPeriksa }}</span></span>
 						</div>
 						{% else %}
-							{% if result.Approval == '1' %}
+							{% if result.Approval == '0' %}
 						<div class="col-sm-4 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Submit</strong>
 							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglMasuk }}</span></span>

@@ -384,33 +384,61 @@ class Approval
     /**
      * Get All Approved Matakuliah Approval for
      * archiving purpose.
-     * @param  boolean $current limit to current year range. defaults to true.
      * @return array
      */
-    public function getAllApprovedMatkul($current = true)
+    public function getAllApprovedMatkul()
     {
-        $approval = array();
-        $matkul = new Matkul;
+        // $approval = array();
+        // $matkul = new Matkul;
+        // $user = new User;
+        // $result = $matkul->getAllMatkul($current);
+        // foreach ($result as $matakuliah) {
+        //     $approvalDetail = $this->getApprovalByIdMatkul($matakuliah['KDMataKuliah']);
+        //     $namaMatkul = $matakuliah['NamaMK'];
+        //     if ($approvalDetail) {
+        //         foreach ($approvalDetail as $keyDetail => $valDetail) {
+        //             unset($approvalDetail[$keyDetail]['TglPeriksa']);
+        //             unset($approvalDetail[$keyDetail]['NIP_Periksa']);
+        //             unset($approvalDetail[$keyDetail]['NotePeriksa']);
+        //             unset($approvalDetail[$keyDetail]['NotePengesahan']);
+        //             unset($approvalDetail[$keyDetail]['Approval']);
+        //             $approvalDetail[$keyDetail]['namaMataKuliah'] = $namaMatkul;
+        //             $approvalDetail[$keyDetail]['namaSubmitter'] = $user->getUserName($approvalDetail[$keyDetail]['NIP']);
+        //             $approvalDetail[$keyDetail]['namaApprover'] = $user->getUserName($approvalDetail[$keyDetail]['NIP_Pengesahan']);
+        //         }
+        //         array_push($approval, $approvalDetail);
+        //     }
+        // }
+        // return $approval;
         $user = new User;
-        $result = $matkul->getAllMatkul($current);
-        foreach ($result as $matakuliah) {
-            $approvalDetail = $this->getApprovalByIdMatkul($matakuliah['KDMataKuliah']);
-            $namaMatkul = $matakuliah['NamaMK'];
-            if ($approvalDetail) {
-                foreach ($approvalDetail as $keyDetail => $valDetail) {
-                    unset($approvalDetail[$keyDetail]['TglPeriksa']);
-                    unset($approvalDetail[$keyDetail]['NIP_Periksa']);
-                    unset($approvalDetail[$keyDetail]['NotePeriksa']);
-                    unset($approvalDetail[$keyDetail]['NotePengesahan']);
-                    unset($approvalDetail[$keyDetail]['Approval']);
-                    $approvalDetail[$keyDetail]['namaMataKuliah'] = $namaMatkul;
-                    $approvalDetail[$keyDetail]['namaSubmitter'] = $user->getUserName($approvalDetail[$keyDetail]['NIP']);
-                    $approvalDetail[$keyDetail]['namaApprover'] = $user->getUserName($approvalDetail[$keyDetail]['NIP_Pengesahan']);
-                }
-                array_push($approval, $approvalDetail);
+        $query = $this->core->db->prepare('
+            SELECT
+                APPROVAL."ID_Approval",
+                APPROVAL."KDMataKuliah",
+                APPROVAL.NIP,
+                MATAKULIAH."NamaMK",
+                TO_CHAR("TglMasuk", \'YYYY-MM-DD HH24:MI:SS\') as "TglMasuk",
+                TO_CHAR("TglDisahkan", \'YYYY-MM-DD HH24:MI:SS\') as "TglDisahkan",
+                APPROVAL."NIP_Pengesahan",
+                MATAKULIAH."SemesterMK"
+            FROM
+                MATAKULIAH INNER JOIN APPROVAL
+            ON
+                MATAKULIAH."KDMataKuliah" = APPROVAL."KDMataKuliah"
+            WHERE
+                APPROVAL."Approval" = 2
+        ');
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            foreach ($results as $itemKey => $itemVal) {
+                $results[$itemKey]['namaSubmitter'] = $user->getUserName($results[$itemKey]['NIP']);
+                $results[$itemKey]['namaApprover'] = $user->getUserName($results[$itemKey]['NIP_Pengesahan']);
             }
+            return $results;
+        } else {
+            return false;
         }
-        return $approval;
     }
 
     /**

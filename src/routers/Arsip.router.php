@@ -28,7 +28,7 @@ $app->get('/arsip', function () use ($app) {
     if (isset($_SESSION['nip'])) {
         if (isset($_GET['current'])) {
             $filtered = F\select($results, function ($item, $key, $val) {
-                return $item[0]['NIP'] == $_SESSION['nip'];
+                return $item['NIP'] == $_SESSION['nip'];
             });
             $results = $filtered;
             $app->render('pages/_arsip.twig', array(
