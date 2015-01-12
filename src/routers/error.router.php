@@ -28,7 +28,7 @@ $app->notFound(function () use ($app) {
 
 /** HTTP 500 */
 $app->error(function (\Exception $e) use ($app) {
-    if ($app['mode'] === 'development') {
+    if ($c['config']['app.environment'] === 'development') {
         echo($e->getMessage());
         debug_print_backtrace();
     } else {
