@@ -60,7 +60,7 @@
 					<a href="/matakuliah/{{ matkul.KDMataKuliah }}">
 						<div>
 							<p>
-								<strong>{{ matkul.NamaMK }}</strong>
+								<strong>{{ matkul.NamaMK|length > 20 ? matkul.NamaMK|slice(0, 20) ~ ' ...' : matkul.NamaMK }}</strong>
 								<span class="pull-right text-muted">{{ matkul.percentage }}% Complete</span>
 							</p>
 							<div class="progress progress-striped active">
@@ -102,11 +102,11 @@
 				<i class="fa fa-user fa-fw"></i> {{ username|length > 15 ? username|slice(0, 15) ~ ' ...' : username }} <i class="fa fa-caret-down"></i>
 			</a>
 			<ul class="dropdown-menu dropdown-user">
-				<li><a href="/user"><i class="fa fa-user fa-fw"></i> User Profile</a>
+				{# <li><a href="/user"><i class="fa fa-user fa-fw"></i> User Profile</a>
 				</li>
 				<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
 				</li>
-				<li class="divider"></li>
+				<li class="divider"></li> #}
 				<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 				</li>
 			</ul>

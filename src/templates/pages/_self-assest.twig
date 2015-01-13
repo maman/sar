@@ -1,0 +1,86 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Self Assesment untuk {{ namaMatkul }}{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' %}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Self Assesment - {{ namaMatkul }}</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+{# 	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading clearfix">
+					<h4 class="pull-left panel-title" style="padding-top:7.5px">Penjaskes <small>2 Agenda Pembelajaran</small></h4>
+					<a href="#" class="btn btn-sm btn-primary pull-right">Rincian Agenda</a>
+				</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-xs-2 col-sm-1">
+									<strong>1</strong>
+								</div>
+								<div class="col-xs-10 col-sm-11">
+									<p class="list-group-item-text pull-left">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet magni inventore illum quae quis! Pariatur praesentium incidunt autem magni sit voluptas officiis tempore laboriosam reiciendis? Quos dolore explicabo magnam deleniti.</p>
+									<a href="#" class="btn btn-primary btn-sm pull-right">Rincian</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> #}
+	<div class="row row-eq-height" data-mailbox-layout>
+		<div class="col-sm-5 col-md-3 {% if not currList %}hidden-xs{% endif %} list">
+			{% for agenda in agendas %}
+			<a href="{% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}#{% else %}/sar/{{ idMatkul }}/agenda/{{ agenda.ID_SUB_KOMPETENSI }}{% endif %}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
+				<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
+				<span class="label label-danger">{{ agenda.BOBOT }}%</span>
+				<section>
+					<h5><strong>Sub Kompetensi</strong></h5>
+					<p>{{ agenda.TEXT_SUB_KOMPETENSI|raw }}</p>
+				</section>
+			</a>
+			{% endfor %}
+		</div>
+		<div class="col-sm-7 col-md-9 {% if currList %}hidden-xs{% endif %} journal {% if not sars %}journal-flex{% endif %}">
+			{% if sars %}
+			<section class="journal-toolbar top-toolbar">
+				<span class="label label-danger">{{ sars.PERSENTASE }}%</span>
+				<span class="pull-right"><i class="fa fa-calendar-o"></i> {{ sars.TGL_PELAKSANA|date('d M Y') }}</span>
+			</section>
+			<section id="journal">
+				<h2>{{ sars.NAMA_SAR }}</h2>
+				<p class="lead">{{ sars.REVIEW|raw }}</p>
+				<h2>Hambatan</h2>
+				<p>{{ sars.HAMBATAN|raw }}</p>
+			</section>
+			<section class="journal-toolbar bottom-toolbar">
+				<div class="row">
+					<div class="col-sm-7 col-sm-offset-2">
+						<div class="btn-group btn-group-justified">
+							<a href="#" class="btn btn-warning">Edit</a>
+							<a href="#" class="btn btn-danger">Delete</a>
+						</div>
+					</div>
+				</div>
+			</section>
+			{% else %}
+			<section class="journal-new">
+				<div class="row">
+					<div class="col-sm-12">
+						<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/new" class="btn btn-success btn-block"><i class="fa fa-plus"></i> Self Assesment Baru</a>
+					</div>
+				</div>
+			</section>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

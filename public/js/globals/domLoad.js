@@ -41,6 +41,7 @@ var domLoad = function() {
       if (height > topOffset) {
           $('#framewrap').css('min-height', (height) + 'px');
           $('#page-wrapper').css('min-height', (height) + 'px');
+          $('[data-mailbox-layout]').css('min-height', (height - 165) + 'px');
       }
   });
   if ($('.sidebar[data-mini]').length) {

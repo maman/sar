@@ -8,14 +8,28 @@
 	<div id="framewrap" style="position:relative;padding-top:51px;height:100%;overflow:hidden">
 		<iframe style="position:absolute;top:0;left:0;width:100%;height:100%" src="/embed/viewer.html?file=http://{{ baseUrl }}/api/v1/generate/pdf/{{ idMatkul }}" frameborder="0"></iframe>
 	</div>
+	{% if username and matkuls is not empty %}
 	<div style="position:fixed;bottom:0;width:100%;height:60px;left:0">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-7 col-sm-offset-3">
-					<a href="/api/v1/generate/pdf/{{ idMatkul }}" target="_blank" class="btn btn-lg btn-block btn-primary">Print</a>
+					<div class="btn-group btn-group-lg btn-group-justified">
+						{# <button class="btn btn-primary" onclick="printIt">Print</button> #}
+						<a href="/api/v1/generate/pdf/{{ idMatkul }}" class="btn btn-success">Download</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	{% endif %}
+	{# <iframe id='printFrame' src="/api/v1/generate/pdf/{{ idMatkul }}?print" frameborder="0" style="display:none;visibility:hidden"></iframe> #}
 </div>
+{% endblock %}
+{% block inlinejs %}
+// <script>
+// 	function printIt(){
+// 		window.frames['printFrame'].focus();
+// 		window.frames['printFrame'].print();
+// 	}
+// </script>
 {% endblock %}

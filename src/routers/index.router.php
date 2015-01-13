@@ -51,7 +51,7 @@ $app->get('/', function () use ($app) {
     if (isset($_SESSION['username'])) {
         $matkulCount = count($_SESSION['matkul']);
         if (!isset($_SESSION['matkul']) || $matkulCount < 1) {
-            $app->flash('errors', "Not Yet Plotted");
+            $app->flash('errors', "Pengguna belum dikenakan mata kuliah. Silahkan menghubungi pihak terkait untuk melakukan plotting ulang");
             $app->log->notice("NOT PLOTTED: " . $_SESSION['username'] . " from " . $req->getIp());
             $app->redirect('/login');
         }

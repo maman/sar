@@ -54,10 +54,6 @@ $app->group('/api/v1', function () use ($app) {
     /** '/generate' API Endpoint Group */
     $app->group('/generate', function () use ($app) {
         $app->get('/pdf/:idMatkul', function ($idMatkul) use ($app) {
-            // Send PDF Directly to browser A.K.A download
-            $app->response->headers->set('Content-Type', 'application/pdf');
-            $app->response->headers->set('Content-Transfer-Encoding', 'binary');
-
             $matkul = new Matkul();
             $user = new User();
             $kategori = new Kategori();
@@ -595,7 +591,15 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
             }
 
             // BRING THE FUCKERS DOOOOOWN
-            $pdf->output($title, 'I');
+            // Send PDF Directly to browser A.K.A download
+            $app->response->headers->set('Content-Type', 'application/pdf');
+            $app->response->headers->set('Content-Transfer-Encoding', 'binary');
+            // $app->response->headers->set('Content-Disposition', 'attachment; filename="RPS Mata Kuliah ' . $matkuls[0]['NamaMK'] . ' ' . $matkuls[0]['TahunAjaranMK'] . '.pdf"');
+            if (isset($_GET['print'])) {
+                $pdf->output($title, 'I');
+            } else {
+                $pdf->output($title, 'D');
+            }
         });
     });
 });

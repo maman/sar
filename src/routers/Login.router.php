@@ -64,13 +64,13 @@ $app->post('/login', function () use ($app) {
                 $app->redirect('/');
             }
         } else {
-            $app->flash('errors', "Authentication Error");
+            $app->flash('errors', "Autentifikasi Pengguna Gagal");
             $_SESSION['username'] = $req->post('username');
             $app->log->notice("LOGIN ATTEMPT: " . $username . ":" . $password . " from " . $req->getIp());
             $app->redirect('/login');
         }
     }
-    $app->flash('errors', "Username or Password cannot be empty");
+    $app->flash('errors', "Username atau Password tidak boleh kosong");
     $app->redirect('/login');
 });
 
@@ -87,5 +87,16 @@ $app->get('/logout', $authenticate($app), function () use ($app) {
         'role' => null,
         'matkuls' => null
     ));
-    $app->redirect('/');
+    // $this->output->set_header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    // $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
+    // $this->output->set_header("Cache-Control: post-check=0, pre-check=0", false);
+    // $this->output->set_header("Pragma: no-cache");
+    $app->response->header('Last-Modified', gmdate("D, d M Y H:i:s")) . ' GMT';
+    $app->response->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+    $app->response->header('Cache-Control', 'post-check=0, pre-check=0, false');
+    $app->response->header('Pragma', 'no-cache');
+    // $app->response->header('Location', '/');
+    $app->redirect('/', 302);
+    // $app->render('pages/_logout.twig');
+    // header('location:/');
 });

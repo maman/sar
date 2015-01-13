@@ -322,10 +322,10 @@ class Agenda
             $query->bindParam(':idAgenda', $idAgenda);
             $query->execute();
             $this->deleteKompetensi($idAgenda);
+            return true;
         } catch (PDOException $e) {
             return false;
         }
-        return true;
     }
 
     /**

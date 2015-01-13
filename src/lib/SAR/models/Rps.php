@@ -22,6 +22,7 @@ use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Matkul;
 use SAR\models\Approval;
+use SAR\models\SelfAssest;
 
 /**
  * Rps Class
