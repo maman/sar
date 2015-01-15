@@ -36,15 +36,6 @@ window.multitags = function() {
       formatResult: format,
       escapeMarkup: function(m) { return m; }
     });
-    // $('[data-list-toggle-target]').click(function(e) {
-    //   e.stopPropagation();
-    //   e.stopImmediatePropagation();
-    //   e.preventDefault();
-    //   $(this).toggleClass('collapsed');
-    //   $('html, body').animate({
-    //     scrollTop: $(this).offset().top
-    //   });
-    // });
   }
 };
 

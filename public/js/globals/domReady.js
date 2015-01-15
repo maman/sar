@@ -31,6 +31,20 @@ var domReady = function() {
       });
     }
     $('[data-toggle="tooltip"]').tooltip();
+    if ($('[data-load-background]').length) {
+      var $proxy = $('[data-load-background]').data('proxyUrl'),
+          addr = 'http://www.bing.com/HPImageArchive.aspx?';
+      $.getJSON($proxy + addr, {
+        format: 'js',
+        idx: 0,
+        n: 1
+      }).done(function(data){
+        $.each(data.images, function(key, val) {
+          $('[data-load-background]').css('background-image', 'url(http://bing.com' + val.urlbase + '_1366x768.jpg)');
+        });
+        $('[data-load-background]').addClass('bg-loaded');
+      });
+    }
   });
 };
 

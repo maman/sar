@@ -20,39 +20,26 @@
 			<li>
 				<a href="/"><i class="fa fa-dashboard fa-fw"></i> <span>Home</span></a>
 			</li>
-			{% if username and matkuls is not empty %}
-			{# <li>
-				<a class="" href="/berita"><i class="fa fa-comments fa-fw"></i> <span>Berita</span></a>
-			</li> #}
+			{% if username is not empty %}
+				{% if matkuls %}
 			<li>
 				<a href="/matakuliah?filter=active"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span></a>
 			</li>
-			{# <li>
-				<a class="" href="#"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span> <span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li>
-						<a href="/matakuliah?filter=active"><i class="fa fa-pencil fa-fw"></i> <span>On Progress</span></a>
-					</li>
-					<li>
-						<a href="/matakuliah?filter=wait"><i class="fa fa-history fa-fw"></i> <span>Pending Approval</span></a>
-					</li>
-					<li>
-						<a href="/matakuliah?filter=approved"><i class="fa fa-archive fa-fw"></i> <span>Arsip</span></a>
-					</li>
-				</ul>
-			</li> #}
+				{% endif %}
+				{% if sars %}
 			<li>
 				<a href="#"><i class="fa fa-line-chart fa-fw"></i> <span>Self Assesment</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-					{% for matkul in matkuls %}
-						{% if matkul.percentage == '100' %}
+					{% for sar in sars %}
+						{% if sar.approved == 'approved' %}
 					<li>
-						<a href="/sar/{{ matkul.KDMataKuliah }}"><i class="fa fa-newspaper-o"></i> <span>{{ matkul.NamaMK }}</span></a>
+						<a href="/sar/{{ sar.KDMataKuliah }}"><i class="fa fa-newspaper-o"></i> <span>{{ sar.NamaMK }}</span></a>
 					</li>
 						{% endif %}
 					{% endfor %}
 				</ul>
 			</li>
+				{% endif %}
 				{% if role == "kaprodi" %}
 			<li>
 				<a class="" href="#"><i class="fa fa-graduation-cap fa-fw"></i> <span>Kaprodi</span> <span class="fa arrow"></span></a>
@@ -61,7 +48,7 @@
 						<a href="/approval?filter=pending"><i class="fa fa-edit fa-fw"></i> <span>Approval Silabus</span></a>
 					</li>
 					<li>
-						<a href="/"><i class="fa fa-comment-o fa-fw"></i> <span>Broadcast Message</span></a>
+						<a href="/plotting"><i class="fa fa-comment-o fa-fw"></i> <span>Plotting Penanggungjawab</span></a>
 					</li>
 				</ul>
 			</li>

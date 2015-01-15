@@ -168,6 +168,20 @@ body {
 		.button-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
 		padding: 6px 12px;
 	}
+	.navbar-logout {
+		.button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+		margin-right: @navbar-padding-horizontal;
+	}
+	.navbar-ident {
+		position: absolute;
+		left: @navbar-padding-horizontal;
+		top: 2*@navbar-padding-horizontal;
+	}
+	@media(max-width:768px) {
+		.navbar-brand {
+			padding-top: 10px;
+		}
+	}
 	.btn-login {
 		margin-right: @navbar-padding-horizontal;
 	}
@@ -316,8 +330,56 @@ body {
 
 // Login Panel
 
+.login-page {
+	margin-left: 0 !important;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	background-color: @brand-primary !important;
+	@media(min-width:768px) {
+		background-size: cover;
+	}
+	&.bg-loaded {
+		.lh-transition(background 1.5s ease-in-out) !important;
+	}
+}
+
 .login-panel {
 	margin-top: 15px;
+}
+
+.login-welcome {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+	@media(min-width:768px) {
+		max-width: 960px;
+		left: 50%;
+		top: 50%;
+		.lh-translate(-50%, -50%);
+		.container {
+			max-width: 960px;
+		}
+	}
+}
+
+.login-paragraph {
+	color: @body-bg;
+	.text-muted {
+		color: darken(@body-bg, 10%);
+	}
+	@media(max-width:768px) {
+		margin: @padding-large-vertical;
+	}
+}
+
+.login-form {
+	margin-top: 10px;
+	padding: @padding-small-horizontal @padding-small-horizontal 0 @padding-small-horizontal;
+	background: white;
+	border-radius: @border-radius-base;
+	border: 1px solid @gray-lighter;
 }
 
 // Flot Charts Containers

@@ -11,31 +11,6 @@
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
-{# 	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading clearfix">
-					<h4 class="pull-left panel-title" style="padding-top:7.5px">Penjaskes <small>2 Agenda Pembelajaran</small></h4>
-					<a href="#" class="btn btn-sm btn-primary pull-right">Rincian Agenda</a>
-				</div>
-				<div class="panel-body">
-					<div class="list-group">
-						<div class="list-group-item">
-							<div class="row">
-								<div class="col-xs-2 col-sm-1">
-									<strong>1</strong>
-								</div>
-								<div class="col-xs-10 col-sm-11">
-									<p class="list-group-item-text pull-left">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet magni inventore illum quae quis! Pariatur praesentium incidunt autem magni sit voluptas officiis tempore laboriosam reiciendis? Quos dolore explicabo magnam deleniti.</p>
-									<a href="#" class="btn btn-primary btn-sm pull-right">Rincian</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> #}
 	<div class="row row-eq-height" data-mailbox-layout>
 		<div class="col-sm-5 col-md-3 {% if not currList %}hidden-xs{% endif %} list">
 			{% for agenda in agendas %}
@@ -49,17 +24,17 @@
 			</a>
 			{% endfor %}
 		</div>
-		<div class="col-sm-7 col-md-9 {% if currList %}hidden-xs{% endif %} journal {% if not sars %}journal-flex{% endif %}">
-			{% if sars %}
+		<div class="col-sm-7 col-md-9 {% if currList %}hidden-xs{% endif %} journal {% if not sarDetails %}journal-flex{% endif %}">
+			{% if sarDetails %}
 			<section class="journal-toolbar top-toolbar">
-				<span class="label label-danger">{{ sars.PERSENTASE }}%</span>
-				<span class="pull-right"><i class="fa fa-calendar-o"></i> {{ sars.TGL_PELAKSANA|date('d M Y') }}</span>
+				<span class="label label-danger">{{ sarDetails.PERSENTASE }}%</span>
+				<span class="pull-right"><i class="fa fa-calendar-o"></i> {{ sarDetails.TGL_PELAKSANA|date('d M Y') }}</span>
 			</section>
 			<section id="journal">
-				<h2>{{ sars.NAMA_SAR }}</h2>
-				<p class="lead">{{ sars.REVIEW|raw }}</p>
+				<h2>{{ sarDetails.NAMA_SAR }}</h2>
+				<p class="lead">{{ sarDetails.REVIEW|raw }}</p>
 				<h2>Hambatan</h2>
-				<p>{{ sars.HAMBATAN|raw }}</p>
+				<p>{{ sarDetails.HAMBATAN|raw }}</p>
 			</section>
 			<section class="journal-toolbar bottom-toolbar">
 				<div class="row">

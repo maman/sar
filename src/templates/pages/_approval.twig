@@ -106,29 +106,29 @@
 					{% endif %}
 					<hr>
 					<div class="row">
-						<div class="col-sm-4 list-group-item-text text-center box">
+						<div class="col-sm-4 col-xs-6 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Dosen</strong>
-							<span class="box-component box-content"><i class="fa fa-user fa-fw"></i> {{ result.NamaDosen|length > 15 ? result.NamaDosen|slice(0, 15) ~ ' ...' : result.NamaDosen }}</span>
+							<span class="box-component box-content"><i class="hidden-xs fa fa-user fa-fw"></i> {{ result.NamaDosen|length > 15 ? result.NamaDosen|slice(0, 15) ~ ' ...' : result.NamaDosen }}</span>
 						</div>
-						<div class="col-sm-4 list-group-item-text text-center box">
+						<div class="col-sm-4 col-xs-6 list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Periode</strong>
-							<span class="box-component box-content"><i class="fa fa-briefcase fa-fw"></i> Semester {{ result.Semester }}/{{ result.Tahun }}</span>
+							<span class="box-component box-content"><i class="hidden-xs fa fa-briefcase fa-fw"></i> Semester {{ result.Semester }}/{{ result.Tahun }}</span>
 						</div>
 						{% if result.NotePeriksa %}
-						<div class="col-sm-4 list-group-item-text text-center box">
+						<div class="col-xs-4 hidden-xs list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Reject</strong>
-							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglPeriksa }}</span></span>
+							<span class="box-component box-content"><i class="hidden-xs fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglPeriksa }}</span></span>
 						</div>
 						{% else %}
 							{% if result.Approval == '0' %}
-						<div class="col-sm-4 list-group-item-text text-center box">
+						<div class="col-xs-4 hidden-xs list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Submit</strong>
-							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglMasuk }}</span></span>
+							<span class="box-component box-content"><i class="hidden-xs fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglMasuk }}</span></span>
 						</div>
 							{% else %}
-						<div class="col-sm-4 list-group-item-text text-center box">
+						<div class="col-xs-4 hidden-xs list-group-item-text text-center box">
 							<strong class="text-muted box-component box-title">Waktu Approval</strong>
-							<span class="box-component box-content"><i class="fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglDisahkan }}</span></span>
+							<span class="box-component box-content"><i class="hidden-xs fa fa-clock-o fa-fw"></i> <span data-moment-render>{{ result.TglDisahkan }}</span></span>
 						</div>
 							{% endif %}
 						{% endif %}

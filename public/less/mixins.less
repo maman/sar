@@ -144,11 +144,21 @@
 		}
 	}
 	&.journal-flex {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: @gray-lighter;
 		border-radius: @border-radius-base;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		height: auto;
+		.journal-new {
+			// flex: 1;
+			// flex-shrink: 0;
+		}
 	}
 }
 

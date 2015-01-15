@@ -70,7 +70,9 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     $nip = null;
     $user = null;
     $role = null;
+    $prodi = null;
     $matkul = null;
+    $sar = null;
     $prevLink = null;
     $pathInfo = array();
     $currPath = $app->request->getPathInfo();
@@ -93,18 +95,35 @@ $app->hook('slim.before.dispatch', function () use ($app) {
     if (isset($_SESSION['role'])) {
         $role = $_SESSION['role'];
     }
+    if (isset($_SESSION['prodi'])) {
+        $prodi = $_SESSION['prodi'];
+    }
     if (isset($_SESSION['matkul'])) {
         $matkul = $_SESSION['matkul'];
+    }
+    if (isset($_SESSION['sar'])) {
+        $sar = $_SESSION['sar'];
     }
     $app->view()->appendData(array(
         'baseUrl' => $baseUrl,
         'nip' => $nip,
         'username' => $user,
         'role' => $role,
+        'prodi' => $prodi,
         'matkuls' => $matkul,
+        'sars' => $sar,
         'breadcrumbs' => $pathInfo
     ));
 });
+
+/* CSRF Guard */
+$app->add(new \Slim\Extras\Middleware\CsrfGuard());
+
+/* STRONG Auth */
+$app->add(new \SARUtils\middleware\Authentication(array(
+    'login.url' => $config['login.url'],
+    'security.urls' => $config['security.urls']
+)));
 
 /* Setup App Env */
 $app->configureMode('production', function () use ($app) {

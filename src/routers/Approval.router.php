@@ -39,7 +39,7 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
         foreach ($results as $num => $result) {
             $rps->getRpsByIdMatkul($results[$num]['KDMataKuliah']);
             // $results[$num]['Versi'] = $rps->versi;
-            $results[$num]['NamaDosen'] = $user->getUser($results[$num]['NIP'])[0]['NAMA'];
+            $results[$num]['NamaDosen'] = $user->getUserName($results[$num]['NIP']);
             $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
             $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
             $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];

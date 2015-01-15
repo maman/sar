@@ -602,4 +602,16 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
             }
         });
     });
+    /** '/proxy?callback' API for JSONP Bridging */
+    $app->get('/proxy', function () use ($app) {
+        $callback = $_SERVER['QUERY_STRING'];
+        if (!empty($callback)) {
+            $jsonp_response = file_get_contents($callback);
+            $app->response()->header('Content-Type', 'application/json');
+            $app->response()->body($jsonp_response);
+        } else {
+            echo json_encode('Provide callback URL');
+            $app->response->setStatus(400);
+        }
+    });
 });

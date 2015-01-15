@@ -28,12 +28,12 @@ $app->notFound(function () use ($app) {
 
 /** HTTP 500 */
 $app->error(function (\Exception $e) use ($app) {
-    if ($c['config']['app.environment'] === 'development') {
+    if ($app->getMode() === 'development') {
         echo($e->getMessage());
         debug_print_backtrace();
     } else {
         $req = $app->request();
-        $app->log->error("500: " . $req->getUrl() . $req->getPath() . " - StackTrace: [" . $e->getMessage . "] - SessionDump: [" . printf($_SESSION) . "]");
+        $app->log->error("500: " . $req->getUrl() . $req->getPath() . " - StackTrace: [" . printf($e->getMessage()) . "] - SessionDump: [" . printf($_SESSION) . "]");
         $app->render('pages/_500.twig', array(
             'url' => $req->getUrl() . $req->getPath()
         ));

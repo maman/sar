@@ -21,7 +21,7 @@ use SAR\models\Matkul;
 use SAR\models\Agenda;
 use SAR\models\SelfAssest;
 
-$app->get('/sar/:idMatkul', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+$app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $agenda = new Agenda();
@@ -35,12 +35,12 @@ $app->get('/sar/:idMatkul', $authenticate($app), $accessmatkul, function ($idMat
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
-        'sars' => $sarDetails,
+        'sarDetails' => $sarDetails,
         'currList' => true
     ));
 });
 
-$app->get('/sar/:idMatkul/agenda', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
+$app->get('/sar/:idMatkul/agenda', $authenticate($app), $accessar, function ($idMatkul) use ($app) {
     // $currPath = $app->request->getPath();
     // $matkul = new Matkul();
     // $agenda = new Agenda();
@@ -60,7 +60,7 @@ $app->get('/sar/:idMatkul/agenda', $authenticate($app), $accessmatkul, function 
     $app->redirect('/sar/' . $idMatkul);
 });
 
-$app->get('/sar/:idMatkul/agenda/:idAgenda', $authenticate($app), $accessmatkul, function ($idMatkul, $idAgenda) use ($app) {
+$app->get('/sar/:idMatkul/agenda/:idAgenda', $authenticate($app), $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $agenda = new Agenda();

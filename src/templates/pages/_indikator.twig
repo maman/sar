@@ -38,6 +38,7 @@
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
 							<textarea class="form-control input-lg" name="textIndikator" data-id="[text]" id="kompetensi" rows="3" placeholder="lorem" data-multiline="disable" required></textarea>
 							<select name="indikator" class="form-control input-plain" data-form-multitag data-placeholder="Kategori" required>

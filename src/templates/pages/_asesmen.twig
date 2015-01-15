@@ -42,6 +42,7 @@
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
 							<div class="col-md-10">
 								<textarea class="form-control input-lg" name="textAsesmen" data-id="[text]" id="kompetensi" rows="1" placeholder="lorem" data-multiline="disable" required></textarea>

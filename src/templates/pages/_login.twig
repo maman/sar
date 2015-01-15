@@ -3,44 +3,51 @@
 {% block pagetitle %}Login{% endblock %}
 
 {% block content %}
-<div class="container preserve3d">
-	<div class="row vertical-center">
-		<div class="col-sm-4 horizontal-center">
-			<div class="login-panel panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Login to SAR</h3>
+{% include 'components/_header.twig' with {'noSidebar': true} %}
+<div id="page-wrapper" class="login-page" data-load-background data-proxy-url="http://{{baseUrl}}/api/v1/proxy?">
+	<div class="login-welcome">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="login-paragraph">
+						<h1 style="margin-top:0"><strong>MCIS</strong>Silabus &amp; SAR</h1>
+						<p class="lead">Sistem Informasi pengolahan Rencana Pembelajaran dan Penilaian mandiri dosen</p>
+						<small class="text-muted"><strong>Bagian dari Ma Chung Information System (MCIS)</strong></small>
+					</div>
 				</div>
-				<div class="panel-body">
-					<img src="/assets/logo.png" alt="machung-logo" class="img-responsive img-rounded center-block" style="margin-bottom:1rem;pointer-events:none">
-					{% if errors is not empty %}
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						{{ errors }}
+				<div class="col-sm-4">
+					<div class="login-form">
+						{% if errors is not empty %}
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							{{ errors }}
+						</div>
+						{% endif %}
+						{% if urlRedirect is not empty and urlRedirect != '/' %}
+						<div class="alert alert-info alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							Setelah melakukan Log In, anda akan di-<em>redirect</em> ke url <code>{{ urlRedirect }}</code>
+						</div>
+						{% endif %}
+						<form role="form" action="/login" method="POST">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+							<fieldset>
+								<div class="form-group{% if username is not empty %} has-error{% endif %}">
+									<input class="form-control{% if username is not empty %} error{% endif %}" placeholder="NIP" name="username" type="text"{% if username is not empty %} value="{{ nip }}"{% endif %}>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-xs-8">
+											<input class="form-control" placeholder="Password" name="password" type="password" value="">
+										</div>
+										<div class="col-xs-4" style="padding-left:0">
+											<input type="submit" class="btn btn-primary btn-block" value="Log In">
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</form>
 					</div>
-					{% endif %}
-					{% if urlRedirect is not empty and urlRedirect != '/' %}
-					<div class="alert alert-info alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						After login, you'll be redirected to {{ urlRedirect }}
-					</div>
-					{% endif %}
-					<form role="form" action="/login" method="POST">
-						<fieldset>
-							{% if username is not empty %}
-							<div class="form-group has-error">
-								<input class="form-control error" placeholder="Username" name="username" type="text" value="{{ nip }}">
-							</div>
-							{% else %}
-							<div class="form-group">
-								<input class="form-control" placeholder="Username" name="username" type="text" autofocus>
-							</div>
-							{% endif %}
-							<div class="form-group">
-								<input class="form-control" placeholder="Password" name="password" type="password" value="">
-							</div>
-							<input type="submit" class="btn btn-lg btn-success btn-block" value="Login">
-						</fieldset>
-					</form>
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SAR Authenticate Middleware
+ * SAR Authenticate Middleware ---- MOVED TO SARUtils\extra\Authentication;
  *
  * This file contains the authentication middleware for Slim Framework.
  * this middleware ensures that the client has logged in and the required
@@ -21,14 +21,14 @@
  */
 
 /**
- * Slim authenticate Middleware
+ * Slim authenticate Route Middleware
  */
 $authenticate = function ($app) {
     return function () use ($app) {
-        $currPath = $app->request()->getPath();
-        if (!isset($_SESSION['username'])) {
-            $app->flash('error', 'Login Required');
-            $app->redirect('/login?r=' . $currPath);
-        }
+        // $currPath = $app->request()->getPath();
+        // if (!isset($_SESSION['username'])) {
+        //     $app->flash('error', 'Login Required');
+        //     $app->redirect('/?r=' . $currPath);
+        // }
     };
 };

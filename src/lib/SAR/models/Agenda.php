@@ -198,6 +198,7 @@ class Agenda
             $query->bindParam(':idAgenda', $idAgenda);
             $query->bindParam(':idKompetensi', $idKompetensi);
             $query->execute();
+            return true;
         } catch (PDOException $e) {
             return false;
         }
@@ -214,10 +215,10 @@ class Agenda
             );
             $query->bindParam(':idAgenda', $idAgenda);
             $query->execute();
+            return true;
         } catch (PDOException $e) {
             return false;
         }
-        return true;
     }
 
     /**

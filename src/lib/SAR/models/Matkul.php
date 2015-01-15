@@ -145,6 +145,33 @@ class Matkul
         $results = array();
         $query = $this->core->db->prepare(
             'SELECT
+                PLOTTING_KOMPETENSI."KDMataKuliah",
+                MATAKULIAH."NamaMK"
+            FROM
+                PLOTTING_KOMPETENSI INNER JOIN MATAKULIAH
+            ON
+                PLOTTING_KOMPETENSI."KDMataKuliah" = MATAKULIAH."KDMataKuliah"
+            WHERE
+                PLOTTING_KOMPETENSI.NIP = :nip
+                AND "MATAKULIAH"."TahunAjaranMK"
+                BETWEEN :tahunMulai
+                AND :tahunSelesai'
+        );
+        $query->bindParam(':nip', $nip);
+        $query->bindParam(':tahunMulai', $range['start']);
+        $query->bindParam(':tahunSelesai', $range['end']);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return $results;
+    }
+
+    public function getSARMatkulByNIP($nip)
+    {
+        $tahun = new Utilities();
+        $range = $tahun->getRangeTahunAjaran();
+        $results = array();
+        $query = $this->core->db->prepare(
+            'SELECT
                 PLOTTING."KDMataKuliah",
                 MATAKULIAH."NamaMK"
             FROM

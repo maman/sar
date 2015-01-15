@@ -54,6 +54,25 @@ class User
         return $this;
     }
 
+    public function getAllUser()
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                *
+            FROM
+                PEGAWAI
+            WHERE
+                ID_JABATAN_AKAD = 1'
+        );
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if ($results > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Get User
      *
@@ -70,7 +89,9 @@ class User
             FROM
                 PEGAWAI
             WHERE
-                PEGAWAI.NIP = :nip'
+                PEGAWAI.NIP = :nip
+            AND
+                PEGAWAI.TGLKELUAR IS null'
         );
         $query->bindParam(':nip', $id);
         $query->execute();
@@ -132,11 +153,11 @@ class User
             'SELECT
                 PEGAWAI.NAMA
             FROM
-                PEGAWAI INNER JOIN PLOTTING
+                PEGAWAI INNER JOIN PLOTTING_KOMPETENSI
             ON
-                PEGAWAI.NIP = PLOTTING.NIP
+                PEGAWAI.NIP = PLOTTING_KOMPETENSI.NIP
             WHERE
-                PLOTTING."KDMataKuliah" = :idMatkul'
+                PLOTTING_KOMPETENSI."KDMataKuliah" = :idMatkul'
         );
         $query->bindParam(':idMatkul', $idMatkul);
         $query->execute();

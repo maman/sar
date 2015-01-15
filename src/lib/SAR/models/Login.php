@@ -31,6 +31,7 @@ class Login
     private $username;
     private $role;
     private $matkul;
+    private $prodi;
     private $core;
 
     public function __construct()
@@ -97,6 +98,7 @@ class Login
                 }
                 $this->nip = $result['NIP'];
                 $this->username = $result['NAMA'];
+                $this->prodi = $result['IDPRODI'];
                 return true;
             }
         }

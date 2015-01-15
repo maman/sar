@@ -544,6 +544,17 @@ class Rps
             $matkul[$key]['approved'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['approved'];
             $matkul[$key]['RPSDetails'] = $this->getRpsProgress($matkul_loop['KDMataKuliah'])['RPSDetails'];
         }
+        $sar = $user->getSARMatkulByNIP($username);
+        foreach ($sar as $keySar => $valSar) {
+            $sar[$keySar]['tglPeriksa'] = $this->getRpsProgress($valSar['KDMataKuliah'])['tglPeriksa'];
+            $sar[$keySar]['nipPeriksa'] = $this->getRpsProgress($valSar['KDMataKuliah'])['nipPeriksa'];
+            $sar[$keySar]['notePeriksa'] = $this->getRpsProgress($valSar['KDMataKuliah'])['notePeriksa'];
+            $sar[$keySar]['versi'] = $this->getRpsProgress($valSar['KDMataKuliah'])['versi'];
+            $sar[$keySar]['percentage'] = $this->getRpsProgress($valSar['KDMataKuliah'])['percentage'];
+            $sar[$keySar]['approved'] = $this->getRpsProgress($valSar['KDMataKuliah'])['approved'];
+            $sar[$keySar]['RPSDetails'] = $this->getRpsProgress($valSar['KDMataKuliah'])['RPSDetails'];
+        }
+        $_SESSION['sar'] = $sar;
         $_SESSION['matkul'] = $matkul;
     }
 }

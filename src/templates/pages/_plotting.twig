@@ -1,0 +1,108 @@
+{% extends 'base.twig' %}
+
+{% block pagetitle %}Plotting Penanggungjawab Matakuliah{% endblock %}
+
+{% block content %}
+{% include 'components/_header.twig' %}
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Plotting Penanggungjawab Matakuliah - {{ namaProdi }}</h1>
+			{% include 'components/widgets/_breadcrumb.twig' %}
+		</div>
+	</div>
+	<div class="row">
+		{# <div class="col-xs-12">
+			<a href="#" class="btn btn-default"
+			data-alert-box
+			data-editor-enabled="true"
+			data-alert-title="Tambahkan Plotting Baru"
+			data-html-template="
+			<form action='#'>
+				<div class='row'>
+					<div class='col-sm-6'>
+						<div class='form-group'>
+							<label for='dosen' class='sr-only'>Nama Dosen</label>
+							<select name='dosen' class='form-control' data-form-multitag data-placeholder='Dosen'>
+							{% for item in currentUsers %}
+								<option value='{{ item.NIP }}' data-tag-text='{{ item.NAMA }}' {% if item.SELECTED %}selected{% endif %}>{{ item.NAMA }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class='col-sm-6'>
+						<div class='form-group'>
+							<label for='dosen' class='sr-only'>Nama Dosen</label>
+							<select multiple name='matkul[]' class='form-control' data-form-multitag data-placeholder='Mata Kuliah'>
+							{% for item in currentMatkul %}
+								<option value='{{ item.KDMataKuliah }}' data-tag-text='{{ item.NamaMK }}' {% if item.SELECTED %}selected{% endif %}>{{ item.NamaMK }}</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>
+			</form>
+			">Tambahkan</a>
+		</div> #}
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="input-group" style="margin-bottom:15px">
+				<input type="text" id="search" class="form-control" placeholder="Search ...">
+				<div class="input-group-btn">
+					<a href="#" class="btn btn-primary" data-alert-box
+					data-editor-enabled="true"
+					data-alert-title="Tambahkan Plotting Baru"
+					data-html-template="
+					<form action='{{currPath}}/new' method='GET'>
+						<div class='form-group row'>
+							<div class='col-xs-12'>
+								<label for='dosen' class='sr-only'>Pilih Dosen</label>
+								<select name='id' id='dosen' class='form-control'>
+									{% for dosen in dosens %}
+									<option value='{{ dosen.NIP }}'>{{ dosen.Nama }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class='row'>
+							<div class='col-lg-6 col-sm-12 col-lg-offset-3'>
+								<div class='btn-group btn-group-justified'>
+									<a href='#' data-dismiss='modal' class='btn btn-primary'><i class='fa fa-close fa-fw'></i> Cancel</a>
+									<div class='btn-group'><button class='btn btn-primary' type='submit'><i class='fa fa-check fa-fw'></i> Plot</button></div>
+								</div>
+							</div>
+						</div>
+					</form>
+					"><i class="fa fa-plus"></i> Tambah Plotting</a>
+				</div>
+			</div>
+			<style type="text/css" id="searchStyle"></style>
+			<script type="text/javascript">
+				var searchStyle = document.getElementById('searchStyle');
+				document.getElementById('search').addEventListener('input', function() {
+					if (!this.value) {
+						searchStyle.innerHTML = '';
+						return;
+					};
+					searchStyle.innerHTML = '.search-target:not([data-text-index*=' + this.value.toLowerCase() + ']){display:none;}';
+				});
+			</script>
+			<ul class="list-group">
+				{% for key, value in plottings %}
+				<li class="list-group-item clearfix search-target" data-text-index="{{ key|lower|replace({" ": ""}) }}{% for idx in value %}{{ item.Matakuliah|lower|replace({" ": ""}) }}{% endfor %}">
+					{{ key }}
+					<br>
+					{% for item in value %}
+					<strong class="label label-primary">{{ item.Matakuliah }}</strong>
+					{% endfor %}
+					<div class="btn-group pull-right btn-group-sm">
+						<a href="{{currPath}}/edit?id={{ value.0.NIP }}" class="btn btn-warning">Edit</a>
+					</div>
+				</li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -30,7 +30,7 @@ return array(
 
     /** Application Settings */
     'app.base.url'         => 'pkl-kampus.vm',
-    'app.environment'      => 'production',
+    'app.environment'      => 'development',
     'app.log'              => $basedir . 'logs/app-' . date('Y-m-d') . '.log',
     'app.cookie.lifetime'  => '20 minutes',
     'app.cookie.path'      => '/',
@@ -55,5 +55,18 @@ return array(
     'path.middlewares'     => $basedir . 'src/middlewares/',
     'path.routes'          => $basedir . 'src/routers/',
     'path.templates'       => $basedir . 'src/templates/',
-    'path.templates.cache' => $basedir . 'src/templates/cache'
+    'path.templates.cache' => $basedir . 'src/templates/cache',
+
+    /** Auth */
+    'login.url'            => '/',
+    'security.urls'        => array(
+        array('path'       => '/matakuliah'),
+        array('path'       => '/matakuliah/.+'),
+        array('path'       => '/matakuliah\?.+'),
+        array('path'       => '/sar'),
+        array('path'       => '/sar/.+'),
+        array('path'       => '/approval'),
+        array('path'       => '/approval/.+'),
+        array('path'       => '/approval\?.+')
+    )
 );

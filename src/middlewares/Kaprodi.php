@@ -22,15 +22,19 @@
  */
 
 /**
- * Slim kaprodi Middleware
+ * Slim kaprodi Route Middleware
  */
 
 $kaprodi = function ($route) use ($app) {
     $req = $app->request();
     if ($_SESSION['role'] != 'kaprodi') {
+        $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Matakuliah ini');
+        $app->render('pages/_403.twig', array(
+            'url' => $req->getUrl() . $req->getPath()
+        ), 403);
         $app->log->error(
-            "403: " . $req->getUrl() . $req->getPath()." - SessionDump: [" . var_export($_SESSION, true) . "]"
+            "403: " . $req->getUrl() . $req->getPath() ." - User " . $_SESSION['username'] . " Trying to access protected resources "
         );
-        $app->redirect('/', 403);
+        $app->stop();
     }
 };

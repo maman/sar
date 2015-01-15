@@ -1,12 +1,12 @@
 <?php
 
 /**
- * SAR Matakuliah Access Middleware
+ * SAR Self Assesment Access Middleware
  *
  * This file contains the check routines used for check whether if an user
- * has access to a specific matakuliah.
+ * has access to a specific Self Assesment.
  *
- * DISCLAIMER: Only use this route middleware only to access /matakuliah/ resources.
+ * DISCLAIMER: Only use this route middleware only to access /sar/ resources.
  *
  * PHP version 5.4
  *
@@ -27,21 +27,21 @@
 
 use Functional as F;
 
-$accessmatkul = function ($route) use ($app) {
+$accessar = function ($route) use ($app) {
     $req = $app->request();
     $idMatkul = $route->getParams();
     $truth = array();
-    foreach ($_SESSION['matkul'] as $matkul) {
-        array_push($truth, F\contains($matkul, $idMatkul['idMatkul']));
+    foreach ($_SESSION['sar'] as $sar) {
+        array_push($truth, F\contains($sar, $idMatkul['idMatkul']));
     }
     if (!F\contains($truth, true)) {
         // if ($_SESSION['role'] != 'kaprodi') {
-        $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Matakuliah ini');
+        $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Self Assesmen ini');
         $app->render('pages/_403.twig', array(
             'url' => $req->getUrl() . $req->getPath()
         ), 403);
         $app->log->error(
-            "403: " . $req->getUrl() . $req->getPath() ." - User " . $_SESSION['username'] . " Not Authorized to accessing matakuliah with ID " . $idMatkul['idMatkul']
+            "403: " . $req->getUrl() . $req->getPath() ." - User " . $_SESSION['username'] . " Not Authorized to accessing SAR with ID " . $idMatkul['idMatkul']
         );
         $app->stop();
             // $app->redirect('/', 403);
