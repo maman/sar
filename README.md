@@ -4,6 +4,7 @@
 ## Requirements
 * `PHP >= 5.4.*`
 * Oracle 11g Enterprise
+* Apache Solr (If you want to enable full-text search)
 * [Composer](https://getcomposer.org)
 * [Node.js](http://nodejs.org)
 * `npm install grunt-cli`
@@ -13,7 +14,6 @@
 * [Pimple](http://pimple.sensiolabs.org)
 * [Monolog](https://github.com/Seldaek/monolog)
 * [Functional-php](https://github.com/lstrojny/functional-php)
-* [Validation](http://documentup.com/Respect/Validation/)
 * [Grunt](http://gruntjs.com)
 * [Webpack](http://webpack.github.io)
 * [Twitter Bootstrap](http://getbootstrap.com)
