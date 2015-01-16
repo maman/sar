@@ -23,8 +23,13 @@ use SAR\models\User;
 use SAR\models\Plotting;
 use SAR\models\SelfAssest;
 
-$app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul) use ($app) {
+$app->get('/sar', function () use ($app) {
+    $app->render('pages/_self-assest-main.twig');
+});
+
+$app->get('/sar/:idMatkul', $accessar, function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
+    $sarDetails = array();
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
@@ -34,6 +39,7 @@ $app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul)
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
     $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
+    // var_dump($sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']));
     $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
@@ -46,27 +52,12 @@ $app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul)
     ));
 });
 
-$app->get('/sar/:idMatkul/agenda', $authenticate($app), $accessar, function ($idMatkul) use ($app) {
-    // $currPath = $app->request->getPath();
-    // $matkul = new Matkul();
-    // $agenda = new Agenda();
-    // $sar = new SelfAssest();
-    // $details = $matkul->getMatkulDetails($idMatkul)[0];
-    // $namaMatkul = $details['NamaMK'];
-    // $agendas = $agenda->getAgendaByMatkul($idMatkul);
-    // $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
-    // $app->render('pages/_self-assest.twig', array(
-    //     'currPath' => $currPath,
-    //     'idMatkul' => $idMatkul,
-    //     'namaMatkul' => $namaMatkul,
-    //     'agendas' => $agendas,
-    //     'sars' => $sarDetails,
-    //     'currList' => true
-    // ));
+$app->get('/sar/:idMatkul/agenda', $accessar, function ($idMatkul) use ($app) {
+    $app->flash('noHighlight', true);
     $app->redirect('/sar/' . $idMatkul);
 });
 
-$app->get('/sar/:idMatkul/agenda/:idAgenda', $authenticate($app), $accessar, function ($idMatkul, $idAgenda) use ($app) {
+$app->get('/sar/:idMatkul/agenda/:idAgenda', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
     $agenda = new Agenda();
@@ -88,4 +79,83 @@ $app->get('/sar/:idMatkul/agenda/:idAgenda', $authenticate($app), $accessar, fun
         'penanggungJawab' => $dosenName,
         'currAgenda' => $idAgenda
     ));
+});
+
+$app->get('/sar/:idMatkul/agenda/:idAgenda/new', $accessar, function ($idMatkul, $idAgenda) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $agenda = new Agenda();
+    $sar = new SelfAssest();
+    $user = new User();
+    $plotting = new Plotting();
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
+    $app->render('pages/_self-assest.twig', array(
+        'currPath' => $currPath,
+        'idAgenda' => $idAgenda,
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'agendas' => $agendas,
+        'penanggungJawab' => $dosenName,
+        'currAgenda' => $idAgenda,
+        'isNew' => true
+    ));
+});
+
+$app->post('/sar/:idMatkul/agenda/:idAgenda/new', $accessar, function ($idMatkul, $idAgenda) use ($app) {
+    $sar = new SelfAssest();
+    $result = $sar->saveOrEdit('', $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
+    if ($result) {
+        $app->redirect('/sar/' . $idMatkul . '/agenda/' . $idAgenda);
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/sar/:idMatkul/agenda/:idAgenda/edit', $accessar, function ($idMatkul, $idAgenda) use ($app) {
+    $currPath = $app->request->getPath();
+    $matkul = new Matkul();
+    $agenda = new Agenda();
+    $sar = new SelfAssest();
+    $user = new User();
+    $plotting = new Plotting();
+    $details = $matkul->getMatkulDetails($idMatkul)[0];
+    $namaMatkul = $details['NamaMK'];
+    $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
+    $app->render('pages/_self-assest.twig', array(
+        'currPath' => $currPath,
+        'idAgenda' => $idAgenda,
+        'idMatkul' => $idMatkul,
+        'namaMatkul' => $namaMatkul,
+        'agendas' => $agendas,
+        'penanggungJawab' => $dosenName,
+        'currAgenda' => $idAgenda,
+        'sarDetails' => $sarDetails,
+        'isNew' => true
+    ));
+});
+
+$app->post('/sar/:idMatkul/agenda/:idAgenda/edit', $accessar, function ($idMatkul, $idAgenda) use ($app) {
+    $sar = new SelfAssest();
+    $result = $sar->saveOrEdit($_POST['idSAR'], $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
+    if ($result) {
+        $app->redirect('/sar/' . $idMatkul . '/agenda/' . $idAgenda);
+    } else {
+        $app->stop();
+    }
+});
+
+$app->get('/sar/:idMatkul/agenda/:idAgenda/del/:idSAR', $accessar, function ($idMatkul, $idAgenda, $idSAR) use ($app) {
+    $sar = new SelfAssest();
+    $result = $sar->deleteSAR($idSAR);
+    if ($result) {
+        $app->redirect('/sar/' . $idMatkul . '/agenda/' . $idAgenda);
+    } else {
+        $app->stop();
+    }
 });

@@ -65,7 +65,8 @@ class SelfAssest
                 return $item['ID_SUB_KOMPETENSI'] == $idAgenda;
             });
             if (count($results) == 1) {
-                return $results[0];
+                $val = reset($results);
+                return $val;
             } else {
                 return false;
             }
@@ -82,7 +83,13 @@ class SelfAssest
     {
         $query = $this->core->db->prepare(
             'SELECT
-                *
+                ID_SAR,
+                ID_SUB_KOMPETENSI,
+                NAMA_SAR,
+                TO_CHAR("TGL_PELAKSANA", \'YYYY-MM-DD HH24:MI:SS\') as "TGL_PELAKSANA",
+                REVIEW,
+                HAMBATAN,
+                PERSENTASE
             FROM
                 SAR'
         );
@@ -141,7 +148,7 @@ class SelfAssest
                     (
                         :idAgenda,
                         :nama,
-                        :tgl,
+                        to_date(:tgl, \'YYYY-MM-DD HH24:MI:SS\'),
                         :review,
                         :hambatan,
                         :persentase
@@ -160,12 +167,12 @@ class SelfAssest
             }
         } else {
             try {
-                $query->this->core->db->prepare(
+                $query = $this->core->db->prepare(
                     'UPDATE
                         SAR
                     SET
                         NAMA_SAR = :nama,
-                        TGL_PELAKSANA = :tgl,
+                        TGL_PELAKSANA = to_date(:tgl, \'YYYY-MM-DD HH24:MI:SS\'),
                         REVIEW = :review,
                         HAMBATAN = :hambatan,
                         PERSENTASE = :persentase

@@ -100,7 +100,7 @@ class Approval
                 WHERE
                     "KDMataKuliah" = :idMatkul
                 ORDER BY
-                    "ID_Approval" DESC
+                    "TglDisahkan" DESC
             )
             WHERE
                 ROWNUM = 1'

@@ -33,7 +33,7 @@ $app->error(function (\Exception $e) use ($app) {
         debug_print_backtrace();
     } else {
         $req = $app->request();
-        $app->log->error("500: " . $req->getUrl() . $req->getPath() . " - StackTrace: [" . printf($e->getMessage()) . "] - SessionDump: [" . printf($_SESSION) . "]");
+        $app->log->error("500: " . $req->getUrl() . $req->getPath());
         $app->render('pages/_500.twig', array(
             'url' => $req->getUrl() . $req->getPath()
         ));

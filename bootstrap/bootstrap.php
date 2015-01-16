@@ -52,7 +52,7 @@ $app = new \Slim\Slim(array(
     'mode' => $c['config']['app.environment'],
     'log.writer' => $logger,
     'templates.path' => $config['path.templates'],
-    'cookies.encrypt' => true,
+    'cookies.encrypt' => $config['app.cookie.encrypt'],
     'cookies.lifetime' => $config['app.cookie.lifetime'],
     'cookies.path' => $config['app.cookie.path'],
     'cookies.domain' => $config['app.cookie.domain'],
@@ -115,6 +115,8 @@ $app->hook('slim.before.dispatch', function () use ($app) {
         'breadcrumbs' => $pathInfo
     ));
 });
+
+$app->setName('SAR');
 
 /* CSRF Guard */
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());

@@ -22,9 +22,9 @@
 		</div>
 	</div>
 	<div class="row row-eq-height" data-mailbox-layout>
-		<div class="col-sm-5 col-md-3 {% if not currList %}hidden-xs{% endif %} list">
+		<div class="col-sm-5 col-md-4 col-lg-4 {% if not currList %}hidden-xs{% endif %} list">
 			{% for agenda in agendas %}
-			<a href="{% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}#{% else %}/sar/{{ idMatkul }}/agenda/{{ agenda.ID_SUB_KOMPETENSI }}{% endif %}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
+			<a href="/sar/{{ idMatkul }}/agenda/{{ agenda.ID_SUB_KOMPETENSI }}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
 				<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
 				<span class="label label-danger">{{ agenda.BOBOT }}%</span>
 				<section>
@@ -34,9 +34,10 @@
 			</a>
 			{% endfor %}
 		</div>
-		<div class="col-sm-7 col-md-9 {% if currList %}hidden-xs{% endif %} journal {% if not sarDetails %}journal-flex{% endif %}">
-			{% if sarDetails %}
+		<div class="col-sm-7 col-md-8 col-lg-8 {% if currList %}hidden-xs{% endif %} journal {% if not sarDetails and not isNew %}journal-flex{% endif %}">
+			{% if sarDetails and not isNew %}
 			<section class="journal-toolbar top-toolbar">
+				<a href="/sar/{{ idMatkul }}/agenda" class="btn btn-primary visible-xs">Back</a>
 				<span class="label label-danger">{{ sarDetails.PERSENTASE }}%</span>
 				<span class="pull-right"><i class="fa fa-calendar-o"></i> {{ sarDetails.TGL_PELAKSANA|date('d M Y') }}</span>
 			</section>
@@ -50,22 +51,94 @@
 				<div class="row">
 					<div class="col-sm-7 col-sm-offset-2">
 						<div class="btn-group btn-group-justified">
-							<a href="#" class="btn btn-warning">Edit</a>
-							<a href="#" class="btn btn-danger">Delete</a>
+							<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/edit" class="btn btn-warning">Edit</a>
+							<a href="#" data-alert-single data-link="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/del/{{ sarDetails.ID_SAR }}" data-alert-message="Hapus SAR<br>{{ sarDetails.NAMA_SAR|raw }}?" class="btn btn-danger">Delete</a>
 						</div>
 					</div>
 				</div>
 			</section>
 			{% else %}
-			<section class="journal-new">
+				{% if isNew %}
+			<section class="journal-form">
 				<div class="row">
 					<div class="col-sm-12">
-						<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/new" class="btn btn-success btn-block"><i class="fa fa-plus"></i> Self Assesment Baru</a>
+						<form action="#" method="POST" data-toggle="validator">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+							<input type="hidden" name="idSAR" value="{{ sarDetails.ID_SAR }}">
+							<input type="hidden" name="idAgenda" value="{{ idAgenda }}">
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label for="nama">Nama/Judul</label>
+									<div class="help-block with-errors"></div>
+									<input type="text" name="nama" id="nama" class="form-control" data-error="Judul tidak boleh kosong" value="{{ sarDetails.NAMA_SAR }}" required>
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="tanggal">Tanggal Pelaksanaan</label>
+									<div class="help-block with-errors"></div>
+									<input type="text" name="tanggal" id="tanggal" class="form-control" data-error="Tanggal tidak boleh kosong" value="{{ sarDetails.TGL_PELAKSANA|date("d F Y") }}" data-format="dd MM yyyy" data-end-date="{{ "now+1"|date("d-m-Y") }}" data-render-datepicker required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="review">Review</label>
+								<div class="help-block with-errors"></div>
+								<textarea name="review" id="review" cols="30" rows="10" class="form-control" data-render-editor data-error="Review tidak boleh kosong" required>{{ sarDetails.REVIEW }}</textarea>
+							</div>
+							<div class="form-group">
+								<label for="hambatan">Hambatan</label>
+								<div class="help-block with-errors"></div>
+								<textarea name="hambatan" id="hambatan" cols="30" rows="10" class="form-control" data-render-editor data-error="Hambatan tidak boleh kosong" required>{{ sarDetails.HAMBATAN }}</textarea>
+							</div>
+							<div class="form-group">
+								<label for="persentase">Persentase</label>
+								<div class="input-group input-group-lg">
+									<input class="form-control" type="text" name="persentase" id="persentase" placeholder="Persentase Penyelesaian" pattern="^((100)|(\d{0,2}))$" data-error="Persentase tidak boleh kosong" data-pattern-error="Format tidak dikenal" value="{{ sarDetails.PERSENTASE }}" required>
+									<span class="input-group-addon">%</span>
+								</div>
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-success btn-lg btn-block" value="Masukkan SAR">
+							</div>
+						</form>
 					</div>
 				</div>
 			</section>
+				{% else %}
+			<section class="journal-new">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="btn-group btn-group-vertical">
+							<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/new" class="btn btn-success btn-block"><i class="fa fa-plus"></i> Self Assesment Baru</a>
+							<a href="/sar/{{ idMatkul }}/agenda" class="btn btn-primary visible-xs">Cancel</a>
+						</div>
+					</div>
+				</div>
+			</section>
+				{% endif %}
 			{% endif %}
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block inlinejs %}
+{% if isNew %}
+<script src="/js/static/jquery.min.js"></script>
+<script src="/js/static/bootstrap.min.js"></script>
+<script src="/js/static/bootstrap3-wysihtml5.min.js"></script>
+<script>
+	$('[data-render-editor]').wysihtml5({
+		toolbar: {
+			"font-styles": false,
+			"emphasis": true,
+			"lists": false,
+			"html": false,
+			"link": false,
+			"image": false,
+			"color": false,
+			"blockquote": false,
+			"size": 'sm'
+		}
+	});
+</script>
+{% endif %}
 {% endblock %}

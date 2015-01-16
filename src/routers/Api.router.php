@@ -26,6 +26,7 @@ use SAR\models\Kategori;
 use SAR\models\Rps;
 use SAR\models\Task;
 use SAR\models\Approval;
+use SAR\models\Prodi;
 
 /** `/api` Group */
 $app->group('/api/v1', function () use ($app) {
@@ -61,8 +62,8 @@ $app->group('/api/v1', function () use ($app) {
             $rps = new Rps();
             $task = new Task();
             $approval = new Approval();
+            $prodi = new Prodi();
             $silabus = new Silabus($idMatkul);
-
             $rps->getRpsByIdMatkul($idMatkul);
             $allKategori = $kategori->getAllKategoriIndikator();
             $groupKategori = $kategori->groupKategoriIndikator();
@@ -75,6 +76,7 @@ $app->group('/api/v1', function () use ($app) {
             $approvals = $approval->getApprovalByIdMatkul($idMatkul);
             $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
             $dosen = $user->getUserFromMatkul($idMatkul);
+            $namaProdi = $prodi->getNamaProdi($matkul->getMatkulDetails($idMatkul)[0]['IDPRODI']);
 
             $creator = 'Ma Chung Silabus & SAR Management System/TCPDFv6.0';
             $author = 'Ma Chung Silabus & SAR Management System';
@@ -114,7 +116,7 @@ $app->group('/api/v1', function () use ($app) {
                 $listDosen .=
                 '<span>' . $user['NAMA'] . ',</span>';
             }
-            $listDosen .= ' Sebagai kelengkapan <em>proses belajar mengajar</em> di Jurusan Sistem Informasi Universitas Ma Chung</p>';
+            $listDosen .= ' Sebagai kelengkapan <em>proses belajar mengajar</em> di Program Studi ' . $namaProdi . ' Universitas Ma Chung</p>';
             $pdf->writeHTMLCell(0, 10, '', '', $listDosen, 0, 1, 0, true, '', true);
 
             // Maklumat
@@ -147,15 +149,15 @@ $app->group('/api/v1', function () use ($app) {
             '</table>';
             $pdf->writeHTMLCell(0, 0, '', '', $revtable, 0, 1, 0, true, '', true);
             $pdf->setY(180);
-            $pdf->MultiCell(0, 0, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Jurusan Sistem Informasi Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis.', 0, 'L', 0, 1, '', '', true, null, false);
+            $pdf->MultiCell(0, 0, 'Dokumen ini dibuat oleh Tim Teaching dengan pengawasan dari Program Studi ' . $namaProdi . ' Universitas Ma Chung sebagai upaya untuk menjamin keakurasian dokumen saat akan dicetak. Penggandaan dokumen, sebaiknya dari release yang terakhir (up to date) dan setelah mendapatkan ijin tertulis.', 0, 'L', 0, 1, '', '', true, null, false);
             $pdf->setY(200);
-            $pdf->MultiCell(0, 0, 'Ketua Jurusan Sistem Informasi
+            $pdf->MultiCell(0, 0, 'Ketua Program Studi ' . $namaProdi . '
 Fakultas Sains dan Teknologi
 Universitas Ma Chung
 Malang', 0, 'L', 0, 1, '', '', true, null, false);
             $pdf->setY(225);
-            $pdf->MultiCell(0, 0, 'Copyright © ' . date('Y') . ' Jurusan Sistem Informasi Universitas Ma Chung
-Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Chung yang tidak dipublikasikan dan bersifat rahasia.', 0, 'L', 0, 1, '', '', true, null, false);
+            $pdf->MultiCell(0, 0, 'Copyright © ' . date('Y') . ' Program Studi ' . $namaProdi . ' Universitas Ma Chung
+Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universitas Ma Chung yang tidak dipublikasikan dan bersifat rahasia.', 0, 'L', 0, 1, '', '', true, null, false);
 
             // Silabus
             $pdf->phase = 'silabus';

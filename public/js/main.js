@@ -27,6 +27,7 @@ require('./globals/domReady');
 
 require('./components/alertBox');
 require('./components/dataTables');
+require('./components/datePicker');
 require('./components/layoutMini');
 require('./components/listToggler');
 require('./components/multitags');

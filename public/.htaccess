@@ -1,3 +1,5 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
+# php_value auto_prepend_file /usr/share/php5/utilities/xhprof/header.php
+# php_value auto_append_file /usr/share/php5/utilities/xhprof/footer.php

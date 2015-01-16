@@ -48,7 +48,7 @@ class SARPdf extends \TCPDF
             // @codingStandardsIgnoreStart
             $this->Cell(0, 15, 'Khusus diproduksi dan didistribusikan kepada', 0, false, 'C', 0, '', 0, false, 'M', 'M');
             $this->SetY(-15);
-            $this->Cell(0, 15, 'yang berhak mengetahui di lingkungan Jurusan Sistem Informasi Universitas Ma Chung', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+            $this->Cell(0, 15, 'yang berhak mengetahui di lingkungan Program Studi Sistem Informasi Universitas Ma Chung', 0, false, 'C', 0, '', 0, false, 'M', 'M');
             $this->phase = '';
             // @codingStandardsIgnoreEnd
         } elseif ($this->phase == 'silabus') {

@@ -84,12 +84,24 @@ class Prodi
                 return $item['IDProdi'] == $idProdi;
             });
             if (count($results) == 1) {
-                return $results[0];
+                $val = reset($result);
+                return $val;
             } else {
                 return false;
             }
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get Nama Prodi
+     * @param  string $idProdi
+     * @return string
+     */
+    public function getNamaProdi($idProdi)
+    {
+        $result = $this->getProdiDetails($idProdi);
+        return $result['NamaProdi'];
     }
 }
