@@ -20,7 +20,8 @@
     "lstrojny/functional-php": "dev-master",
     "itbz/fpdf": "1.7.2",
     "tecnick.com/tcpdf": "6.*",
-    "slim/extras": "~2.0"
+    "slim/extras": "~2.0",
+    "solarium/solarium": "~3.3"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*",
@@ -28,8 +29,7 @@
   },
   "autoload": {
     "psr-0": {
-      "SAR\\": "src/lib/",
-      "SARUtils\\": "src/extras/"
+      "SAR\\": "src/lib/"
     }
   },
   "authors": [

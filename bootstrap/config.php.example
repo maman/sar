@@ -51,6 +51,12 @@ return array(
     'db.username'          => 'sar',
     'db.password'          => 'Blink182',
 
+    /** Solr Settings */
+    'solr.enabled'         => false,
+    'solr.host'            => '127.0.0.1',
+    'solr.port'            => '8983',
+    'solr.basePath'        => '/solr/',
+
     /** Application Paths */
     'path.middlewares'     => $basedir . 'src/middlewares/',
     'path.routes'          => $basedir . 'src/routers/',

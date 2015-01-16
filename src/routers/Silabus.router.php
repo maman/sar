@@ -217,7 +217,7 @@ $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessm
 
 $app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $silabus = new Silabus($idMatkul);
-    $result = $silabus->saveKepustakaan($_POST['idSilabus'], $_POST['judul'], $_POST['tahun'], $_POST['penerbit'], $_POST['pengarang']);
+    $result = $silabus->saveKepustakaan($_POST['idSilabus'], $_POST['judul'], $_POST['tahun'], $_POST['penerbit'], $_POST['pengarang'], $_POST['edisi'], $_POST['tempat']);
     if ($result) {
         $rps = new Rps();
         $rps->editSilabus($idMatkul);

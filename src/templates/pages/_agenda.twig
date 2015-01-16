@@ -26,10 +26,10 @@
 				<div class="list-group-item clearfix collapsed list-group-big" data-list-toggle-target>
 					<div class="list-group-item-content">
 						<div class="list-group-toggle">
-							<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
+							<span class="label label-success">Pertemuan: {{ agenda.RANGE_PERTEMUAN }}</span>
 							{% if agenda.ASESMEN.tes is not empty %}<span class="label label-info">Asesmen Tes</span>{% endif %}
 							{% if agenda.ASESMEN.nontes is not empty %}<span class="label label-info">Asesmen Non Tes</span>{% endif %}
-							<span class="label label-danger">{{ agenda.BOBOT }}%</span>
+							<span class="label label-danger">Bobot: {{ agenda.BOBOT }}%</span>
 							<section class="list-group-item-section">
 								<strong class="text-info">Sub Kompetensi</strong><a data-toggle-hidden href="{{currPath}}/edit?id={{ agenda.ID_SUB_KOMPETENSI }}" class="btn btn-xs btn-warning pull-right"><span class="text-allcaps">Edit</span></a>
 								<p class="list-group-item-text">{{ agenda.TEXT_SUB_KOMPETENSI|raw }}</p>

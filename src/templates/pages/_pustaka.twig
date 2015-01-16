@@ -29,18 +29,24 @@
 				<div class="pustaka" data-multi-target data-name="pustaka">
 					<a href="#" data-alert-single data-link="{{currPath}}/del/{{ pustaka.ID_PUSTAKA }}" data-alert-message="Hapus Pustaka - {{ pustaka.JUDUL_PUSTAKA }}?" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<div class="row">
-						<div class="col-sm-9">
+						<div class="col-sm-6">
 							<input type="text" class="form-control" disabled name="judul" placeholder="Judul" value="{{ pustaka.JUDUL_PUSTAKA }}">
+						</div>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" disabled name="edisi" placeholder="Edisi" value="{{ pustaka.EDISI_PUSTAKA }}">
 						</div>
 						<div class="col-sm-3">
 							<input type="number" class="form-control" disabled name="tahun" placeholder="Tahun Terbit" value="{{ pustaka.TAHUN_TERBIT_PUSTAKA }}">
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-5">
 							<input type="text" class="form-control" disabled name="penerbit" placeholder="Penerbit" value="{{ pustaka.PENERBIT_PUSTAKA }}">
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-3">
+							<input type="text" class="form-control" disabled name="tempat" placeholder="Tempat Terbit" value="{{ pustaka.TEMPAT_TERBIT_PUSTAKA }}">
+						</div>
+						<div class="col-sm-4">
 							<input type="text" class="form-control" disabled name="pengarang" placeholder="Pengarang" value="{{ pustaka.PENGARANG_PUSTAKA }}">
 						</div>
 					</div>
@@ -55,9 +61,14 @@
 							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 							<input type="hidden" name="idSilabus" value="{{ silabus.idSilabus }}">
 							<div class="row">
-								<div class="col-sm-9">
+								<div class="col-sm-6">
 									<div class="form-group">
 										<input type="text" class="form-control" name="judul" placeholder="Judul" required>
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="text" class="form-control" name="edisi" placeholder="Edisi" required>
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -67,12 +78,17 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-6">
+								<div class="col-sm-5">
 									<div class="form-group">
 										<input type="text" class="form-control" name="penerbit" placeholder="Penerbit" required>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="text" class="form-control" name="tempat" placeholder="Tempat Terbit" required>
+									</div>
+								</div>
+								<div class="col-sm-4">
 									<div class="form-group">
 										<input type="text" class="form-control" name="pengarang" placeholder="Pengarang" required>
 									</div>

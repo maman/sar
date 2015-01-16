@@ -11,6 +11,16 @@
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default clearfix">
+				<div class="panel-body">
+					<span class="text-muted">Penanggung Jawab Mata Kuliah:</span> <strong>{{ penanggungJawab }}</strong>
+					<a href="/dokumen/{{ idMatkul }}" class="label label-primary pull-right" style="box-shadow: 0 0 0 5px #428bca;border-radius:1px">Dokumen Pendukung</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="row row-eq-height" data-mailbox-layout>
 		<div class="col-sm-5 col-md-3 {% if not currList %}hidden-xs{% endif %} list">
 			{% for agenda in agendas %}

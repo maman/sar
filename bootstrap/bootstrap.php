@@ -120,7 +120,7 @@ $app->hook('slim.before.dispatch', function () use ($app) {
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());
 
 /* STRONG Auth */
-$app->add(new \SARUtils\middleware\Authentication(array(
+$app->add(new \SAR\helpers\Authentication(array(
     'login.url' => $config['login.url'],
     'security.urls' => $config['security.urls']
 )));
@@ -157,6 +157,24 @@ $app->container->singleton('db', function () use ($config) {
     $password = $config['db.password'];
     return new \alfmel\OCI8\PDO($dsn, $user, $password);
 });
+
+/* Load Solr, if Enabled. */
+if ($config['solr.enabled']) {
+    $app->container->singleton('solr', function () use ($config) {
+        $host = $config['solr.host'];
+        $port = $config['solr.port'];
+        $basePath = $config['solr.basePath'];
+        return new \SAR\helpers\FTSLib(array(
+            'endpoint' => array(
+                'localhost' => array(
+                    'host' => $host,
+                    'port' => $port,
+                    'path' => $basePath
+                )
+            )
+        ));
+    });
+}
 
 /* Twig Options */
 $view = $app->view();

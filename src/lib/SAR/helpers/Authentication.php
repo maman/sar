@@ -20,7 +20,7 @@
  * @link https://github.com/maman/sar
  */
 
-namespace SARUtils\middleware;
+namespace SAR\helpers;
 
 use Slim\Middleware;
 

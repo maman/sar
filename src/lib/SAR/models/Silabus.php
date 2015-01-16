@@ -117,7 +117,9 @@ class Silabus
                 PUSTAKA.JUDUL_PUSTAKA,
                 PUSTAKA.PENERBIT_PUSTAKA,
                 PUSTAKA.PENGARANG_PUSTAKA,
-                PUSTAKA.TAHUN_TERBIT_PUSTAKA
+                PUSTAKA.TAHUN_TERBIT_PUSTAKA,
+                PUSTAKA.EDISI_PUSTAKA,
+                PUSTAKA.TEMPAT_TERBIT_PUSTAKA
             FROM
                 PUSTAKA INNER JOIN SILABUS
             ON
@@ -379,7 +381,7 @@ class Silabus
      * @param  string $pengarang
      * @return boolean
      */
-    public function saveKepustakaan($idSilabus, $judul, $tahunTerbit, $penerbit, $pengarang)
+    public function saveKepustakaan($idSilabus, $judul, $tahunTerbit, $penerbit, $pengarang, $edisi, $tempat)
     {
         try {
             $query = $this->core->db->prepare(
@@ -390,7 +392,9 @@ class Silabus
                     PENGARANG_PUSTAKA,
                     JUDUL_PUSTAKA,
                     PENERBIT_PUSTAKA,
-                    TAHUN_TERBIT_PUSTAKA
+                    TAHUN_TERBIT_PUSTAKA,
+                    EDISI_PUSTAKA,
+                    TEMPAT_TERBIT_PUSTAKA
                 )
                 VALUES
                 (
@@ -398,7 +402,9 @@ class Silabus
                     :pengarang,
                     :judul,
                     :penerbit,
-                    :tahunTerbit
+                    :tahunTerbit,
+                    :edisi,
+                    :tempat
                 )'
             );
             $query->bindParam(':idSilabus', $idSilabus);
@@ -406,6 +412,8 @@ class Silabus
             $query->bindParam(':tahunTerbit', $tahunTerbit);
             $query->bindParam(':penerbit', $penerbit);
             $query->bindParam(':pengarang', $pengarang);
+            $query->bindParam(':edisi', $edisi);
+            $query->bindParam(':tempat', $tempat);
             $query->execute();
         } catch (PDOException $e) {
             return false;

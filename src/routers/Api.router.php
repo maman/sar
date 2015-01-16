@@ -218,7 +218,8 @@ Seluruh informasinya adalah hak milik Jurusan Sistem Informasi Universitas Ma Ch
                 <tr>
                     <td width="100%" colspan="2"><ol>';
             foreach ($silabus->pustaka as $pustaka) {
-                $sill .= '<li><strong>' . $pustaka['PENGARANG_PUSTAKA'] . ', </strong><em>' . $pustaka['JUDUL_PUSTAKA'] . '</em>, ' . $pustaka['PENERBIT_PUSTAKA'] . ', ' . $pustaka['TAHUN_TERBIT_PUSTAKA'] . '</li>';
+                // <p><strong>{{ item.PENGARANG_PUSTAKA }},</strong> <span class="text-italic">{{ item.JUDUL_PUSTAKA }}</span>, {{ item.EDISI_PUSTAKA }}. {{ item.PENERBIT_PUSTAKA }}, {{ item.TEMPAT_TERBIT_PUSTAKA }}, {{ item.TAHUN_TERBIT_PUSTAKA }}.</p>
+                $sill .= '<li><strong>' . $pustaka['PENGARANG_PUSTAKA'] . ', </strong><em>' . $pustaka['JUDUL_PUSTAKA'] . '</em>, ' . $pustaka['EDISI_PUSTAKA'] . '. ' . $pustaka['PENERBIT_PUSTAKA'] . ', ' . $pustaka['TEMPAT_TERBIT_PUSTAKA'] . ', ' . $pustaka['TAHUN_TERBIT_PUSTAKA'] . '</li>';
             }
                 $sill .=
                 '   </ol></td>

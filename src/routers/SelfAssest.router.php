@@ -19,6 +19,8 @@
 
 use SAR\models\Matkul;
 use SAR\models\Agenda;
+use SAR\models\User;
+use SAR\models\Plotting;
 use SAR\models\SelfAssest;
 
 $app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul) use ($app) {
@@ -26,16 +28,20 @@ $app->get('/sar/:idMatkul', $authenticate($app), $accessar, function ($idMatkul)
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
+    $user = new User();
+    $plotting = new Plotting();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
     $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
+    $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
         'sarDetails' => $sarDetails,
+        'penanggungJawab' => $dosenName,
         'currList' => true
     ));
 });
@@ -65,17 +71,21 @@ $app->get('/sar/:idMatkul/agenda/:idAgenda', $authenticate($app), $accessar, fun
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
+    $user = new User();
+    $plotting = new Plotting();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
     $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
         'idAgenda' => $idAgenda,
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
-        'sars' => $sarDetails,
+        'sarDetails' => $sarDetails,
+        'penanggungJawab' => $dosenName,
         'currAgenda' => $idAgenda
     ));
 });

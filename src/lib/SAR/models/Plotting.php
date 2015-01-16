@@ -101,6 +101,30 @@ class Plotting
     }
 
     /**
+     * Get Dosen for Provided ID Matakuliah
+     * @param  string $idMatkul
+     * @param  string $idProdi
+     * @return string
+     */
+    public function getDosenByMatkul($idMatkul, $idProdi)
+    {
+        $results = $this->getAllPlotting($idProdi);
+        if ($results) {
+            $result = F\select($results, function ($item, $key, $col) use ($idMatkul) {
+                return $item['KDMataKuliah'] == $idMatkul;
+            });
+            if (count($result) == 1) {
+                $val = reset($result);
+                return $val['NIP'];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get Unplotted Dosen
      * @param  string $idProdi
      * @return mixed
