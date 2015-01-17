@@ -45,8 +45,7 @@ class FTSLib
 
     /**
      * Search documents
-     * @param  string $query [description]
-     * @return [type]        [description]
+     * @param  string $query Query to perform on Solr
      */
     public function search(string $query)
     {

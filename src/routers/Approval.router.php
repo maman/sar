@@ -124,6 +124,7 @@ $app->get('/review', $kaprodi, function () use ($app) {
 $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
     $req = $app->request();
     $currPath = $app->request()->getPath();
+    $user = new User();
     $matkul = new Matkul();
     $rps = new Rps();
     $silabus = new Silabus($idMatkul);
@@ -148,6 +149,12 @@ $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
         $idApproval = $_GET['id'];
         $app->view->appendData(array(
             'idApproval' => $idApproval
+        ));
+    }
+    if (isset($_GET['nip'])) {
+        $currNip = $_GET['nip'];
+        $app->view->appendData(array(
+            'currNip' => $currNip
         ));
     }
     $app->render('pages/_review.twig', array(

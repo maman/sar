@@ -19,5 +19,61 @@
 	{% if debug %}
 	<script src="//localhost:35729/livereload.js"></script>
 	{% endif %}
+	{% if ws and username %}
+	<script src="//{{ wsHost }}/socket.io/socket.io.js"></script>
+	<script src="/js/static/vanilla-notify.min.js"></script>
+	<script type="text/javascript">
+	var client = io.connect('//{{ wsHost }}');
+	var request = new XMLHttpRequest();
+	vNotify.options = {
+	  sticky: true,
+	  showClose: true
+	};
+	client.on('connect', function() {
+		client.emit('adduser', '{{ username }}', '{{ nip }}');
+		client.on('submitApproval', function (namaMatkul, username) {
+			vNotify.info({
+				text: 'Request approval baru dari <strong>' + username + '</strong> untuk Mata Kuliah <strong>' + namaMatkul + '</strong>',
+				title: 'Approval Baru'
+			});
+		});
+		client.on('approveApproval', function (namaMatkul) {
+			request.open('GET', 'http://{{ baseUrl }}/api/v1/update/progress/{{ nip }}', true);
+			request.onload = function() {
+				if (request.status >= 200 && request.status < 400) {
+					vNotify.success({
+						text: 'Request approval untuk Mata Kuliah <strong>' + namaMatkul + '</strong> telah diapprove.',
+						title: 'Info'
+					});
+				} else {
+					console.log('error');
+				}
+			};
+			request.onerror = function() {
+				console.log('error');
+			}
+			request.send();
+		});
+		client.on('rejectApproval', function (namaMatkul) {
+			request.open('GET', 'http://{{ baseUrl }}/api/v1/update/progress/{{ nip }}', true);
+			request.onload = function() {
+				if (request.status >= 200 && request.status < 400) {
+					vNotify.error({
+						text: 'Request approval untuk Mata Kuliah <strong>' + namaMatkul + '</strong> direject.',
+						title: 'Perhatian'
+					});
+				} else {
+					console.log('error');
+				}
+			};
+			request.onerror = function() {
+				console.log('error');
+			}
+			request.send();
+		});
+	});
+	{% block socket %}{% endblock %}
+	</script>
+	{% endif %}
 </body>
 </html>

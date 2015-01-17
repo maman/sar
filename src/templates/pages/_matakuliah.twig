@@ -108,7 +108,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
-								<a href="{{ currPath }}/submit" {% if progress.approved != 'never' %}disabled{% endif %} class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
+								<a href="{{ currPath }}/submit" data-name="{{ namaMatkul }}" {% if progress.approved != 'never' %}disabled{% endif %} class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
 					</div>
@@ -175,7 +175,7 @@
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
 								<a href="/dokumen/{{ matkul.KDMataKuliah }}" {% if matkul.approved != 'approved' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-primary"><i class="fa fa-print"></i> Dokumen RPS</a>
-								<a href="{{ currPath }}/{{ matkul.KDMataKuliah }}/submit" {% if matkul.approved != 'never' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
+								<a href="{{ currPath }}/{{ matkul.KDMataKuliah }}/submit" data-name="{{ matkul.NamaMK }}" {% if matkul.approved != 'never' %}disabled{% endif %} class="{% if matkul.RPSDetails.silabus != 'finish' or matkul.RPSDetails.agenda != 'finish' or matkul.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
 					</div>
@@ -188,3 +188,12 @@
 	</div>
 </div>
 {% endblock content %}
+
+{% block socket %}
+var trigger = document.querySelectorAll('[data-name]');
+for (var i = 0; i < trigger.length; i++) {
+	trigger[i].addEventListener('click', function(i) {
+		client.emit('approval-submit', this.dataset.name, '101');
+	}, false);
+};
+{% endblock %}

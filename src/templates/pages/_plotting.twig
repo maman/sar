@@ -12,40 +12,6 @@
 		</div>
 	</div>
 	<div class="row">
-		{# <div class="col-xs-12">
-			<a href="#" class="btn btn-default"
-			data-alert-box
-			data-editor-enabled="true"
-			data-alert-title="Tambahkan Plotting Baru"
-			data-html-template="
-			<form action='#'>
-				<div class='row'>
-					<div class='col-sm-6'>
-						<div class='form-group'>
-							<label for='dosen' class='sr-only'>Nama Dosen</label>
-							<select name='dosen' class='form-control' data-form-multitag data-placeholder='Dosen'>
-							{% for item in currentUsers %}
-								<option value='{{ item.NIP }}' data-tag-text='{{ item.NAMA }}' {% if item.SELECTED %}selected{% endif %}>{{ item.NAMA }}</option>
-							{% endfor %}
-							</select>
-						</div>
-					</div>
-					<div class='col-sm-6'>
-						<div class='form-group'>
-							<label for='dosen' class='sr-only'>Nama Dosen</label>
-							<select multiple name='matkul[]' class='form-control' data-form-multitag data-placeholder='Mata Kuliah'>
-							{% for item in currentMatkul %}
-								<option value='{{ item.KDMataKuliah }}' data-tag-text='{{ item.NamaMK }}' {% if item.SELECTED %}selected{% endif %}>{{ item.NamaMK }}</option>
-							{% endfor %}
-							</select>
-						</div>
-					</div>
-				</div>
-			</form>
-			">Tambahkan</a>
-		</div> #}
-	</div>
-	<div class="row">
 		<div class="col-xs-12">
 			<div class="input-group" style="margin-bottom:15px">
 				<input type="text" id="search" class="form-control" placeholder="Search ...">
@@ -97,7 +63,7 @@
 					<strong class="label label-primary">{{ item.Matakuliah }}</strong>
 					{% endfor %}
 					<div class="btn-group pull-right btn-group-sm">
-						<a href="{{currPath}}/edit?id={{ value.0.NIP }}" class="btn btn-warning">Edit</a>
+						<a href="{{currPath}}/edit?id={{ value|first.NIP }}" class="btn btn-warning">Edit</a>
 					</div>
 				</li>
 			{% endfor %}

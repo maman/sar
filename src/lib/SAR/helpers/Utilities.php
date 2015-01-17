@@ -18,6 +18,8 @@
  */
 namespace SAR\helpers;
 
+use Functional as F;
+
 /**
 * Helpers Class
 *
@@ -32,5 +34,24 @@ class Utilities
         $tahun['current'] = date('Y');
         $tahun['end'] = date('Y', strtotime('+1 year'));
         return $tahun;
+    }
+
+    public static function arrayDiff(array $a1, array $a2)
+    {
+        $result = array();
+        foreach ($a1 as $item1) {
+            $duplicate = array();
+            foreach ($a2 as $item2) {
+                if ($item1 === $item2) {
+                    $duplicate[] = true;
+                } else {
+                    $duplicate[] = false;
+                }
+            }
+            if (F\false($duplicate)) {
+                $result[] = $item1;
+            }
+        }
+        return $result;
     }
 }

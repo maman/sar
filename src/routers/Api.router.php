@@ -18,6 +18,7 @@
  */
 
 use SAR\helpers\SARPdf;
+use SAR\helpers\Utilities;
 use SAR\models\Silabus;
 use SAR\models\Matkul;
 use SAR\models\User;
@@ -27,9 +28,52 @@ use SAR\models\Rps;
 use SAR\models\Task;
 use SAR\models\Approval;
 use SAR\models\Prodi;
+use Functional as F;
 
 /** `/api` Group */
 $app->group('/api/v1', function () use ($app) {
+    $app->group('/update', function () use ($app) {
+        $app->get('/progress/:nip', function ($nip) use ($app) {
+            $rps = new Rps();
+            $sarTemp = $_SESSION['sar'];
+            $matkulTemp = $_SESSION['matkul'];
+            $nextSar = $rps->updateSarProgress($nip);
+            $nextMatkul = $rps->updateMatkulProgress($nip);
+            if ($sarTemp !== $nextSar) {
+                $_SESSION['sar'] = $nextSar;
+                $app->response()->header('Content-Type', 'application/json');
+                if (count($nextSar) > count($sarTemp)) {
+                    echo json_encode(array(
+                        'status' => 'new',
+                        'data' => Utilities::arrayDiff($nextSar, $sarTemp)
+                    ));
+                } else {
+                    echo json_encode(array(
+                        'status' => 'delete',
+                        'data' => Utilities::arrayDiff($sarTemp, $nextSar)
+                    ));
+                }
+            } else {
+                if ($matkulTemp !== $nextMatkul) {
+                    $_SESSION['matkul'] = $nextMatkul;
+                    $app->response()->header('Content-Type', 'application/json');
+                    if (count($nextMatkul) > count($matkulTemp)) {
+                        echo json_encode(array(
+                            'status' => 'new',
+                            'data' => Utilities::arrayDiff($nextMatkul, $matkulTemp)
+                        ));
+                    } else {
+                        echo json_encode(array(
+                            'status' => 'delete',
+                            'data' => Utilities::arrayDiff($matkulTemp, $nextMatkul)
+                        ));
+                    }
+                } else {
+                    $app->response->setStatus(304);
+                }
+            }
+        });
+    });
     /** '/agenda' API Endpoint Group */
     $app->group('/agenda', function () use ($app) {
         /** '/checkPercentage' */

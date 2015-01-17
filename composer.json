@@ -21,7 +21,8 @@
     "itbz/fpdf": "1.7.2",
     "tecnick.com/tcpdf": "6.*",
     "slim/extras": "~2.0",
-    "solarium/solarium": "~3.3"
+    "solarium/solarium": "~3.3",
+    "nc/faye-client": "~1.1"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*",

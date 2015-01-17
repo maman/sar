@@ -76,6 +76,7 @@ $app->get('/plotting/new', $kaprodi, function () use ($app) {
         'currPath' => $currPath,
         'currMatkul' => $currMatkul,
         'currDosen' => $currDosen,
+        'currNip' => $_GET['id'],
         'nip' => $nip,
         'isNew' => true
     ));
@@ -118,7 +119,7 @@ $app->get('/plotting/edit', $kaprodi, function () use ($app) {
         'currMatkul' => $currMatkul,
         'currDosen' => $currDosen,
         'collection' => $collection,
-        'nip' => $nip
+        'currNip' => $nip
     ));
 });
 

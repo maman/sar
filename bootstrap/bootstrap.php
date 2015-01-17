@@ -176,6 +176,21 @@ if ($config['solr.enabled']) {
             )
         ));
     });
+    $app->hook('slim.before', function () use ($app, $config) {
+        $app->view()->appendData(array(
+            'fts' => true
+        ));
+    });
+}
+
+/* Enable WebSocket, if Enabled. */
+if ($config['ws.enabled']) {
+    $app->hook('slim.before', function () use ($app, $config) {
+        $app->view()->appendData(array(
+            'ws' => true,
+            'wsHost' => $config['ws.host']
+        ));
+    });
 }
 
 /* Twig Options */

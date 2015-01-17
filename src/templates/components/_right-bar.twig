@@ -18,11 +18,11 @@
 			{% if isReview %}
 				{% if idApproval or role == "kaprodi"%}
 			<div class="btn-group btn-group-justified btn-block" role="group">
-				<a href="/approval/{{ idApproval }}/approve?id={{ idMatkul }}" class="btn btn-success btn-lg">Approve</a>
+				<a href="/approval/{{ idApproval }}/approve?id={{ idMatkul }}" data-name="{{ namaMatkul }}" data-nip="{{ currNip }}" class="btn btn-success btn-lg">Approve</a>
 				<a href="#" class="btn btn-lg btn-danger" data-alert-box data-editor-enabled="true"
 					data-alert-title="Konfirmasi Reject RPS"
 					data-html-template="
-					<form action='/approval/{{ idApproval }}/reject' method='POST'>
+					<form action='/approval/{{ idApproval }}/reject' method='POST' id='rejectForm' data-matkul='{{ namaMatkul }}' data-nip='{{ currNIP }}'>
 						<div class='row' style='margin-bottom: 1em'>
 							<div class='col-lg-12'>
 								<input type='hidden' name='csrf_token' value='{{ csrf_token }}'>

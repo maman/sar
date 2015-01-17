@@ -57,6 +57,10 @@ return array(
     'solr.port'            => '8983',
     'solr.basePath'        => '/solr/',
 
+    /** Faye WebSocket */
+    'ws.enabled'           => true,
+    'ws.host'              => 'http://127.0.0.1/ws',
+
     /** Application Paths */
     'path.middlewares'     => $basedir . 'src/middlewares/',
     'path.routes'          => $basedir . 'src/routers/',

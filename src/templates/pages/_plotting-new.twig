@@ -25,18 +25,18 @@
 				{% if collection or not isNew %}
 					{% for item in collection %}
 				<div class="indikator" data-multi-target data-name="indikator">
-					<a href="#" data-alert-single data-link="/plotting/del?id={{ item.KDMataKuliah }}&nip={{ nip }}" data-alert-message="Hapus Plotting untuk <br><strong><em>{{ item.Nama }}</em></strong>?" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
+					<a href="#" data-alert-single data-link="/plotting/del?id={{ item.KDMataKuliah }}&nip={{ currNip }}" data-alert-message="Hapus Plotting untuk <br><strong><em>{{ item.Nama }}</em></strong>?" class="multi-close"><i class="fa fa-times"></i><span class="sr-only">Close</span></a>
 					<input type="text" disabled class="form-control" value="{{ item.Nama }}">
 				</div>
 					{% endfor %}
 				{% endif %}
 			</div>
-			<form action="/plotting/new" method="POST" data-toggle="validator">
+			<form action="/plotting/new" method="POST" data-toggle="validator" id="plottingForm">
 				<section class="step">
 					<div class="form-group kompetensi">
 						<div class="kompetensi" data-multi-target data-name="kompetensi">
 							<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-							<input type="hidden" name="nip" value="{{ nip }}">
+							<input type="hidden" name="nip" value="{{ currNip }}">
 							<select name="matkul" class="form-control input-plain" data-form-multitag data-placeholder="Kategori" required>
 							{% for item in currMatkul %}
 								<option value="{{ item.KDMataKuliah }}" data-tag-text="{{ item.Nama }}">{{ item.Nama }}</option>
