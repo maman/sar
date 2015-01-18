@@ -76,6 +76,7 @@
 										<form action='/approval/{{ result.ID_Approval }}/reject' method='POST' id='rejectForm' data-matkul='{{ result.NamaMatkul }}' data-nip='{{ result.NIP }}'>
 											<div class='row' style='margin-bottom: 1em'>
 												<div class='col-lg-12'>
+													<input type='hidden' name='csrf_token' value='{{ csrf_token }}'>
 													<input type='hidden' name='idMatkul' value='{{ result.KDMataKuliah }}'>
 													<label for='review'><span class='sr-only'>Review</span></label>
 													<textarea class='form-control' name='review' id='review' cols='30' rows='10' placeholder='Review'></textarea>

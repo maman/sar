@@ -81,7 +81,11 @@ $app->group('/api/v1', function () use ($app) {
             $arg = '';
             $agenda = new Agenda();
             $percentage = $agenda->getAgendaPercentage($idMatkul);
-            $totalNow = end($percentage)['total'];
+            if (!$percentage) {
+                $totalNow = 0;
+            } else {
+                $totalNow = end($percentage)['total'];
+            }
             if (isset($_GET['bobot'])) {
                 $arg = $_GET['bobot'];
             }

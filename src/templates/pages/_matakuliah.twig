@@ -68,7 +68,7 @@
 						{% if progress.RPSDetails.silabus == 'finish' %}
 						<div class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 						{% else %}
-						<a href="{{ currPath }}/silabus" data-pjax class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
+						<a href="{{ currPath }}/silabus" class="list-group-item{% if progress.RPSDetails.silabus == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.silabus == 'work' %} list-group-item-info{% elseif progress.RPSDetails.silabus == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.silabus == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Silabus <span class="pull-right label label-danger">unfinished</span>{% endif %}
 							{% if progress.RPSDetails.silabus == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Silabus <span class="pull-right label label-warning">draft</span>{% endif %}
@@ -81,7 +81,7 @@
 						{% if progress.RPSDetails.agenda == 'finish' %}
 						<div class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
 						{% else %}
-						<a data-pjax href="{% if progress.RPSDetails.silabus == 'never' or progress.RPSDetails.silabus == 'work' %}#{% else %}{{ currPath }}/agenda{% endif %}" class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
+						<a href="{% if progress.RPSDetails.silabus == 'never' or progress.RPSDetails.silabus == 'work' %}#{% else %}{{ currPath }}/agenda{% endif %}" class="list-group-item{% if progress.RPSDetails.agenda == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.agenda == 'work' %} list-group-item-info{% elseif progress.RPSDetails.agenda == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.agenda == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Agenda <span class="pull-right label label-danger">unfinished</span>{% endif %}
 							{% if progress.RPSDetails.agenda == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Agenda <span class="pull-right label label-warning">draft</span>{% endif %}
@@ -94,7 +94,7 @@
 						{% if progress.RPSDetails.project == 'finish' %}
 						<div class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
 						{% else %}
-						<a data-pjax href="{% if progress.RPSDetails.agenda == 'never' or progress.RPSDetails.agenda == 'work' %}#{% else %}{{ currPath }}/task{% endif %}" class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
+						<a href="{% if progress.RPSDetails.agenda == 'never' or progress.RPSDetails.agenda == 'work' %}#{% else %}{{ currPath }}/task{% endif %}" class="list-group-item{% if progress.RPSDetails.project == 'never' %} list-group-item-warning{% elseif progress.RPSDetails.project == 'work' %} list-group-item-info{% elseif progress.RPSDetails.project == 'finish' %} list-group-item-success{% endif %}">
 						{% endif %}
 							{% if progress.RPSDetails.project == 'never' %}<i class="fa fa-exclamation fa-fw text-warning"><span class="sr-only">Belum: </span></i> Task&#47;Project <span class="pull-right label label-danger">unfinished</span>{% endif %}
 							{% if progress.RPSDetails.project == 'work' %}<i class="fa fa-pencil fa-fw text-info"><span class="sr-only">Dalam Proses: </span></i> Task&#47;Project <span class="pull-right label label-warning">draft</span>{% endif %}

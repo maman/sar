@@ -90,7 +90,7 @@ $app->get('/approval/:idApproval/approve', $authenticate($app), $kaprodi, functi
     $matkulName = $matkul->getMatkulName($_GET['id']);
     $result = true;
     if ($result) {
-        $approval->approveMatkul($idApproval, $_SESSION['nip']);
+        $approval->approveMatkul($idApproval, $_SESSION['nip'], $_GET['id']);
         $rps->updateProgress($_SESSION['nip']);
         $app->flash('msg', 'Request untuk mata kuliah ' . $matkulName . ' berhasil diapprove');
         $app->redirect('/approval?filter=pending');

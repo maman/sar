@@ -22,7 +22,26 @@ use SAR\models\Rps;
 use Functional as F;
 
 $app->get('/search', function () use ($app) {
-    $currPath = $app->request()->getPath();
-    var_dump($currPath);
-    var_dump($_GET);
+    if ($app->container->has('solr')) {
+        $solr = $app->solr;
+        $query = $solr->createSelect();
+        $query->setQuery($_GET['q']);
+        $resultSet = $solr->select($query);
+        $highlight = $resultSet->getHighlighting();
+        echo 'Found: ' . $resultSet->getNumFound();
+        foreach ($resultSet as $document) {
+            echo '<hr/><table>';
+            // the documents are also iterable, to get all fields
+            foreach ($document as $field => $value) {
+                // this converts multivalue fields to a comma-separated string
+                if (is_array($value)) {
+                    $value = implode(', ', $value);
+                }
+                echo '<tr><th>' . $field . '</th><td>' . $value . '</td></tr>';
+            }
+            var_dump($document->namamatakuliah);
+        }
+    } else {
+        $app->error();
+    }
 });

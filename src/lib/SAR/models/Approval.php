@@ -20,6 +20,9 @@ namespace SAR\models;
 
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
+use SAR\models\Silabus;
+use SAR\models\Agenda;
+use SAR\models\Task;
 use SAR\models\Rps;
 use SAR\models\Matkul;
 use SAR\models\User;
@@ -285,7 +288,7 @@ class Approval
      * @param  string $review
      * @return boolean
      */
-    public function approveMatkul($idApproval, $nip, $review = '-')
+    public function approveMatkul($idApproval, $nip, $idMatkul, $review = '-')
     {
         $rps = new Rps();
         $tglApprove = $this->getTodayDate();
@@ -311,6 +314,56 @@ class Approval
             $this->nipSahkan = $nip;
             $this->kodeApproval = '2';
             $rps->approve($this->idMatkul);
+            if ($this->core->container->has('solr')) {
+                $solr = $this->core->solr;
+                $matkul = new Matkul();
+                $agenda = new Agenda();
+                $task = new Task();
+                $user = new User();
+                $detail = $this->getApprovalByIdMatkul($idMatkul);
+                $silabus = new Silabus($detail[0]['KDMataKuliah']);
+                $kompetensis = $silabus->kompetensi;
+                $pustakas = $silabus->pustaka;
+                $matkulName = $matkul->getMatkulName($detail[0]['KDMataKuliah']);
+                $agendaDetail = $agenda->getAgendaByMatkul($detail[0]['KDMataKuliah']);
+                $taskDetail = $task->getDetailAktivitasByMatkul($detail[0]['KDMataKuliah']);
+                $kompetensi = array();
+                $pustaka = array();
+                $subkompetensi = array();
+                $materi = array();
+                $task = array();
+                foreach ($kompetensis as $item) {
+                    $kompetensi[] = $item['NAMA_KOMPETENSI'];
+                }
+                foreach ($pustakas as $item) {
+                    $pustaka[] = $item['JUDUL_PUSTAKA'] . '-' . $item['PENERBIT_PUSTAKA'] . '-' . $item['PENGARANG_PUSTAKA'];
+                }
+                foreach ($agendaDetail as $keyAgenda => $valAgenda) {
+                    $subkompetensi[] = $agendaDetail[$keyAgenda]['TEXT_SUB_KOMPETENSI'];
+                    $materi[] = $agendaDetail[$keyAgenda]['TEXT_MATERI_BELAJAR'];
+                }
+                foreach ($taskDetail as $keyTask => $valTask) {
+                    foreach ($taskDetail[$keyTask]['AKTIVITAS'] as $keyAct => $valAct) {
+                        $task[] = $taskDetail[$keyTask]['AKTIVITAS'][$keyAct]['TEXT_AKTIVITAS_AGENDA'];
+                    }
+                }
+                $update = $solr->createUpdate();
+                $doc = $update->createDocument();
+                $doc->id = $detail[0]['KDMataKuliah'];
+                $doc->namamatakuliah = $matkulName;
+                $doc->tujuan = $silabus->tujuan;
+                $doc->kompetensi = $kompetensi;
+                $doc->pokokbahasan = $silabus->pokokBahasan;
+                $doc->pustaka = $pustaka;
+                $doc->subkompetensi = $subkompetensi;
+                $doc->materi = $materi;
+                $doc->task = $task;
+                $doc->author = $user->getUserFromMatkul($detail[0]['KDMataKuliah'])[0]['NAMA'];
+                $doc->acceptor = $user->getUserName($nip);
+                $update->addDocument($doc);
+                $update->addCommit();
+                $solr->update($update);
+            }
             return true;
         } catch (PDOException $e) {
             return false;

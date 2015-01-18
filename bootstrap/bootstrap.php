@@ -171,12 +171,14 @@ if ($config['solr.enabled']) {
         $host = $config['solr.host'];
         $port = $config['solr.port'];
         $basePath = $config['solr.basePath'];
-        return new \SAR\helpers\FTSLib(array(
+        $core = $config['solr.core'];
+        return new \Solarium\Client(array(
             'endpoint' => array(
                 'localhost' => array(
                     'host' => $host,
                     'port' => $port,
-                    'path' => $basePath
+                    'path' => $basePath,
+                    'core' => $core
                 )
             )
         ));
