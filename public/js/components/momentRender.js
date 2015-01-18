@@ -20,8 +20,7 @@
 
 var moment = require('moment');
 
-$(document).ready(function() {
-  moment.locale('id');
+function momentRender() {
   $('[data-moment-render]').each(function(index) {
     var $this = $(this);
     var $text = $this.text();
@@ -35,4 +34,9 @@ $(document).ready(function() {
       $this.text($time.fromNow());
     }
   });
+}
+
+$(document).on('ready pjax:end', function() {
+  moment.locale('id');
+  momentRender();
 });

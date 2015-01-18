@@ -24,7 +24,7 @@
 	<div class="row row-eq-height" data-mailbox-layout>
 		<div class="col-sm-5 col-md-4 col-lg-4 {% if not currList %}hidden-xs{% endif %} list">
 			{% for agenda in agendas %}
-			<a href="/sar/{{ idMatkul }}/agenda/{{ agenda.ID_SUB_KOMPETENSI }}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
+			<a data-pjax href="/sar/{{ idMatkul }}/agenda/{{ agenda.ID_SUB_KOMPETENSI }}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
 				<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
 				<span class="label label-danger">{{ agenda.BOBOT }}%</span>
 				<section>
@@ -51,8 +51,8 @@
 				<div class="row">
 					<div class="col-sm-7 col-sm-offset-2">
 						<div class="btn-group btn-group-justified">
-							<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/edit" class="btn btn-warning">Edit</a>
-							<a href="#" data-alert-single data-link="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/del/{{ sarDetails.ID_SAR }}" data-alert-message="Hapus SAR<br>{{ sarDetails.NAMA_SAR|raw }}?" class="btn btn-danger">Delete</a>
+							<a href="/sar/{{ idMatkul }}/agenda/{% if idAgenda %}{{ idAgenda }}{% else %}{{ agendas['0'].ID_SUB_KOMPETENSI }}{% endif %}/edit" class="btn btn-warning">Edit</a>
+							<a href="#" data-alert-single data-link="/sar/{{ idMatkul }}/agenda/{% if idAgenda %}{{ idAgenda }}{% else %}{{ agendas['0'].ID_SUB_KOMPETENSI }}{% endif %}/del/{{ sarDetails.ID_SAR }}" data-alert-message="Hapus SAR<br>{{ sarDetails.NAMA_SAR|raw }}?" class="btn btn-danger">Delete</a>
 						</div>
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="btn-group btn-group-vertical">
-							<a href="/sar/{{ idMatkul }}/agenda/{{ idAgenda }}/new" class="btn btn-success btn-block"><i class="fa fa-plus"></i> Self Assesment Baru</a>
+							<a href="/sar/{{ idMatkul }}/agenda/{% if idAgenda %}{{ idAgenda }}{% else %}{{ agendas['0'].ID_SUB_KOMPETENSI }}{% endif %}/new" class="btn btn-success btn-block"><i class="fa fa-plus"></i> Self Assesment Baru</a>
 							<a href="/sar/{{ idMatkul }}/agenda" class="btn btn-primary visible-xs">Cancel</a>
 						</div>
 					</div>
@@ -126,6 +126,7 @@
 <script src="/js/static/bootstrap.min.js"></script>
 <script src="/js/static/bootstrap3-wysihtml5.min.js"></script>
 <script>
+if ($('[data-render-editor]').length) {
 	$('[data-render-editor]').wysihtml5({
 		toolbar: {
 			"font-styles": false,
@@ -139,6 +140,7 @@
 			"size": 'sm'
 		}
 	});
+}
 </script>
 {% endif %}
 {% endblock %}

@@ -13,11 +13,11 @@
 			<div class="page-form form-inline hidden-xs">
 				<div class="btn-group">
 					{% if isCurrent %}
-					<a href="/arsip" class="btn btn-default">Semua</a>
-					<a href="/arsip?current" class="btn btn-primary">Milik Saya</a>
+					<a data-pjax href="/arsip" class="btn btn-default">Semua</a>
+					<a data-pjax href="/arsip?current" class="btn btn-primary">Milik Saya</a>
 					{% else %}
-					<a href="/arsip" class="btn btn-primary">Semua</a>
-					<a href="/arsip?current" class="btn btn-default">Milik Saya</a>
+					<a data-pjax href="/arsip" class="btn btn-primary">Semua</a>
+					<a data-pjax href="/arsip?current" class="btn btn-default">Milik Saya</a>
 					{% endif %}
 				</div>
 			</div>

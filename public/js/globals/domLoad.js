@@ -18,10 +18,11 @@
 
 'use strict';
 
-var fun = require('./globalFunction');
+var fun = require('./globalFunction'),
+    pjax = require('jquery-pjax');
 
 var domLoad = function() {
-  $(window).bind('load resize', function() {
+  $(window).bind('load resize pjax:end', function() {
       var topOffset = 51;
       var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
       var height = (this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height;
@@ -49,6 +50,18 @@ var domLoad = function() {
       $(this).toggleClass('sidebar-mini');
       $('#page-wrapper').toggleClass('full-page');
       $('[data-toggle=sidebar-right]').toggleClass('collapsed');
+    });
+  }
+  $(document).on('change', 'select[data-pjax]', function() {
+    $.pjax({
+      container: '#page-wrapper',
+      fragment: '#page-wrapper',
+      url: $('option:selected', this).data('url')
+    });
+  });
+  if (window.domReady) {
+    $(document).on('pjax:end', function() {
+      window.domReady();
     });
   }
 };

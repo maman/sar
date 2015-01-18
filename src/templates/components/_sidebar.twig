@@ -25,7 +25,7 @@
 			{% if username is not empty %}
 				{% if matkuls %}
 			<li>
-				<a href="/matakuliah?filter=active"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span></a>
+				<a href="/matakuliah?filter=active" data-pjax data-template="<i class='fa fa-refresh fa-spin pull-right'></i>"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span></a>
 			</li>
 				{% endif %}
 				{% if sars %}
@@ -35,7 +35,7 @@
 					{% for sar in sars %}
 						{% if sar.approved == 'approved' %}
 					<li>
-						<a href="/sar/{{ sar.KDMataKuliah }}"><i class="fa fa-newspaper-o"></i> <span>{{ sar.NamaMK }}</span></a>
+						<a href="/sar/{{ sar.KDMataKuliah }}" data-pjax><i class="fa fa-newspaper-o"></i> <span>{{ sar.NamaMK }}</span></a>
 					</li>
 						{% endif %}
 					{% endfor %}
@@ -47,10 +47,10 @@
 				<a class="" href="#"><i class="fa fa-graduation-cap fa-fw"></i> <span>Kaprodi</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="/approval?filter=pending"><i class="fa fa-edit fa-fw"></i> <span>Approval Silabus</span></a>
+						<a href="/approval?filter=pending" data-pjax><i class="fa fa-edit fa-fw"></i> <span>Approval Silabus</span></a>
 					</li>
 					<li>
-						<a href="/plotting"><i class="fa fa-comment-o fa-fw"></i> <span>Plotting Penanggungjawab</span></a>
+						<a href="/plotting" data-pjax><i class="fa fa-comment-o fa-fw"></i> <span>Plotting Penanggungjawab</span></a>
 					</li>
 				</ul>
 			</li>
@@ -61,7 +61,7 @@
 			{% else %}
 			{% endif %}
 			<li>
-				<a class="" href="/arsip"><i class="fa fa-archive fa-fw"></i> <span>Arsip Approval Matakuliah</span></a>
+				<a class="" href="/arsip" data-pjax><i class="fa fa-archive fa-fw"></i> <span>Arsip Approval Matakuliah</span></a>
 			</li>
 		</ul>
 	</div>

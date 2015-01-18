@@ -7,9 +7,9 @@
 			<span class="icon-bar"></span>
 		</button>
 		{% if username is empty %}
-		<a href="/arsip" class="navbar-toggle navbar-btn navbar-login btn btn-primary visible-xs">Arsip</a>
+		<a href="/arsip" data-pjax-full class="navbar-toggle navbar-btn navbar-login btn btn-primary visible-xs">Arsip</a>
 		{% endif %}
-		<a class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
+		<a data-pjax-full class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
 		<span class="navbar-ident small text-muted visible-xs"><strong>{% if username is empty %}MCIS{% else %}{{ username|length > 15 ? username|slice(0, 15) ~ ' ...' : username }}{% endif %}</strong></span>
 		{% if username is not empty %}
 		<a href="/logout" class="btn btn-default navbar-btn navbar-logout pull-right visible-xs">Sign Out</a>
@@ -26,7 +26,7 @@
 				{% for matkul in matkuls %}
 					{% if matkul.percentage != '100' %}
 				<li>
-					<a href="/matakuliah/{{ matkul.KDMataKuliah }}">
+					<a href="/matakuliah/{{ matkul.KDMataKuliah }}" data-pjax>
 						<div>
 							<p>
 								<strong>{{ matkul.NamaMK|length > 20 ? matkul.NamaMK|slice(0, 20) ~ ' ...' : matkul.NamaMK }}</strong>
@@ -44,7 +44,7 @@
 					{% endif %}
 				{% endfor %}
 				<li>
-					<a href="/matakuliah?filter=active" class="center-block text-center">
+					<a href="/matakuliah?filter=active" data-pjax class="center-block text-center">
 						<strong>All Matakuliah</strong>
 					</a>
 				</li>
@@ -54,7 +54,7 @@
 			{% elseif matkuls is not empty %}
 		<li>
 			<div class="progress-navbar">
-				<a href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}">
+				<a href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}" data-pjax>
 					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls['0'].NamaMK }}</strong></span>
 					<div class="progress" style="width: 120px">
 						<div class="progress-bar {% if matkuls['0'].percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkuls['0'].percentage == '0' %}100{% else %}{{ matkuls['0'].percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width:{% if matkuls['0'].percentage == '0' %}100%{% else %}{{ [matkuls['0'].percentage, '%']|join }}{% endif %}">
@@ -76,16 +76,16 @@
 				<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
 				</li>
 				<li class="divider"></li> #}
-				<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+				<li><a href="/logout" data-pjax-disabled><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 				</li>
 			</ul>
 			<!-- /.dropdown-user -->
 		</li>
 		{% else %}
 			{% if not isLogin %}
-		<a href="/" class="btn btn-primary primary navbar-btn btn-login hidden-xs">Login</a>
+		<a href="/" data-pjax-full class="btn btn-primary primary navbar-btn btn-login hidden-xs">Login</a>
 			{% else %}
-		<a href="/arsip" class="btn btn-primary primary navbar-btn btn-login hidden-xs">Arsip</a>
+		<a href="/arsip" data-pjax-full class="btn btn-primary primary navbar-btn btn-login hidden-xs">Arsip</a>
 			{% endif %}
 		{% endif %}
 		<!-- /.dropdown -->

@@ -15,6 +15,9 @@
 	{% block content %}{% endblock %}
 	</div>
 	<script src="/js/bundle.js" charset="utf-8"></script>
+	{% if isPjax %}
+	<script data-pace-options='{"document": false, "restartOnRequestAfter": false, "eventLag": false}' src="/js/static/pace.min.js"></script>
+	{% endif %}
 	{% block inlinejs %}{% endblock %}
 	{% if debug %}
 	<script src="//localhost:35729/livereload.js"></script>

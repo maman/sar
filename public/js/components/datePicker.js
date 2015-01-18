@@ -20,7 +20,7 @@
 
 var datepicker = require('bootstrap-datepicker');
 
-$(document).ready(function() {
+function renderDatePicker() {
   $('[data-render-datepicker]').each(function(index) {
     var $this = $(this),
         $format = $this.data('format'),
@@ -31,4 +31,8 @@ $(document).ready(function() {
       'endDate': $endDate
     });
   });
+}
+
+$(document).on('ready pjax:end', function() {
+  renderDatePicker();
 });

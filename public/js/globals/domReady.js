@@ -18,10 +18,11 @@
 
 'use strict';
 
-var metisMenu = require('metisMenu');
+var metisMenu = require('metisMenu'),
+    pjax = require('jquery-pjax');
 
 var domReady = function() {
-  $(document).ready(function() {
+  $(document).on('ready pjax:end', function() {
     $('#side-menu').metisMenu();
     if($('[data-multiline]').data('multiline') == 'disable') {
       $(this).keypress(function(e) {
@@ -30,7 +31,6 @@ var domReady = function() {
         }
       });
     }
-    $('[data-toggle="tooltip"]').tooltip();
     if ($('[data-load-background]').length) {
       var $proxy = $('[data-load-background]').data('proxyUrl'),
           addr = 'http://www.bing.com/HPImageArchive.aspx?';
@@ -45,6 +45,12 @@ var domReady = function() {
         $('[data-load-background]').addClass('bg-loaded');
       });
     }
+    $(document).pjax('a[data-pjax]', '#page-wrapper', {
+      fragment: '#page-wrapper'
+    });
+    $(document).pjax('a[data-pjax-full]', '#wrapper', {
+      fragment: '#wrapper'
+    });
   });
 };
 

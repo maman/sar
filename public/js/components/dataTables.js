@@ -20,11 +20,15 @@
 
 var tables = require('datatables-bootstrap3-plugin');
 
-$(document).ready(function() {
+function renderTable() {
   $('[data-render-table]').each(function(index) {
     var $this = $(this);
     $this.DataTable({
       'pagingType': 'simple_numbers'
     });
   });
+}
+
+$(document).on('ready pjax:end', function() {
+  renderTable();
 });

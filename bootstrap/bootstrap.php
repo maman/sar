@@ -118,6 +118,11 @@ $app->hook('slim.before.dispatch', function () use ($app) {
 
 $app->setName('SAR');
 
+/* PJAX */
+if ($config['app.pjax']) {
+    $app->add(new \SAR\helpers\Pjax());
+}
+
 /* CSRF Guard */
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());
 
