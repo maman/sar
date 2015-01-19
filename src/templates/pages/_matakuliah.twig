@@ -108,7 +108,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3">
 							<div class="btn-group btn-group-justified btn-group-lg">
-								<a data-pjax href="{{ currPath }}/submit" data-name="{{ namaMatkul }}" {% if progress.approved != 'never' %}disabled{% endif %} class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
+								<a href="{{ currPath }}/submit" data-name="{{ namaMatkul }}" {% if progress.approved != 'never' %}disabled{% endif %} class="{% if progress.RPSDetails.silabus != 'finish' or progress.RPSDetails.agenda != 'finish' or progress.RPSDetails.project != 'finish' %}disabled {% endif %}btn btn-success"><i class="fa fa-cloud"></i> Submit RPS</a>
 							</div>
 						</div>
 					</div>

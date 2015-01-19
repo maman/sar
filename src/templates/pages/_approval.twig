@@ -154,4 +154,11 @@ var form = document.getElementById('rejectForm');
 form.addEventListener('submit', function() {
 	client.emit('approval-reject', form.dataset.matkul, form.dataset.nip);
 }, false);
+{#
+document.querySelector('body').addEventListener('click', function(event) {
+  if (event.target.tagName.toLowerCase() === 'li') {
+    alert(event.target.id);
+  }
+});
+ #}
 {% endblock %}
