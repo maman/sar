@@ -36,41 +36,41 @@
 			</div>
 		</div>
 	</div>
-	<script src="js/static/jquery.min.js"></script>
-	<script src="/js/static/raphael-min.js"></script>
-	<script src="/js/static/morris.min.js"></script>
-	<script>
-	function domReady() {
-		if ($('#chartpanel1, #chartpanel2').length) {
-			Morris.Line({
-				element: 'chartpanel1',
-				data: [
-				{% for item in matkulData %}
-					{tahun: '{{item.year}}', jumlah: {{item.jumlah}}}{% if not loop.last %},{% endif %}
-				{% endfor %}
-				],
-				xkey: 'tahun',
-				ykeys: ['jumlah'],
-				labels: ['Jumlah Matakuliah'],
-				resize: true
-			});
-			Morris.Line({
-				element: 'chartpanel2',
-				data: [
-				{% for item in chartData %}
-					{tahun: '{{item.year}}', approved: {{item.approved}}, rejected: {{item.rejected}}}{% if not loop.last %},{% endif %}
-				{% endfor %}
-				],
-				xkey: 'tahun',
-				ykeys: ['approved', 'rejected'],
-				labels: ['Approved', 'Rejected'],
-				resize: true
-			});
-		}
-	}
-	$(document).on('ready', function() {
-		domReady();
-	});
-	</script>
 </div>
+<script src="/js/static/jquery.min.js"></script>
+<script src="/js/static/raphael-min.js"></script>
+<script src="/js/static/morris.min.js"></script>
+<script>
+function domReady() {
+	if ($('#chartpanel1, #chartpanel2').length) {
+		Morris.Line({
+			element: 'chartpanel1',
+			data: [
+			{% for item in matkulData %}
+				{tahun: '{{item.year}}', jumlah: {{item.jumlah}}}{% if not loop.last %},{% endif %}
+			{% endfor %}
+			],
+			xkey: 'tahun',
+			ykeys: ['jumlah'],
+			labels: ['Jumlah Matakuliah'],
+			resize: true
+		});
+		Morris.Line({
+			element: 'chartpanel2',
+			data: [
+			{% for item in chartData %}
+				{tahun: '{{item.year}}', approved: {{item.approved}}, rejected: {{item.rejected}}}{% if not loop.last %},{% endif %}
+			{% endfor %}
+			],
+			xkey: 'tahun',
+			ykeys: ['approved', 'rejected'],
+			labels: ['Approved', 'Rejected'],
+			resize: true
+		});
+	}
+}
+$(document).on('ready', function() {
+	domReady();
+});
+</script>
 {% endblock content %}

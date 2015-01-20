@@ -118,29 +118,30 @@
 			{% endif %}
 		</div>
 	</div>
+	{% if isNew %}
+	<script src="/js/static/jquery.min.js"></script>
+	<script src="/js/static/bootstrap.min.js"></script>
+	<script src="/js/static/bootstrap3-wysihtml5.min.js"></script>
+	<script>
+	if ($('[data-render-editor]').length) {
+		$('[data-render-editor]').wysihtml5({
+			toolbar: {
+				"font-styles": false,
+				"emphasis": true,
+				"lists": false,
+				"html": false,
+				"link": false,
+				"image": false,
+				"color": false,
+				"blockquote": false,
+				"size": 'sm'
+			}
+		});
+	}
+	</script>
+	{% endif %}
 </div>
 {% endblock %}
 {% block inlinejs %}
-{% if isNew %}
-<script src="/js/static/jquery.min.js"></script>
-<script src="/js/static/bootstrap.min.js"></script>
-<script src="/js/static/bootstrap3-wysihtml5.min.js"></script>
-<script>
-if ($('[data-render-editor]').length) {
-	$('[data-render-editor]').wysihtml5({
-		toolbar: {
-			"font-styles": false,
-			"emphasis": true,
-			"lists": false,
-			"html": false,
-			"link": false,
-			"image": false,
-			"color": false,
-			"blockquote": false,
-			"size": 'sm'
-		}
-	});
-}
-</script>
-{% endif %}
+
 {% endblock %}

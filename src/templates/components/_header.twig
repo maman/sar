@@ -9,7 +9,7 @@
 		{% if username is empty %}
 		<a href="/arsip" data-pjax-full class="navbar-toggle navbar-btn navbar-login btn btn-primary visible-xs">Arsip</a>
 		{% endif %}
-		<a data-pjax-full class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
+		<a {% if not username %}data-pjax-full{% endif %} class="navbar-brand" href="/"><strong class="hidden-xs" >MCIS</strong>Silabus &amp; SAR</a>
 		<span class="navbar-ident small text-muted visible-xs"><strong>{% if username is empty %}MCIS{% else %}{{ username|length > 15 ? username|slice(0, 15) ~ ' ...' : username }}{% endif %}</strong></span>
 		{% if username is not empty %}
 		<a href="/logout" class="btn btn-default navbar-btn navbar-logout pull-right visible-xs">Sign Out</a>
