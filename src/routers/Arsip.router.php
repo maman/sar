@@ -27,10 +27,12 @@ $app->get('/arsip', function () use ($app) {
     $results = $approval->getAllApprovedMatkul(false);
     if (isset($_SESSION['nip'])) {
         if (isset($_GET['current'])) {
-            $filtered = F\select($results, function ($item, $key, $val) {
-                return $item['NIP'] == $_SESSION['nip'];
-            });
-            $results = $filtered;
+            if ($results) {
+                $filtered = F\select($results, function ($item, $key, $val) {
+                    return $item['NIP'] == $_SESSION['nip'];
+                });
+                $results = $filtered;
+            }
             $app->render('pages/_arsip.twig', array(
                 'currPath' => $currPath,
                 'results' => $results,

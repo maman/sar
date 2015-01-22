@@ -82,6 +82,8 @@ class Agenda
      */
     private function getDetailAgendaByMatkul($idMatkul)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         $query = $this->core->db->prepare(
             'SELECT
                 AGENDA.ID_SUB_KOMPETENSI,
@@ -94,15 +96,21 @@ class Agenda
                 MATAKULIAH INNER JOIN SILABUS
             ON
                 MATAKULIAH."KDMataKuliah" = SILABUS.ID_MATAKULIAH
+                INNER JOIN PLOTTING
+            ON
+                MATAKULIAH."KDMataKuliah" = PLOTTING."KDMataKuliah"
                 INNER JOIN AGENDA
             ON
                 SILABUS.ID_SILABUS = AGENDA.ID_SILABUS
             WHERE
                 MATAKULIAH."KDMataKuliah" = :idMatkul
+            AND
+                PLOTTING."ID_PLOTTING" = :currPlot
             ORDER BY
                 AGENDA.ID_SUB_KOMPETENSI ASC'
         );
         $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':currPlot', $currPlot);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {

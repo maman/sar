@@ -90,7 +90,8 @@ class Rps
                 TO_CHAR("Silabus_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Silabus_LastEdit",
                 TO_CHAR("Agenda_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Agenda_LastEdit",
                 TO_CHAR("Project_LastEdit", \'YYYY-MM-DD HH24:MI:SS\') as "Project_LastEdit",
-                "Versi"
+                "Versi",
+                "ID_PLOTTING"
             FROM
                 RPS
             WHERE

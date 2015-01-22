@@ -23,6 +23,7 @@ use alfmel\OCI8\PDO as OCI8;
 use Functional as F;
 use SAR\models\Matkul;
 use SAR\models\Agenda;
+use SAR\externals\Plotting;
 
 /**
  * SelfAssest Class

@@ -27,6 +27,7 @@ use SAR\models\Rps;
 use SAR\models\Matkul;
 use SAR\models\User;
 use SAR\helpers\Utilities;
+use SAR\externals\Plotting;
 
 /**
 * Approval Class
@@ -46,6 +47,7 @@ class Approval
     private $noteSahkan;
     private $kodeApproval;
     private $versi;
+    private $idPlotting;
     private $core;
 
     public function __construct()
@@ -80,6 +82,8 @@ class Approval
      */
     public function getApprovalByIdMatkul($idMatkul)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         $query = $this->core->db->prepare(
             'SELECT
                 *
@@ -97,11 +101,14 @@ class Approval
                     "NotePeriksa",
                     "NotePengesahan",
                     "Approval",
-                    "Versi"
+                    "Versi",
+                    "ID_PLOTTING"
                 FROM
                     Approval
                 WHERE
                     "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot
                 ORDER BY
                     "TglDisahkan" DESC
             )
@@ -109,6 +116,7 @@ class Approval
                 ROWNUM = 1'
         );
         $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':currPlot', $currPlot);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -125,6 +133,7 @@ class Approval
                 $this->noteSahkan = $result['NotePengesahan'];
                 $this->kodeApproval = $result['Approval'];
                 $this->versi = $result['Versi'];
+                $this->idPlotting = $result['ID_PLOTTING'];
             }
             return $results;
         } else {
@@ -171,8 +180,15 @@ class Approval
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getAllApprovalByMatkul($idMatkul)
+    public function getAllApprovalByMatkul($idMatkul, $tahun = null)
     {
+        $plotting = new Plotting();
+        if ($tahun === null) {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        } else {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul, $tahun);
+        }
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         $query = $this->core->db->prepare(
             'SELECT
                 "ID_Approval",
@@ -186,15 +202,19 @@ class Approval
                 "NotePeriksa",
                 "NotePengesahan",
                 "Approval",
-                "Versi"
+                "Versi",
+                "ID_PLOTTING"
             FROM
                 Approval
             WHERE
                 "KDMataKuliah" = :idMatkul
+            AND
+                "ID_PLOTTING" = :currPlot
             ORDER BY
                 "ID_Approval" ASC'
         );
         $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':currPlot', $currPlot);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -213,6 +233,8 @@ class Approval
     public function createApprovalForMatkul($idMatkul, $nip, $versi)
     {
         $tglMasuk = $this->getTodayDate();
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $insert = $this->core->db->prepare(
                 'INSERT INTO
@@ -221,20 +243,23 @@ class Approval
                     "KDMataKuliah",
                     "NIP",
                     "TglMasuk",
-                    "Versi"
+                    "Versi",
+                    "ID_PLOTTING"
                 )
                 VALUES
                 (
                     :idMatkul,
                     :nip,
                     to_date(:tglMasuk, \'YYYY-MM-DD HH24:MI:SS\'),
-                    :versi
+                    :versi,
+                    :currPlot
                 )'
             );
             $insert->bindParam(':idMatkul', $idMatkul);
             $insert->bindParam(':nip', $nip);
             $insert->bindParam(':tglMasuk', $tglMasuk);
             $insert->bindParam(':versi', $versi);
+            $insert->bindParam(':currPlot', $currPlot);
             $insert->execute();
             return true;
         } catch (PDOException $e) {
@@ -379,6 +404,8 @@ class Approval
     public function getRejectDetail($idMatkul, $versi)
     {
         $versi = $versi - 1;
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         $query = $this->core->db->prepare('
             SELECT
                 TO_CHAR("TglPeriksa", \'YYYY-MM-DD HH24:MI:SS\') as "TglPeriksa",
@@ -390,9 +417,12 @@ class Approval
                 "KDMataKuliah" = :idMatkul
             AND
                 "Versi" = :versi
+            AND
+                "ID_PLOTTING" = :currPlot
         ');
         $query->bindParam(':idMatkul', $idMatkul);
         $query->bindParam(':versi', $versi);
+        $query->bindParam(':currPlot', $currPlot);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -410,6 +440,8 @@ class Approval
     public function getApprovalDetail($idMatkul)
     {
         $result = $this->getApprovalByIdMatkul($idMatkul);
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         if ($result) {
             $query = $this->core->db->prepare('
                 SELECT
@@ -420,8 +452,11 @@ class Approval
                     Approval
                 WHERE
                     "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot
             ');
             $query->bindParam(':idMatkul', $result['KDMataKuliah']);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $results = $query->fetchAll(OCI8::FETCH_ASSOC);
             if (count($results) > 0) {
@@ -441,28 +476,6 @@ class Approval
      */
     public function getAllApprovedMatkul()
     {
-        // $approval = array();
-        // $matkul = new Matkul;
-        // $user = new User;
-        // $result = $matkul->getAllMatkul($current);
-        // foreach ($result as $matakuliah) {
-        //     $approvalDetail = $this->getApprovalByIdMatkul($matakuliah['KDMataKuliah']);
-        //     $namaMatkul = $matakuliah['NamaMK'];
-        //     if ($approvalDetail) {
-        //         foreach ($approvalDetail as $keyDetail => $valDetail) {
-        //             unset($approvalDetail[$keyDetail]['TglPeriksa']);
-        //             unset($approvalDetail[$keyDetail]['NIP_Periksa']);
-        //             unset($approvalDetail[$keyDetail]['NotePeriksa']);
-        //             unset($approvalDetail[$keyDetail]['NotePengesahan']);
-        //             unset($approvalDetail[$keyDetail]['Approval']);
-        //             $approvalDetail[$keyDetail]['namaMataKuliah'] = $namaMatkul;
-        //             $approvalDetail[$keyDetail]['namaSubmitter'] = $user->getUserName($approvalDetail[$keyDetail]['NIP']);
-        //             $approvalDetail[$keyDetail]['namaApprover'] = $user->getUserName($approvalDetail[$keyDetail]['NIP_Pengesahan']);
-        //         }
-        //         array_push($approval, $approvalDetail);
-        //     }
-        // }
-        // return $approval;
         $user = new User;
         $query = $this->core->db->prepare('
             SELECT
