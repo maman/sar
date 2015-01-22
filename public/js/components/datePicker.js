@@ -18,7 +18,7 @@
 
 'use strict';
 
-var datepicker = require('bootstrap-datepicker');
+require('bootstrap-datepicker');
 
 function renderDatePicker() {
   $('[data-render-datepicker]').each(function(index) {

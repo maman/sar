@@ -13,6 +13,12 @@
 <body>
 	<div id="wrapper">
 	{% block content %}{% endblock %}
+	{% block inlinejs %}{% endblock %}
+	</div>
+	<script src="/js/bundle.js" charset="utf-8"></script>
+	{% if isPjax %}
+	<script data-pace-options='{"document": false, "restartOnRequestAfter": false, "eventLag": false}' src="/js/static/pace.min.js"></script>
+	{% endif %}
 	{% if ws and username %}
 		<script src="//{{ wsHost }}/socket.io/socket.io.js"></script>
 		<script src="/js/static/vanilla-notify.min.js"></script>
@@ -69,12 +75,6 @@
 		{% block socket %}{% endblock %}
 		</script>
 	{% endif %}
-	</div>
-	<script src="/js/bundle.js" charset="utf-8"></script>
-	{% if isPjax %}
-	<script data-pace-options='{"document": false, "restartOnRequestAfter": false, "eventLag": false}' src="/js/static/pace.min.js"></script>
-	{% endif %}
-	{% block inlinejs %}{% endblock %}
 	{% if debug %}
 	<script src="//localhost:35729/livereload.js"></script>
 	{% endif %}

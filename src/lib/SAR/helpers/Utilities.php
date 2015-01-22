@@ -36,6 +36,12 @@ class Utilities
         return $tahun;
     }
 
+    public function getTahunAjaran()
+    {
+        $tahun = date('Y');
+        return $tahun;
+    }
+
     public static function arrayDiff(array $a1, array $a2)
     {
         $result = array();

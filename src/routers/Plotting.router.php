@@ -68,7 +68,7 @@ $app->get('/plotting/new', $kaprodi, function () use ($app) {
     $currMatkul = $plotting->getUnplottedMatkul($idProdi);
     if ($currMatkul) {
         foreach ($currMatkul as $keyMatkul => $valMatkul) {
-            $currMatkul[$keyMatkul]['Nama'] = $matkul->getMatkulName($currMatkul[$keyMatkul]['KDMataKuliah']);
+            $currMatkul[$keyMatkul]['Nama'] = $matkul->getMatkulName($currMatkul[$keyMatkul]['KDMataKuliah'], false);
         }
     }
     $currDosen = $user->getUserName($nip);

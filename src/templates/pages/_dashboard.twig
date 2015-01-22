@@ -37,6 +37,9 @@
 		</div>
 	</div>
 </div>
+{% endblock content %}
+
+{% block inlinejs %}
 <script src="/js/static/jquery.min.js"></script>
 <script src="/js/static/raphael-min.js"></script>
 <script src="/js/static/morris.min.js"></script>
@@ -73,4 +76,4 @@ $(document).on('ready', function() {
 	domReady();
 });
 </script>
-{% endblock content %}
+{% endblock %}

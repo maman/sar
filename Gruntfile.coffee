@@ -47,7 +47,10 @@ module.exports = (grunt) ->
           livereload: true
 
       js:
-        files: ['public/js/**/*.js']
+        files: [
+          'public/js/**/*.js'
+          '!public/js/bundle.js'
+        ]
         tasks: ['jshint', 'webpack:dev']
         options:
           livereload: true
@@ -145,6 +148,8 @@ module.exports = (grunt) ->
         ]
       stats: false
       dist:
+        optimize:
+          minimize: true
         plugins: [
           new webpack.DefinePlugin(
             'process.env': NODE_ENV: JSON.stringify('production')

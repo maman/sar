@@ -28,7 +28,7 @@
 				<a href="/matakuliah?filter=active" data-pjax-full data-template="<i class='fa fa-refresh fa-spin pull-right'></i>"><i class="fa fa-briefcase fa-fw"></i> <span>Mata Kuliah</span></a>
 			</li>
 				{% endif %}
-				{% if sars %}
+				{% if sars and sars is not empty and sars["0"].approved == 'approved' %}
 			<li>
 				<a href="#"><i class="fa fa-line-chart fa-fw"></i> <span>Self Assesment</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">

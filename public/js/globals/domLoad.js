@@ -46,12 +46,28 @@ var domLoad = function() {
       }
   });
   if ($('.sidebar[data-mini]').length) {
+    $('.sidebar[data-mini]').addClass('sidebar-mini');
+    $('#page-wrapper').addClass('full-page');
+    $('.sidebar-right').removeClass('collapsed');
     $('.sidebar[data-mini]').hover(function() {
       $(this).toggleClass('sidebar-mini');
       $('#page-wrapper').toggleClass('full-page');
       $('[data-toggle=sidebar-right]').toggleClass('collapsed');
     });
   }
+  // $(document).on('pjax:popstate', function() {
+  //   $(document).on('pjax:complete.popstate-handling', function(){
+  //     // Content loaded from ajax, prevent pjax:end.popstate-handling from its execution
+  //     $(document).off('.popstate-handling');
+  //   });
+  //   $(document).on('pjax:end.popstate-handling', function(event) {
+  //     // Manually execute the inline scripts
+  //     $(event.target).find('script').each(function() {
+  //       $.globalEval(this.text || this.textContent || this.innerHTML || '');
+  //     });
+  //     $(document).off('.popstate-handling'); // Cleanup the callback that's not fired
+  //   });
+  // });
   $(document).on('change', 'select[data-pjax]', function() {
     $.pjax({
       container: '#page-wrapper',

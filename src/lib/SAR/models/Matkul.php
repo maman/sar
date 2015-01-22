@@ -53,35 +53,26 @@ class Matkul
 
     /**
      * Get All Recorded matakuliah
-     * @param  boolean $current limit year range. defaults to true.
      * @return array
      */
-    public function getAllMatkul($current = true)
+    public function getAllMatkul()
     {
         $tahun = new Utilities();
         $range = $tahun->getRangeTahunAjaran();
         $results = array();
-        if ($current) {
-            $query = $this->core->db->prepare(
-                'SELECT
-                    *
-                FROM
-                    "MATAKULIAH"
-                WHERE
-                    "MATAKULIAH"."TahunAjaranMK"
-                    BETWEEN :tahunMulai
-                    AND :tahunSelesai'
-            );
-            $query->bindParam(':tahunMulai', $range['start']);
-            $query->bindParam(':tahunSelesai', $range['end']);
-        } else {
-            $query = $this->core->db->prepare(
-                'SELECT
-                    *
-                FROM
-                    "MATAKULIAH"'
-            );
-        }
+        $query = $this->core->db->prepare(
+            'SELECT
+                "MATAKULIAH"."KDMataKuliah",
+                "MATAKULIAH"."IDSyaratMK",
+                "MATAKULIAH"."NamaMK",
+                "MATAKULIAH"."SemesterMK",
+                "MATAKULIAH"."IDPRODI",
+                "PLOTTING"."TAHUNAJARAN" AS "TahunAjaranMK"
+            FROM
+                "MATAKULIAH" INNER JOIN "PLOTTING"
+            ON
+                "MATAKULIAH"."KDMataKuliah" = "PLOTTING"."KDMataKuliah"'
+        );
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
@@ -92,40 +83,26 @@ class Matkul
      *
      * Get Mata Kuliah Details from KDMataKuliah
      * @param  string  $id
-     * @param  boolean $current limit year range. defaults to true.
      * @return array
      */
-    public function getMatkulDetails($id, $current = true)
+    public function getMatkulDetails($id)
     {
         $tahun = new Utilities();
         $range = $tahun->getRangeTahunAjaran();
         $results = array();
-        if ($current) {
-            $query = $this->core->db->prepare(
-                'SELECT
-                    *
-                FROM
-                    "MATAKULIAH"
-                WHERE
-                    "MATAKULIAH"."KDMataKuliah" = :id
-                    AND "MATAKULIAH"."TahunAjaranMK"
-                    BETWEEN :tahunMulai
-                    AND :tahunSelesai'
-            );
-            $query->bindParam(':id', $id);
-            $query->bindParam(':tahunMulai', $range['start']);
-            $query->bindParam(':tahunSelesai', $range['end']);
-        } else {
-            $query = $this->core->db->prepare(
-                'SELECT
-                    *
-                FROM
-                    "MATAKULIAH"
-                WHERE
-                    "MATAKULIAH"."KDMataKuliah" = :id'
-            );
-            $query->bindParam(':id', $id);
-        }
+        $query = $this->core->db->prepare(
+            'SELECT
+                "MATAKULIAH"."KDMataKuliah",
+                "MATAKULIAH"."IDSyaratMK",
+                "MATAKULIAH"."NamaMK",
+                "MATAKULIAH"."SemesterMK",
+                "MATAKULIAH"."IDPRODI"
+            FROM
+                "MATAKULIAH"
+            WHERE
+                "MATAKULIAH"."KDMataKuliah" = :id'
+        );
+        $query->bindParam(':id', $id);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
@@ -151,9 +128,13 @@ class Matkul
                 PLOTTING_KOMPETENSI INNER JOIN MATAKULIAH
             ON
                 PLOTTING_KOMPETENSI."KDMataKuliah" = MATAKULIAH."KDMataKuliah"
+            INNER JOIN
+                PLOTTING
+            ON
+                "MATAKULIAH"."KDMataKuliah" = "PLOTTING"."KDMataKuliah"
             WHERE
                 PLOTTING_KOMPETENSI.NIP = :nip
-                AND "MATAKULIAH"."TahunAjaranMK"
+                AND "PLOTTING"."TAHUNAJARAN"
                 BETWEEN :tahunMulai
                 AND :tahunSelesai'
         );
@@ -181,7 +162,7 @@ class Matkul
             WHERE
                 PLOTTING.NIP = :nip
                 AND PLOTTING.STATUS IS NOT NULL
-                AND "MATAKULIAH"."TahunAjaranMK"
+                AND "PLOTTING"."TAHUNAJARAN"
                 BETWEEN :tahunMulai
                 AND :tahunSelesai'
         );
@@ -235,9 +216,9 @@ class Matkul
      * @param  boolean $current  defaults to true
      * @return string
      */
-    public function getMatkulName($idMatkul, $current = true)
+    public function getMatkulName($idMatkul)
     {
-        $results = $this->getMatkulDetails($idMatkul, $current);
+        $results = $this->getMatkulDetails($idMatkul);
         if ($results) {
             return $results[0]['NamaMK'];
         } else {
@@ -253,8 +234,8 @@ class Matkul
     {
         $query = $this->core->db->prepare(
             'SELECT DISTINCT
-                MATAKULIAH."TahunAjaranMK"
-            FROM MATAKULIAH'
+                "PLOTTING"."TAHUNAJARAN" AS "TahunAjaranMK"
+            FROM PLOTTING'
         );
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
@@ -270,11 +251,18 @@ class Matkul
     {
         $query = $this->core->db->prepare(
             'SELECT
-                *
+                "MATAKULIAH"."KDMataKuliah",
+                "MATAKULIAH"."IDSyaratMK",
+                "MATAKULIAH"."NamaMK",
+                "MATAKULIAH"."SemesterMK",
+                "MATAKULIAH"."IDPRODI",
+                "PLOTTING"."TAHUNAJARAN" AS "TahunAjaranMK"
             FROM
-                MATAKULIAH
+                "MATAKULIAH" INNER JOIN "PLOTTING"
+            ON
+                "MATAKULIAH"."KDMataKuliah" = "PLOTTING"."KDMataKuliah"
             WHERE
-                "TahunAjaranMK" = :yearData'
+                "PLOTTING"."TAHUNAJARAN" = :yearData'
         );
         $query->bindParam(':yearData', $year);
         $query->execute();

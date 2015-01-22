@@ -20,18 +20,21 @@ use SAR\models\Matkul;
 use SAR\models\Silabus;
 use SAR\models\Kategori;
 use SAR\models\Rps;
+use SAR\externals\Plotting;
 
 /** GET request on `/matakuliah/:idMatkul/silabus` */
 $app->get('/matakuliah/:idMatkul/silabus', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
+    $plotting = new Plotting();
     $matkul = new Matkul();
-    $silabus = new Silabus($idMatkul);
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $rps = new Rps();
     $rps->getRpsByIdMatkul($idMatkul);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $new = false;
     if (is_null($silabus->silabusID)) {
         $new = true;
@@ -84,7 +87,9 @@ $app->get('/matakuliah/:idMatkul/silabus/submit', $authenticate($app), function 
 $app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     if (!is_null($silabus->silabusID)) {
@@ -105,7 +110,9 @@ $app->get('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatku
 
 /** POST request on `/matakuliah/:idMatkul/silabus/new` */
 $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->saveOrEdit($idMatkul, '', $_POST['pokok-bahasan'], $_POST['tujuan']);
     if ($result) {
         $rps = new Rps();
@@ -120,7 +127,9 @@ $app->post('/matakuliah/:idMatkul/silabus/new', $authenticate($app), $accessmatk
 $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     if (!empty($_SESSION['silabusID'])) {
@@ -147,7 +156,9 @@ $app->get('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatk
 
 /** POST request on `/matakuliah/:idMatkul/silabus/edit` */
 $app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->saveOrEdit($idMatkul, $_POST['idSilabus'], $_POST['pokok-bahasan'], $_POST['tujuan']);
     if ($result) {
         $rps = new Rps();
@@ -161,7 +172,9 @@ $app->post('/matakuliah/:idMatkul/silabus/edit', $authenticate($app), $accessmat
 /** GET request on `/matakuliah/:idMatkul/silabus/kompetensi` */
 $app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $kategori = new Kategori();
     $app->render('pages/_kompetensi.twig', array(
         'kategori' => $kategori->getAllKategori(),
@@ -176,7 +189,9 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $acce
 
 /** POST request on `/matakuliah/:idMatkul/silabus/kompetensi` */
 $app->post('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->saveKompetensi($_POST['idSilabus'], $_POST['text'], $_POST['kategori']);
     if ($result) {
         $rps = new Rps();
@@ -189,7 +204,9 @@ $app->post('/matakuliah/:idMatkul/silabus/kompetensi', $authenticate($app), $acc
 
 /** GET request on `/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi` */
 $app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authenticate($app), $accessmatkul, function ($idMatkul, $idKompetensi) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->deleteKompetensi($idKompetensi);
     if ($result) {
         $rps = new Rps();
@@ -202,7 +219,9 @@ $app->get('/matakuliah/:idMatkul/silabus/kompetensi/del/:idKompetensi', $authent
 
 $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
     $currPath = $app->request()->getPath();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $currYear = date('Y');
     $app->render('pages/_pustaka.twig', array(
         'currPath' => $currPath,
@@ -216,7 +235,9 @@ $app->get('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessm
 });
 
 $app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $accessmatkul, function ($idMatkul) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->saveKepustakaan($_POST['idSilabus'], $_POST['judul'], $_POST['tahun'], $_POST['penerbit'], $_POST['pengarang'], $_POST['edisi'], $_POST['tempat']);
     if ($result) {
         $rps = new Rps();
@@ -228,7 +249,9 @@ $app->post('/matakuliah/:idMatkul/silabus/pustaka', $authenticate($app), $access
 });
 
 $app->get('/matakuliah/:idMatkul/silabus/pustaka/del/:idPustaka', $authenticate($app), $accessmatkul, function ($idMatkul, $idPustaka) use ($app) {
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $result = $silabus->deleteKepustakaan($idPustaka);
     if ($result) {
         $rps = new Rps();

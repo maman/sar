@@ -18,7 +18,7 @@
 
 'use strict';
 
-var tables = require('datatables-bootstrap3-plugin');
+require('datatables-bootstrap3-plugin');
 
 function renderTable() {
   $('[data-render-table]').each(function(index) {

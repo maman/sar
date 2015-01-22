@@ -14,12 +14,11 @@
  */
 
 /* jslint node: true */
-/* global window, document, define */
+/* global window, document, define, $ */
 
 'use strict';
 
-var $ = require('jquery'),
-    select2 = require('select2');
+var select2 = require('select2');
 
 function format(tags) {
   var originalOption = tags.element;

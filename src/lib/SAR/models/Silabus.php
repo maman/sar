@@ -21,6 +21,7 @@ namespace SAR\models;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Kategori;
+use SAR\externals\Plotting;
 
 /**
  * Silabus Class
@@ -31,28 +32,21 @@ use SAR\models\Kategori;
 class Silabus
 {
     private $silabusID;
+    private $plottingID;
     private $semester;
     private $tujuan;
     private $kompetensi;
     private $pokokBahasan;
     private $pustaka;
-    private $mediaBelajarSoft;
-    private $mediaBelajarHard;
-    private $assesmentTes;
-    private $assesmentNonTes;
     private $core;
 
-    public function __construct($idMatkul)
+    public function __construct($idMatkul, $idPlotting)
     {
         $this->core = Slim::getInstance();
-        $silabus = $this->getSilabusByMatkul($idMatkul);
+        $silabus = $this->getSilabusByMatkul($idMatkul, $idPlotting);
         if ($silabus) {
             foreach ($silabus as $result) {
                 $this->silabusID = $result['ID_SILABUS'];
-                // $this->mediaBelajarSoft = $result['MEDIA_BELAJAR_SOFTWARE'];
-                // $this->mediaBelajarHard = $result['MEDIA_BELAJAR_HARDWARE'];
-                // $this->assesmentTes = $result['ASSESMENT_TES'];
-                // $this->assesmentNonTes = $result['ASSESMENT_NONTES'];
                 $this->pokokBahasan = $result['POKOK_BAHASAN'];
                 $this->tujuan = $result['TUJUAN'];
                 $this->pustaka = $this->getPustakaBySilabusID($result['ID_SILABUS']);
@@ -84,7 +78,7 @@ class Silabus
      * @param  string $idMatkul
      * @return mixed
      */
-    private function getSilabusByMatkul($idMatkul)
+    private function getSilabusByMatkul($idMatkul, $idPlotting)
     {
         $query = $this->core->db->prepare(
             'SELECT
@@ -92,9 +86,12 @@ class Silabus
             FROM
                 SILABUS
             WHERE
-                ID_MATAKULIAH = :idMatkul'
+                ID_MATAKULIAH = :idMatkul
+            AND
+                ID_PLOTTING = :idPlotting'
         );
         $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':idPlotting', $idPlotting);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -236,6 +233,8 @@ class Silabus
     public function saveOrEdit($idMatkul, $idSilabus, $pokokBahasan, $tujuan)
     {
         if ($idSilabus == '') {
+            $plotting = new Plotting();
+            $currPlot = $plotting->getCurrentPlotting($idMatkul);
             try {
                 $query = $this->core->db->prepare(
                     'INSERT INTO
@@ -243,18 +242,21 @@ class Silabus
                     (
                         POKOK_BAHASAN,
                         ID_MATAKULIAH,
-                        TUJUAN
+                        TUJUAN,
+                        ID_PLOTTING
                     )
                     VALUES
                     (
                         :pokokBahasan,
                         :idMatkul,
-                        :tujuan
+                        :tujuan,
+                        :currPlot
                     )'
                 );
                 $query->bindParam(':pokokBahasan', $pokokBahasan);
                 $query->bindParam(':idMatkul', $idMatkul);
                 $query->bindParam(':tujuan', $tujuan);
+                $query->bindParam(':currPlot', $currPlot);
                 $query->execute();
                 return true;
             } catch (PDOException $e) {

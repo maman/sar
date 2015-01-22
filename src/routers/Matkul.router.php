@@ -61,13 +61,13 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $progress = $rps->getRpsProgress($idMatkul);
     $app->render('pages/_matakuliah.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'progress' => $progress,
         'currPath' => $currPath
     ));

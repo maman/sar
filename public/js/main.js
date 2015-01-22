@@ -28,10 +28,8 @@ require('./globals/domReady');
 require('./components/alertBox');
 require('./components/dataTables');
 require('./components/datePicker');
-require('./components/layoutMini');
 require('./components/listToggler');
 require('./components/multitags');
 require('./components/momentRender');
-// require('./components/progressBar');
 
 console.log('ready to dispatch.');
