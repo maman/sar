@@ -23,6 +23,7 @@ use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Matkul;
 use SAR\models\Approval;
 use SAR\models\SelfAssest;
+use SAR\externals\Plotting;
 
 /**
  * Rps Class
@@ -42,6 +43,7 @@ class Rps
     private $agendaLastEdit;
     private $projectLastEdit;
     private $versi;
+    private $idPlotting;
     private $core;
 
     public function __construct()
@@ -74,6 +76,8 @@ class Rps
     public function getRpsByIdMatkul($idMatkul)
     {
         $results = false;
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         $query = $this->core->db->prepare(
             'SELECT
                 "Silabus",
@@ -90,9 +94,12 @@ class Rps
             FROM
                 RPS
             WHERE
-                "KDMataKuliah" = :idMatkul'
+                "KDMataKuliah" = :idMatkul
+            AND
+                "ID_PLOTTING" = :currPlot'
         );
         $query->bindParam(':idMatkul', $idMatkul);
+        $query->bindParam(':currPlot', $currPlot);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {
@@ -108,6 +115,7 @@ class Rps
                 $this->agendaLastEdit  = $result['Agenda_LastEdit'];
                 $this->projectLastEdit = $result['Project_LastEdit'];
                 $this->versi           = $result['Versi'];
+                $this->idPlotting      = $result['ID_PLOTTING'];
             }
             return true;
         } else {
@@ -124,15 +132,24 @@ class Rps
      */
     public function createRpsForMatkul($idMatkul)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $insert = $this->core->db->prepare(
                 'INSERT INTO
                     RPS
-                ("KDMataKuliah")
+                (
+                    "KDMataKuliah",
+                    "ID_PLOTTING"
+                )
                     VALUES
-                (:idMatkul)'
+                (
+                    :idMatkul,
+                    :currPlot
+                )'
             );
             $insert->bindParam(':idMatkul', $idMatkul);
+            $insert->bindParam(':currPlot', $currPlot);
             $insert->execute();
             return true;
         } catch (PDOException $e) {
@@ -229,6 +246,8 @@ class Rps
     public function startSilabus($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -236,10 +255,13 @@ class Rps
                 SET
                     "Silabus_StartDate" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->silabusStart = $currDate;
             return true;
@@ -256,6 +278,8 @@ class Rps
     public function editSilabus($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -263,10 +287,13 @@ class Rps
                 SET
                     "Silabus_LastEdit" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->silabusLastEdit = $currDate;
             return true;
@@ -283,6 +310,8 @@ class Rps
     public function startAgenda($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -290,10 +319,13 @@ class Rps
                 SET
                     "Agenda_StartDate" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->agendaStart = $currDate;
             return true;
@@ -310,6 +342,8 @@ class Rps
     public function editAgenda($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -317,10 +351,13 @@ class Rps
                 SET
                     "Agenda_LastEdit" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->agendaLastEdit = $currDate;
             return true;
@@ -337,6 +374,8 @@ class Rps
     public function startProject($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -344,10 +383,13 @@ class Rps
                 SET
                     "Project_StartDate" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul,
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->projectStart = $currDate;
             return true;
@@ -364,6 +406,8 @@ class Rps
     public function editProject($idMatkul)
     {
         $currDate = date('Y-m-d H:i:s');
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -371,10 +415,13 @@ class Rps
                 SET
                     "Project_LastEdit" = to_date(:currDate, \'YYYY-MM-DD HH24:MI:SS\')
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':currDate', $currDate);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->projectLastEdit = $currDate;
             return true;
@@ -391,6 +438,8 @@ class Rps
      */
     public function bumpProgress($idMatkul, $field)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -398,9 +447,12 @@ class Rps
                 SET
                     "' . ucfirst($field) . '" = 1
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING = :currPlot"'
             );
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->$field = '1';
             return true;
@@ -417,6 +469,8 @@ class Rps
      */
     public function submitProgress($idMatkul, $field)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -424,9 +478,12 @@ class Rps
                 SET
                     "' . ucfirst($field) . '" = 2
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->$field = '2';
             return true;
@@ -445,6 +502,8 @@ class Rps
         $approval = new Approval();
         $this->getRpsByIdMatkul($idMatkul);
         $versi = $this->versi;
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -452,9 +511,12 @@ class Rps
                 SET
                     "Approval" = 1
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->approval = '1';
             $approval->createApprovalForMatkul($idMatkul, $nip, $versi);
@@ -471,6 +533,8 @@ class Rps
      */
     public function approve($idMatkul)
     {
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -478,9 +542,12 @@ class Rps
                 SET
                     "Approval" = 2
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->approval = '2';
             return true;
@@ -497,6 +564,8 @@ class Rps
     public function resetAndBump($idMatkul)
     {
         $versi = $this->versi + 1;
+        $plotting = new Plotting();
+        $currPlot = $plotting->getCurrentPlotting($idMatkul);
         try {
             $query = $this->core->db->prepare(
                 'UPDATE
@@ -508,10 +577,13 @@ class Rps
                     "Approval" = 0,
                     "Versi" = :versi
                 WHERE
-                    "KDMataKuliah" = :idMatkul'
+                    "KDMataKuliah" = :idMatkul
+                AND
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':versi', $versi);
             $query->bindParam(':idMatkul', $idMatkul);
+            $query->bindParam(':currPlot', $currPlot);
             $query->execute();
             $this->silabus = '0';
             $this->agenda = '0';
@@ -536,6 +608,11 @@ class Rps
         $_SESSION['matkul'] = $matkul;
     }
 
+    /**
+     * Update Matkul Progress value
+     * @param  string $username
+     * @return array
+     */
     public function updateMatkulProgress($username)
     {
         $user = new Matkul();
@@ -555,6 +632,11 @@ class Rps
         return $matkul;
     }
 
+    /**
+     * Update SAR Progress value
+     * @param  string $username
+     * @return array
+     */
     public function updateSarProgress($username)
     {
         $user = new Matkul();
