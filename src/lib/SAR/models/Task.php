@@ -137,10 +137,14 @@ class Task
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getDetailAktivitasByMatkul($idMatkul)
+    public function getDetailAktivitasByMatkul($idMatkul, $year = null)
     {
         $agenda = new Agenda();
-        $results = $agenda->getAgendaByMatkul($idMatkul);
+        if ($year === null) {
+            $results = $agenda->getAgendaByMatkul($idMatkul);
+        } else {
+            $results = $agenda->getAgendaByMatkul($idMatkul, $year, null);
+        }
         if ($results) {
             foreach ($results as $key => $value) {
                 unset($results[$key]['TEXT_MATERI_BELAJAR']);

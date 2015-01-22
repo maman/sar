@@ -22,6 +22,7 @@ use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use SAR\models\Kategori;
 use SAR\models\Task;
+use SAR\externals\Plotting;
 use Functional as F;
 
 /**
@@ -80,10 +81,14 @@ class Agenda
      * @param  string $idMatkul
      * @return mixed
      */
-    private function getDetailAgendaByMatkul($idMatkul)
+    private function getDetailAgendaByMatkul($idMatkul, $year = null)
     {
         $plotting = new Plotting();
-        $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        if ($year === null) {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        } else {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul, $year);
+        }
         $query = $this->core->db->prepare(
             'SELECT
                 AGENDA.ID_SUB_KOMPETENSI,
@@ -125,10 +130,14 @@ class Agenda
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getAgendaByMatkul($idMatkul, $mode = null)
+    public function getAgendaByMatkul($idMatkul, $year = null, $mode = null)
     {
         $kategori = new Kategori();
-        $results = $this->getDetailAgendaByMatkul($idMatkul);
+        if ($year === null) {
+            $results = $this->getDetailAgendaByMatkul($idMatkul);
+        } else {
+            $results = $this->getDetailAgendaByMatkul($idMatkul, $year);
+        }
         if ($results) {
             foreach ($results as $value => $agenda) {
                 if (is_null($mode)) {

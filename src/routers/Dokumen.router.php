@@ -22,3 +22,10 @@ $app->get('/dokumen/:idMatkul', function ($idMatkul) use ($app) {
         'idMatkul' => $idMatkul
     ));
 });
+
+$app->get('/dokumen/:idMatkul/:year', function ($idMatkul, $year) use ($app) {
+    $app->render('pages/_document.twig', array(
+        'idMatkul' => $idMatkul,
+        'year' => $year
+    ));
+});

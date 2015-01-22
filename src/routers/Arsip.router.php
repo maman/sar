@@ -21,10 +21,10 @@ use SAR\models\Approval;
 use SAR\models\Rps;
 use Functional as F;
 
-$app->get('/arsip', function () use ($app) {
+$app->get('/arsip(/:year)', function ($year = null) use ($app) {
     $currPath = $app->request()->getPath();
     $approval = new Approval();
-    $results = $approval->getAllApprovedMatkul(false);
+    $results = $approval->getAllApprovedMatkul($year);
     if (isset($_SESSION['nip'])) {
         if (isset($_GET['current'])) {
             if ($results) {

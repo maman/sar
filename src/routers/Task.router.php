@@ -31,7 +31,7 @@ $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, func
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
     if (!is_array($tasks)) {
         $tasks = false;
@@ -55,7 +55,7 @@ $app->get('/matakuliah/:idMatkul/task', $authenticate($app), $accessmatkul, func
         'lastEditDate' => $lastEditDate,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'tasks' => $tasks,
         'isComplete' => $isComplete,
         'currPath' => $currPath
@@ -88,14 +88,14 @@ $app->get('/matakuliah/:idMatkul/task/scope', $authenticate($app), $accessmatkul
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $collection = $task->getScopeByAktivitas($idAktivitas);
     $app->render('pages/_subtask.twig', array(
         'pageTitle' => 'Scope',
         'idAktivitas' => $idAktivitas,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
         'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath
@@ -138,14 +138,14 @@ $app->get('/matakuliah/:idMatkul/task/metode', $authenticate($app), $accessmatku
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $collection = $task->getMetodeByAktivitas($idAktivitas);
     $app->render('pages/_subtask.twig', array(
         'pageTitle' => 'Metode',
         'idAktivitas' => $idAktivitas,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
         'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath
@@ -188,14 +188,14 @@ $app->get('/matakuliah/:idMatkul/task/kriteria', $authenticate($app), $accessmat
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $collection = $task->getKriteriaByAktivitas($idAktivitas);
     $app->render('pages/_subtask.twig', array(
         'pageTitle' => 'Kriteria',
         'idAktivitas' => $idAktivitas,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'collection' => $collection,
         'btnPath' => '/matakuliah/'. $idMatkul . '/task',
         'currPath' => $currPath

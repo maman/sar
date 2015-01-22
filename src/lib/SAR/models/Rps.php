@@ -73,11 +73,11 @@ class Rps
      * @param  string $idMatkul
      * @return boolean
      */
-    public function getRpsByIdMatkul($idMatkul)
+    public function getRpsByIdMatkul($idMatkul, $year = null)
     {
         $results = false;
         $plotting = new Plotting();
-        $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        $currPlot = $plotting->getCurrentPlotting($idMatkul, $year);
         $query = $this->core->db->prepare(
             'SELECT
                 "Silabus",
@@ -450,7 +450,7 @@ class Rps
                 WHERE
                     "KDMataKuliah" = :idMatkul
                 AND
-                    "ID_PLOTTING = :currPlot"'
+                    "ID_PLOTTING" = :currPlot'
             );
             $query->bindParam(':idMatkul', $idMatkul);
             $query->bindParam(':currPlot', $currPlot);

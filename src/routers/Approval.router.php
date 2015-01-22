@@ -25,6 +25,7 @@ use SAR\models\Agenda;
 use SAR\models\Task;
 use SAR\models\Approval;
 use SAR\helpers\Utilities;
+use SAR\externals\Plotting;
 use Functional as F;
 
 $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
@@ -42,7 +43,6 @@ $app->get('/approval', $authenticate($app), $kaprodi, function () use ($app) {
             $results[$num]['NamaDosen'] = $user->getUserName($results[$num]['NIP']);
             $results[$num]['NamaMatkul'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['NamaMK'];
             $results[$num]['Semester'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['SemesterMK'];
-            $results[$num]['Tahun'] = $matkul->getMatkulDetails($results[$num]['KDMataKuliah'])[0]['TahunAjaranMK'];
         }
         if (isset($flash['msg'])) {
             $msg = $flash['msg'];
@@ -121,16 +121,18 @@ $app->get('/review', $kaprodi, function () use ($app) {
     $app->redirect('/approval?filter=pending');
 });
 
-$app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
+$app->get('/review/:idMatkul(/:year)', function ($idMatkul, $year = null) use ($app) {
     $req = $app->request();
     $currPath = $app->request()->getPath();
     $user = new User();
     $matkul = new Matkul();
     $rps = new Rps();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul, $year);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $agenda = new Agenda();
     $task = new Task();
-    $rps->getRpsByIdMatkul($idMatkul);
+    $rps->getRpsByIdMatkul($idMatkul, $year);
     $matkulDetails = $matkul->getMatkulDetails($idMatkul);
     if ($matkulDetails) {
         $details = $matkulDetails[0];
@@ -142,9 +144,8 @@ $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
     }
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
-    $agendas = $agenda->getAgendaByMatkul($idMatkul);
-    $tasks = $task->getDetailAktivitasByMatkul($idMatkul);
+    $agendas = $agenda->getAgendaByMatkul($idMatkul, $year);
+    $tasks = $task->getDetailAktivitasByMatkul($idMatkul, $year);
     if (isset($_GET['id'])) {
         $idApproval = $_GET['id'];
         $app->view->appendData(array(
@@ -161,7 +162,6 @@ $app->get('/review/:idMatkul', function ($idMatkul) use ($app) {
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
         'silabus' => array(
             'idSilabus' => $silabus->silabusID,
             'pokokBahasan' => $silabus->pokokBahasan,

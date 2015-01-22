@@ -21,6 +21,7 @@ use SAR\models\Silabus;
 use SAR\models\Agenda;
 use SAR\models\Kategori;
 use SAR\models\Rps;
+use SAR\externals\Plotting;
 use Functional as F;
 
 /** GET request on `/matakuliah/:idMatkul/agenda` */
@@ -34,7 +35,7 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
-    $tahunMatkul = $details['TahunAjaranMK'];
+    // $tahunMatkul = $details['TahunAjaranMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
     if (!$agendas) {
         $rps->startAgenda($idMatkul);
@@ -57,7 +58,7 @@ $app->get('/matakuliah/:idMatkul/agenda', $authenticate($app), $accessmatkul, fu
         'isComplete' => $isComplete,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
-        'tahunMatkul' => $tahunMatkul,
+        // 'tahunMatkul' => $tahunMatkul,
         'agendas' => $agendas,
         'currPath' => $currPath
     ));
@@ -84,7 +85,9 @@ $app->get('/matakuliah/:idMatkul/agenda/submit', $authenticate($app), function (
 $app->get('/matakuliah/:idMatkul/agenda/new', $authenticate($app), function ($idMatkul) use ($app) {
     $currPath = $app->request->getPath();
     $matkul = new Matkul();
-    $silabus = new Silabus($idMatkul);
+    $plotting = new Plotting();
+    $currPlot = $plotting->getCurrentPlotting($idMatkul);
+    $silabus = new Silabus($idMatkul, $currPlot);
     $kategori = new Kategori();
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];

@@ -80,10 +80,14 @@ class Approval
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getApprovalByIdMatkul($idMatkul)
+    public function getApprovalByIdMatkul($idMatkul, $year = null)
     {
         $plotting = new Plotting();
-        $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        if ($year === null) {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul);
+        } else {
+            $currPlot = $plotting->getCurrentPlotting($idMatkul, $year);
+        }
         $query = $this->core->db->prepare(
             'SELECT
                 *
@@ -346,7 +350,9 @@ class Approval
                 $task = new Task();
                 $user = new User();
                 $detail = $this->getApprovalByIdMatkul($idMatkul);
-                $silabus = new Silabus($detail[0]['KDMataKuliah']);
+                $plotting = new Plotting();
+                $currPlot = $plotting->getCurrentPlotting();
+                $silabus = new Silabus($detail[0]['KDMataKuliah'], $currPlot);
                 $kompetensis = $silabus->kompetensi;
                 $pustakas = $silabus->pustaka;
                 $matkulName = $matkul->getMatkulName($detail[0]['KDMataKuliah']);
@@ -474,9 +480,13 @@ class Approval
      * archiving purpose.
      * @return array
      */
-    public function getAllApprovedMatkul()
+    public function getAllApprovedMatkul($year = null)
     {
         $user = new User;
+        $plotting = new Plotting;
+        if ($year === null) {
+            $year = date('Y');
+        }
         $query = $this->core->db->prepare('
             SELECT
                 APPROVAL."ID_Approval",
@@ -488,12 +498,19 @@ class Approval
                 APPROVAL."NIP_Pengesahan",
                 MATAKULIAH."SemesterMK"
             FROM
-                MATAKULIAH INNER JOIN APPROVAL
+                MATAKULIAH
+                INNER JOIN APPROVAL
             ON
                 MATAKULIAH."KDMataKuliah" = APPROVAL."KDMataKuliah"
+                INNER JOIN PLOTTING
+            ON
+                MATAKULIAH."KDMataKuliah" = PLOTTING."KDMataKuliah"
             WHERE
                 APPROVAL."Approval" = 2
+            AND
+                TO_CHAR("TglDisahkan", \'YYYY\') = :currYear
         ');
+        $query->bindParam(':currYear', $year);
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         if (count($results) > 0) {

@@ -30,7 +30,7 @@ class Kategori
 {
     private $core;
 
-    function __construct()
+    public function __construct()
     {
         $this->core = Slim::getInstance();
     }
