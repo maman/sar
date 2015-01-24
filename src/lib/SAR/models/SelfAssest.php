@@ -108,11 +108,11 @@ class SelfAssest
      * @param  string $idMatkul
      * @return mixed
      */
-    public function getSARByMatkul($idMatkul)
+    public function getSARByMatkul($idMatkul, $year = null)
     {
         $agenda = new Agenda();
         $arraySar = array();
-        $result = $agenda->getAgendaByMatkul($idMatkul);
+        $result = $agenda->getAgendaByMatkul($idMatkul, $year, null);
         foreach ($result as $resultKey => $resultValue) {
             array_push($arraySar, $this->getAllSARByAgenda($result[$resultKey]['ID_SUB_KOMPETENSI']));
         }

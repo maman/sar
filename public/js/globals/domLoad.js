@@ -55,6 +55,11 @@ var domLoad = function() {
       $('[data-toggle=sidebar-right]').toggleClass('collapsed');
     });
   }
+  if ($('[data-show-graph]').length) {
+    $('[data-show-graph]').on('click hover', function() {
+      $('.compare-field').toggleClass('show-graph');
+    });
+  }
   // $(document).on('pjax:popstate', function() {
   //   $(document).on('pjax:complete.popstate-handling', function(){
   //     // Content loaded from ajax, prevent pjax:end.popstate-handling from its execution

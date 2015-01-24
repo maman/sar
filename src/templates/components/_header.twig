@@ -52,7 +52,7 @@
 			</ul>
 			<!-- /.dropdown-tasks -->
 		</li>
-			{% elseif matkuls is not empty %}
+			{% elseif matkuls is not empty and matkuls['0'].approved != 'approved' %}
 		<li>
 			<div class="progress-navbar">
 				<a href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}" data-pjax>

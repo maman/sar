@@ -27,29 +27,37 @@ $app->get('/sar', function () use ($app) {
     $app->render('pages/_self-assest-main.twig');
 });
 
-$app->get('/sar/:idMatkul', $accessar, function ($idMatkul) use ($app) {
-    $currPath = $app->request->getPath();
-    $sarDetails = array();
-    $matkul = new Matkul();
-    $agenda = new Agenda();
-    $sar = new SelfAssest();
-    $user = new User();
-    $plotting = new Plotting();
-    $details = $matkul->getMatkulDetails($idMatkul)[0];
-    $namaMatkul = $details['NamaMK'];
-    $agendas = $agenda->getAgendaByMatkul($idMatkul);
-    $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
-    // var_dump($sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']));
-    $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
-    $app->render('pages/_self-assest.twig', array(
-        'currPath' => $currPath,
-        'idMatkul' => $idMatkul,
-        'namaMatkul' => $namaMatkul,
-        'agendas' => $agendas,
-        'sarDetails' => $sarDetails,
-        'penanggungJawab' => $dosenName,
-        'currList' => true
-    ));
+$app->get('/sar/all', function () use ($app) {
+    $app->render('pages/_self-assest-all.twig');
+});
+
+$app->get('/sar/:idMatkul(/:year)', $accessar, function ($idMatkul, $year = null) use ($app) {
+    $app->render('pages/_self-assest-main.twig');
+    // $currPath = $app->request->getPath();
+    // $sarDetails = array();
+    // $matkul = new Matkul();
+    // $agenda = new Agenda();
+    // $sar = new SelfAssest();
+    // $user = new User();
+    // $plotting = new Plotting();
+    // $details = $matkul->getMatkulDetails($idMatkul)[0];
+    // $namaMatkul = $details['NamaMK'];
+    // if ($year === null) {
+    //     $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    // } else {
+    //     $agendas = $agenda->getAgendaByMatkul($idMatkul, $year, null);
+    // }
+    // $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
+    // $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
+    // $app->render('pages/_self-assest.twig', array(
+    //     'currPath' => $currPath,
+    //     'idMatkul' => $idMatkul,
+    //     'namaMatkul' => $namaMatkul,
+    //     'agendas' => $agendas,
+    //     'sarDetails' => $sarDetails,
+    //     'penanggungJawab' => $dosenName,
+    //     'currList' => true
+    // ));
 });
 
 $app->get('/sar/:idMatkul/agenda', $accessar, function ($idMatkul) use ($app) {

@@ -34,7 +34,7 @@ $accessar = function ($route) use ($app) {
     foreach ($_SESSION['sar'] as $sar) {
         array_push($truth, F\contains($sar, $idMatkul['idMatkul']));
     }
-    if (!F\contains($truth, true)) {
+    if (!F\contains($truth, true) && $_SESSION['role'] != 'kaprodi') {
         // if ($_SESSION['role'] != 'kaprodi') {
         $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Self Assesmen ini');
         $app->render('pages/_403.twig', array(

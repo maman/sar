@@ -26,6 +26,7 @@ require('./globals/domLoad');
 require('./globals/domReady');
 
 require('./components/alertBox');
+require('./components/circularProgress');
 require('./components/dataTables');
 require('./components/datePicker');
 require('./components/listToggler');
