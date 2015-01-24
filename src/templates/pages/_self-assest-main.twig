@@ -1,166 +1,56 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}SAR Dashboard{% endblock %}
+{% block pagetitle %}SAR Dashboard - {{ namaMatkul }}{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig' with {'state': 'mini'}%}
 <div id="page-wrapper" class="full-page-default">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Self Assesment untuk {{ namaDosen }}</h1>
+			<h1 class="page-header">Self Assesment - {{ namaMatkul }}</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="{% if isByYear %}col-sm-12{% else %}col-sm-6{% endif %}">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="comparison" data-comparison>
 						<div class="compare-head row">
-							<div class="col-sm-2 col-sm-offset-5 text-center" data-render-circle data-percent="70" data-size="120">
-								<h2 class="compare-final" data-show-graph>70%</h2>
+							<div class="col-sm-2 col-sm-offset-5 text-center" data-render-circle data-percent="{{ total }}" data-size="120">
+								<h2 class="compare-final" data-show-graph>{{ total }}%</h2>
 							</div>
 						</div>
+						{% for item in agendas %}
 						<div class="compare-field row row-eq-height">
 							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:80%"></div>
+								<div class="graph" style="width:{{ item.PERSENTASE_SAR }}%"></div>
 								<div class="row">
 									<div class="col-sm-8 hidden-xs compare-field-left">
-										<h4 class="compare-field-title">Review 1</h4>
-										<p>Lorem ipsum dolor sit amet.</p>
+										<h4 class="compare-field-title">Review {{ loop.length - loop.revindex0 }}</h4>
+										<p>{% if item.NAMA_SAR == '' %}Belum diinputkan{% else %}{{ item.NAMA_SAR }}{% endif %}</p>
 									</div>
 									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Agenda 1</strong></span>
-										<h3 class="compare-value">80%</h3>
+										<span class="visible-xs text-muted"><strong>Review {{ loop.length - loop.revindex0 }}</strong></span>
+										<h3 class="compare-value">{{ item.PERSENTASE_SAR }}%</h3>
 									</div>
 								</div>
 							</div>
 							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:75%"></div>
+								<div class="graph" style="width:{{ item.PERSENTASE_NILAI }}%"></div>
 								<div class="row">
 									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Evaluasi 1</strong></span>
-										<h3 class="compare-value">75%</h3>
+										<span class="visible-xs text-muted"><strong>Evaluasi {{ loop.length - loop.revindex0 }}</strong></span>
+										<h3 class="compare-value">{{ item.PERSENTASE_NILAI }}%</h3>
 									</div>
 									<div class="col-sm-8 hidden-xs compare-field-right">
-										<h4 class="compare-field-title">Evaluasi 1</h4>
+										<h4 class="compare-field-title">Evaluasi {{ loop.length - loop.revindex0 }}</h4>
 										<p>20 soal - 19 Januari 2015</p>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="compare-field row row-eq-height">
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:70%"></div>
-								<div class="row">
-									<div class="col-sm-8 hidden-xs compare-field-left">
-										<h4 class="compare-field-title">Review 2</h4>
-										<p>Lorem ipsum dolor sit amet.</p>
-									</div>
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Agenda 2</strong></span>
-										<h3 class="compare-value">70%</h3>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:40%"></div>
-								<div class="row">
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Evaluasi 2</strong></span>
-										<h3 class="compare-value">40%</h3>
-									</div>
-									<div class="col-sm-8 hidden-xs compare-field-right">
-										<h4 class="compare-field-title">Evaluasi 2</h4>
-										<p>20 soal - 19 Januari 2015</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="compare-field row row-eq-height">
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:80%"></div>
-								<div class="row">
-									<div class="col-sm-8 hidden-xs compare-field-left">
-										<h4 class="compare-field-title">Review 3</h4>
-										<p>Lorem ipsum dolor sit amet.</p>
-									</div>
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Agenda 3</strong></span>
-										<h3 class="compare-value">80%</h3>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:65%"></div>
-								<div class="row">
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Evaluasi 3</strong></span>
-										<h3 class="compare-value">65%</h3>
-									</div>
-									<div class="col-sm-8 hidden-xs compare-field-right">
-										<h4 class="compare-field-title">Evaluasi 3</h4>
-										<p>20 soal - 19 Januari 2015</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="compare-field row row-eq-height">
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:60%"></div>
-								<div class="row">
-									<div class="col-sm-8 hidden-xs compare-field-left">
-										<h4 class="compare-field-title">Review 4</h4>
-										<p>Lorem ipsum dolor sit amet.</p>
-									</div>
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Agenda 4</strong></span>
-										<h3 class="compare-value">60%</h3>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:80%"></div>
-								<div class="row">
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Evaluasi 4</strong></span>
-										<h3 class="compare-value">80%</h3>
-									</div>
-									<div class="col-sm-8 hidden-xs compare-field-right">
-										<h4 class="compare-field-title">Evaluasi 4</h4>
-										<p>20 soal - 19 Januari 2015</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="compare-field row row-eq-height">
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:50%"></div>
-								<div class="row">
-									<div class="col-sm-8 hidden-xs compare-field-left">
-										<h4 class="compare-field-title">Review 5</h4>
-										<p>Lorem ipsum dolor sit amet.</p>
-									</div>
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Agenda 5</strong></span>
-										<h3 class="compare-value">50%</h3>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-6 compare-field-graph">
-								<div class="graph" style="width:50%"></div>
-								<div class="row">
-									<div class="col-sm-4 col-xs-12 text-center">
-										<span class="visible-xs text-muted"><strong>Evaluasi 5</strong></span>
-										<h3 class="compare-value">50%</h3>
-									</div>
-									<div class="col-sm-8 hidden-xs compare-field-right">
-										<h4 class="compare-field-title">Evaluasi 5</h4>
-										<p>20 soal - 19 Januari 2015</p>
-									</div>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="panel-footer">
@@ -168,6 +58,58 @@
 				</div>
 			</div>
 		</div>
+		{% if not isByYear %}
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">Menu Self Assesment Report</div>
+						<div class="panel-body">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">Riwayat SAR untuk {{ namaMatkul }}</div>
+						<div class="panel-body">
+							<div id="chartpanel" data-chart></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
+
+{% if not isByYear %}
+	{% block inlinejs %}
+<script src="/js/static/jquery.min.js"></script>
+<script src="/js/static/raphael-min.js"></script>
+<script src="/js/static/morris.min.js"></script>
+<script>
+function domReady() {
+	if ($('#chartpanel').length) {
+		Morris.Line({
+			element: 'chartpanel',
+			data: [
+			{% for item in chartData %}
+				{tahun: '{{item.year}}', nilaiSAR: {{item.nilai}}}{% if not loop.last %},{% endif %}
+			{% endfor %}
+			],
+			xkey: 'tahun',
+			ykeys: ['nilaiSAR'],
+			labels: ['Nilai SAR'],
+			resize: true
+		});
+	}
+}
+$(document).on('ready', function() {
+	domReady();
+});
+</script>
+	{% endblock %}
+{% endif %}

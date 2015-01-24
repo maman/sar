@@ -21,6 +21,8 @@ namespace SAR\externals;
 use Slim\Slim;
 use alfmel\OCI8\PDO as OCI8;
 use Functional as F;
+use SAR\models\Agenda;
+use SAR\models\SelfAssest;
 
 /**
  * Nilai Class
@@ -161,9 +163,13 @@ class Nilai
         $jawaban = $this->getAllJawabanBySoal($idSoal);
         if ($jawaban) {
             $avgJawaban = F\average($jawaban);
-            return $avgJawaban;
+            if ($avgJawaban > 0) {
+                return $avgJawaban;
+            } else {
+                return 0;
+            }
         } else {
-            return false;
+            return 0;
         }
     }
 
@@ -178,9 +184,13 @@ class Nilai
         $soal = $this->getAllPoinSoalByAgenda($idAgenda);
         if ($soal) {
             $sumSoal = F\sum($soal);
-            return $sumSoal;
+            if ($sumSoal > 0) {
+                return $sumSoal;
+            } else {
+                return 0;
+            }
         } else {
-            return false;
+            return 0;
         }
     }
 
@@ -204,7 +214,54 @@ class Nilai
             $sumJawaban = F\sum($jawaban);
         }
         $sumSoal = $this->getSumSoalByAgenda($idAgenda);
-        $percentage = ($sumJawaban/$sumSoal)*100;
+        if ($sumJawaban == 0 || $sumSoal == 0) {
+            $percentage = 0;
+        } else {
+            $percentage = ($sumJawaban/$sumSoal)*100;
+        }
         return $percentage;
+    }
+
+    /**
+     * Get total percentage by Matkul ID
+     * @param  string    $idMatkul
+     * @param  date('Y') $year OPTIONAL
+     * @return float
+     */
+    public function getTotalPercentageByMatkul($idMatkul, $year = null)
+    {
+        $sar = new SelfAssest();
+        $agenda = new Agenda();
+        $agendaTemp = array();
+        $totalTemp = array();
+        $ifTemp = 0;
+        $total = 0;
+        if ($year === null) {
+            $agendas = $agenda->getAgendaByMatkul($idMatkul);
+        } else {
+            $agendas = $agenda->getAgendaByMatkul($idMatkul, $year);
+        }
+        if ($agendas) {
+            foreach ($agendas as $keyAgenda => $valAgenda) {
+                array_push($agendaTemp, array(
+                    'ID_SUB_KOMPETENSI' => $agendas[$keyAgenda]['ID_SUB_KOMPETENSI'],
+                    'NAMA_SAR' => $sar->getSARByAgenda($agendas[$keyAgenda]['ID_SUB_KOMPETENSI'])['NAMA_SAR'],
+                    'PERSENTASE_SAR' => ($sar->getSARByAgenda($agendas[$keyAgenda]['ID_SUB_KOMPETENSI'])['PERSENTASE'] == '0' || $sar->getSARByAgenda($agendas[$keyAgenda]['ID_SUB_KOMPETENSI'])['PERSENTASE'] == '' ? '0': $sar->getSARByAgenda($agendas[$keyAgenda]['ID_SUB_KOMPETENSI'])['PERSENTASE'])
+                ));
+            }
+            foreach ($agendaTemp as $tempKey => $tempVal) {
+                $agendaTemp[$tempKey]['PERSENTASE_NILAI'] = $this->getPercentageByAgenda($agendaTemp[$tempKey]['ID_SUB_KOMPETENSI']);
+                array_push($totalTemp, $agendaTemp[$tempKey]['PERSENTASE_NILAI'] + $agendaTemp[$tempKey]['PERSENTASE_SAR']);
+            }
+            $ifTemp = F\sum($totalTemp);
+            if ($ifTemp = 0) {
+                return $total;
+            } else {
+                $total = F\sum($totalTemp) / count($totalTemp);
+                return round($total, 0, PHP_ROUND_HALF_EVEN);
+            }
+        } else {
+            return 0;
+        }
     }
 }
