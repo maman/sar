@@ -65,6 +65,22 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">Menu Self Assesment Report</div>
 						<div class="panel-body">
+							<form action="?" method="GET" class="form-horizontal">
+								<div class="form-group">
+									<div class="{% if isByYear %}col-sm-12{% else %}col-sm-6{% endif %}">
+										<select data-pjax class="form-control" name="year" onchange="this.form.submit()">
+											{% for item in chartData %}
+											<option value="{{ item.year }}">{{ item.year }}</option>
+											{% endfor %}
+										</select>
+									</div>
+									{% if not isByYear %}
+									<div class="col-sm-6">
+										<a href="#" class="btn btn-block btn-primary">Isi SAR</a>
+									</div>
+									{% endif %}
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>

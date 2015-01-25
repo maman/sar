@@ -27,6 +27,7 @@ use Functional as F;
 */
 class Utilities
 {
+
     public function getRangeTahunAjaran()
     {
         $tahun = array();
@@ -34,6 +35,11 @@ class Utilities
         $tahun['current'] = date('Y');
         $tahun['end'] = date('Y', strtotime('+1 year'));
         return $tahun;
+    }
+
+    public function getAllTahunAjaran()
+    {
+
     }
 
     public function getTahunAjaran()

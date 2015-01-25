@@ -78,4 +78,28 @@ class Plotting
             return false;
         }
     }
+
+    /**
+     * Get all year from plotting table
+     * @return mixed
+     */
+    public function getAllPlottingYearByMatkul($idMatkul)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT DISTINCT
+                "TAHUNAJARAN"
+            FROM
+                PLOTTING
+            WHERE
+                "KDMataKuliah" = :idMatkul'
+        );
+        $query->bindParam(':idMatkul', $idMatkul);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
 }
