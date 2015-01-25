@@ -417,25 +417,36 @@ hr.mini {
 
 /** Card Style */
 [data-card] {
-	.card-body {
-		position: relative;
-		min-height: 70px;
-		.card-title, .card-percentage {
-			font-weight: bold;
+	&:hover {
+		text-decoration: none;
+		.card {
+			background: darken(@body-bg, 1%);
+			box-shadow: 0 5px 25px darken(@body-bg, 10%);
+			.lh-translateY(-5px);
 		}
-		.card-percentage {
+	}
+	.card {
+		.lh-transition(all .2s ease-in-out);
+		.card-body {
 			position: relative;
-			canvas {
-				top: 0;
-				left: 0;
-				right: 0;
+			min-height: 70px;
+			.card-title, .card-percentage {
+				font-weight: bold;
 			}
-			span {
-				margin: auto;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				.lh-translate(-50%, -120%);
+			.card-percentage {
+				position: relative;
+				canvas {
+					top: 0;
+					left: 0;
+					right: 0;
+				}
+				span {
+					margin: auto;
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					.lh-translate(-50%, -120%);
+				}
 			}
 		}
 	}

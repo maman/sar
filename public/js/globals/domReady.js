@@ -46,9 +46,11 @@ var domReady = function() {
       });
     }
     $(document).pjax('a[data-pjax]', '#page-wrapper', {
+      timeout: 10000,
       fragment: '#page-wrapper'
     });
     $(document).pjax('a[data-pjax-full]', '#wrapper', {
+      timeout: 10000,
       fragment: '#wrapper'
     });
   });

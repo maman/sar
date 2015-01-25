@@ -35,6 +35,7 @@
     "jquery-pjax": "~1.9.4",
     "pace": "~1.0.2",
     "pjax": "~0.1.4",
-    "jquery-circle-progress": "~1.1.2"
+    "jquery-circle-progress": "~1.1.2",
+    "instantclick": "~3.1.0"
   }
 }

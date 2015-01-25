@@ -1,170 +1,43 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}SAR Dashboard{% endblock %}
+{% block pagetitle %}SAR Dashboard - {{ namaProdi }}{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig'%}
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Self Assesment untuk {{ namaDosen }}</h1>
+			<h1 class="page-header">Self Assesment Report untuk {{ namaProdi }}</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
+			{% for key, value in dosens %}
 			<div class="row">
 				<div class="col-sm-12">
-					<h3>Meme Susilowati</h3>
+					<h3>{{ key }}</h3>
 					<div class="row">
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
+						{% for item in value %}
+						<a href="/sar/{{ item.KDMataKuliah }}" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" data-card>
+							<div class="panel panel-default card">
 								<div class="panel-body card-body">
 									<div class="row row-eq-height">
 										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
+											<span class="card-title">{{ item.Matakuliah|length > 24 ? item.Matakuliah|slice(0, 24) ~ ' ...' : item.Matakuliah }}</span>
 										</div>
 										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
+											<span class="card-percentage text-muted" data-render-circle data-percent="{{ item.SARScore }}" data-size="40"><span>{{ item.SARScore }}%</span></span>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-12">
-					<h3>Meme Susilowati</h3>
-					<div class="row">
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6 col-md-4 col-lg-3">
-							<div class="panel panel-default card" data-card>
-								<div class="panel-body card-body">
-									<div class="row row-eq-height">
-										<div class="col-md-8">
-											<span class="card-title">Sistem Informasi Akuntansi</span>
-										</div>
-										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="70" data-size="40"><span>70%</span></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						</a>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
 	</div>
 </div>

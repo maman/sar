@@ -47,6 +47,36 @@ class Plotting
         return $this;
     }
 
+    public function getAllPlotting($idProdi)
+    {
+        $query = $this->core->db->prepare(
+            'SELECT
+                PLOTTING."KDMataKuliah",
+                PLOTTING.NIP
+            FROM
+                PLOTTING INNER JOIN MATAKULIAH
+            ON
+                PLOTTING."KDMataKuliah" = MATAKULIAH."KDMataKuliah"
+                INNER JOIN PEGAWAI
+            ON
+                PLOTTING.NIP = PEGAWAI.NIP
+            WHERE
+                PEGAWAI.IDPRODI = :idProdi
+            AND
+                MATAKULIAH.IDPRODI = :idProdi
+            ORDER BY
+                PEGAWAI.NIP ASC'
+        );
+        $query->bindParam(':idProdi', $idProdi);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        if (count($results) > 0) {
+            return $results;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Get Current Plotting From Matkul ID
      * @param  string $idMatkul

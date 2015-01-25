@@ -17,6 +17,7 @@
  * @license GNU General Public License v2
  */
 
+use SAR\models\Prodi;
 use SAR\models\Matkul;
 use SAR\models\Agenda;
 use SAR\models\User;
@@ -24,9 +25,32 @@ use SAR\models\Plotting;
 use SAR\models\SelfAssest;
 use SAR\externals\Nilai;
 use SAR\externals\Plotting as extPlot;
+use Functional as F;
 
 $app->get('/sar/all', $kaprodi, function () use ($app) {
-    $app->render('pages/_self-assest-all.twig');
+    $currPath = $app->request->getPath();
+    $extPlot = new extPlot();
+    $prodi = new Prodi();
+    $user = new User();
+    $matkul = new Matkul();
+    $nilai = new Nilai();
+    $idProdi = $_SESSION['prodi'];
+    $namaProdi = $prodi->getNamaProdi($idProdi);
+    $plottings = $extPlot->getAllPlotting($idProdi);
+    if ($plottings) {
+        foreach ($plottings as $plotKey => $plotVal) {
+            $plottings[$plotKey]['Nama'] = $user->getUserName($plottings[$plotKey]['NIP']);
+            $plottings[$plotKey]['Matakuliah'] = $matkul->getMatkulName($plottings[$plotKey]['KDMataKuliah']);
+            $plottings[$plotKey]['SARScore'] = $nilai->getTotalPercentageByMatkul($plottings[$plotKey]['KDMataKuliah']);
+        }
+        $groupPlots = F\group($plottings, function ($plot) {
+            return $plot['Nama'];
+        });
+    }
+    $app->render('pages/_self-assest-all.twig', array(
+        'namaProdi' => $namaProdi,
+        'dosens' => $groupPlots
+    ));
 });
 
 $app->get('/sar/:idMatkul', function ($idMatkul) use ($app) {

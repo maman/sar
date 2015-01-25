@@ -35,7 +35,7 @@
 					{% for sar in sars %}
 						{% if sar.approved == 'approved' %}
 					<li>
-						<a href="/sar/{{ sar.KDMataKuliah }}" data-pjax><i class="fa fa-newspaper-o"></i> <span>{{ sar.NamaMK }}</span></a>
+						<a href="/sar/{{ sar.KDMataKuliah }}"><i class="fa fa-newspaper-o"></i> <span>{{ sar.NamaMK }}</span></a>
 					</li>
 						{% endif %}
 					{% endfor %}
@@ -51,6 +51,9 @@
 					</li>
 					<li>
 						<a href="/plotting" data-pjax><i class="fa fa-comment-o fa-fw"></i> <span>Plotting Penanggungjawab</span></a>
+					</li>
+					<li>
+						<a href="/sar/all" data-pjax-full><i class="fa fa-area-chart fa-fw"></i> <span>SAR Program Studi</span></a>
 					</li>
 				</ul>
 			</li>
