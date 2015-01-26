@@ -1173,7 +1173,7 @@ html[dir='rtl'] .verticalToolbarSeparator {
 
 #thumbnailView {
   position: absolute;
-  /*width: 120px;*/
+  width: 120px;
   top: 0;
   bottom: 0;
   padding: 10px 40px 0;
@@ -1406,8 +1406,8 @@ html[dir='rtl'] .attachmentsItem > button {
   padding: 15px;
   border-spacing: 4px;
   color: #333;
-  font-size: 13px;
-  line-height: 15px;
+  font-size: 12px;
+  line-height: 14px;
   background-color: #F8F8F8; /* fallback */
   background-image: url(images/texture.png),
                     linear-gradient(hsla(0, 0%, 97%, 1), hsla(0, 0%, 97%, 1));

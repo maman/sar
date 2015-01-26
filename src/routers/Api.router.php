@@ -109,10 +109,13 @@ $app->group('/api/v1', function () use ($app) {
             $app->response->headers->set('Content-Type', 'application/pdf');
             $app->response->headers->set('Content-Transfer-Encoding', 'binary');
             if (isset($_GET['print'])) {
-                $pdf->output($title, 'I');
+                $pdf->output($title . '.pdf', 'I');
             } else {
-                $pdf->output($title, 'D');
+                $pdf->output($title . '.pdf', 'D');
             }
+        });
+        $app->get('/pdf', function () use ($app) {
+
         });
     });
     /** '/proxy?callback' API for JSONP Bridging */

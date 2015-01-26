@@ -20,7 +20,9 @@
     "lstrojny/functional-php": "dev-master",
     "tecnick.com/tcpdf": "6.*",
     "slim/extras": "~2.0",
-    "solarium/solarium": "~3.3"
+    "solarium/solarium": "~3.3",
+    "mpdf/mpdf": "5.7.4",
+    "tedivm/stash": "0.12.*"
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*",

@@ -165,6 +165,19 @@ $app->container->singleton('db', function () use ($config) {
     return new \alfmel\OCI8\PDO($dsn, $user, $password);
 });
 
+/* use APC, if Enabled */
+if ($config['app.caching']) {
+    $app->container->singleton('stash', function () use ($app, $config) {
+        $timeout = $config['app.caching.timeout'];
+        $options = array(
+            'ttl' => $timeout
+        );
+        $driver = new \Stash\Driver\Apc();
+        $driver->setOptions($options);
+        return new \Stash\Pool($driver);
+    });
+}
+
 /* Load Solr, if Enabled. */
 if ($config['solr.enabled']) {
     $app->container->singleton('solr', function () use ($config) {
