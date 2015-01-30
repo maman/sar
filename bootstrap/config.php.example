@@ -29,9 +29,13 @@ $basedir = __DIR__ . '/../';
 return array(
 
     /** Application Settings */
-    'app.base.url'         => 'pkl-kampus.vm',
-    'app.environment'      => 'development',
+    'app.base.url'         => '10.10.10.10',
+    'app.environment'      => 'production',
     'app.log'              => $basedir . 'logs/app-' . date('Y-m-d') . '.log',
+    'app.pjax'             => true,
+    'app.caching'          => true,
+    'app.caching.timeout'  => 3600,
+    'app.cookie.encrypt'   => true,
     'app.cookie.lifetime'  => '20 minutes',
     'app.cookie.path'      => '/',
     'app.cookie.domain'    => null,
@@ -53,13 +57,14 @@ return array(
 
     /** Solr Settings */
     'solr.enabled'         => false,
-    'solr.host'            => '127.0.0.1',
-    'solr.port'            => '8983',
+    'solr.host'            => '10.10.10.13',
+    'solr.port'            => '8984',
     'solr.basePath'        => '/solr/',
+    'solr.core'            => 'sar',
 
-    /** Faye WebSocket */
-    'ws.enabled'           => true,
-    'ws.host'              => 'http://127.0.0.1/ws',
+    /** WebSocket Notification */
+    'ws.enabled'           => false,
+    'ws.host'              => '10.10.10.13:3001',
 
     /** Application Paths */
     'path.middlewares'     => $basedir . 'src/middlewares/',
@@ -67,7 +72,11 @@ return array(
     'path.templates'       => $basedir . 'src/templates/',
     'path.templates.cache' => $basedir . 'src/templates/cache',
 
-    /** Auth */
+    /**
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * Do not change this unless necessary
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     */
     'login.url'            => '/',
     'security.urls'        => array(
         array('path'       => '/matakuliah'),

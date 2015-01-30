@@ -32,5 +32,6 @@ require('./components/datePicker');
 require('./components/listToggler');
 require('./components/multitags');
 require('./components/momentRender');
+require('./components/selfAssestCheck');
 
 console.log('ready to dispatch.');

@@ -25,8 +25,8 @@
 		<div class="col-sm-5 col-md-4 col-lg-4 {% if not currList %}hidden-xs{% endif %} list">
 			{% for agenda in agendas %}
 			<a data-pjax href="/sar/{{ idMatkul }}/details/agenda/{{ agenda.ID_SUB_KOMPETENSI }}" class="item list-item {% if currAgenda|lower is sameas(agenda.ID_SUB_KOMPETENSI|lower) or (not currAgenda and loop.first) %}selected{% endif %}">
-				<span class="label label-success">{{ agenda.RANGE_PERTEMUAN }}</span>
-				<span class="label label-danger">{{ agenda.BOBOT }}%</span>
+				<span class="label label-success">Pertemuan: {{ agenda.RANGE_PERTEMUAN }}</span>
+				<span class="label label-danger">Bobot: {{ agenda.BOBOT }}%</span>
 				<section>
 					<h5><strong>Sub Kompetensi</strong></h5>
 					<p>{{ agenda.TEXT_SUB_KOMPETENSI|raw }}</p>
@@ -42,6 +42,16 @@
 				<span class="pull-right"><i class="fa fa-calendar-o"></i> {{ sarDetails.TGL_PELAKSANA|date('d M Y') }}</span>
 			</section>
 			<section id="journal">
+				<h2>Aktivitas</h2>
+				<div>
+					{% for act in aktivitas %}
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" {% if act.SELECTED %}checked{% endif %} disabled> {{ act.TEXT_AKTIVITAS_AGENDA }}
+						</label>
+					</div>
+					{% endfor %}
+				</div>
 				<h2>{{ sarDetails.NAMA_SAR }}</h2>
 				<p class="lead">{{ sarDetails.REVIEW|raw }}</p>
 				<h2>Hambatan</h2>
@@ -79,6 +89,17 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label>Aktivitas</label>
+								<input type="hidden" value="{{ 100/aktivitas|length }}" name="ratio" data-ratio>
+								{% for act in aktivitas %}
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" data-check {% if act.SELECTED %}checked{% endif %} value="{{ act.ID_AKTIVITAS_AGENDA }}" name="aktivitas[]"> {{ act.TEXT_AKTIVITAS_AGENDA }}
+									</label>
+								</div>
+								{% endfor %}
+							</div>
+							<div class="form-group">
 								<label for="review">Review</label>
 								<div class="help-block with-errors"></div>
 								<textarea name="review" id="review" cols="30" rows="10" class="form-control" data-render-editor data-error="Review tidak boleh kosong" required>{{ sarDetails.REVIEW }}</textarea>
@@ -91,7 +112,7 @@
 							<div class="form-group">
 								<label for="persentase">Persentase</label>
 								<div class="input-group input-group-lg">
-									<input class="form-control" type="text" name="persentase" id="persentase" placeholder="Persentase Penyelesaian" pattern="^((100)|(\d{0,2}))$" data-error="Persentase tidak boleh kosong" data-pattern-error="Format tidak dikenal" value="{{ sarDetails.PERSENTASE }}" required>
+									<input class="form-control" data-check-percentage type="number" min=0 max=100 name="persentase" id="persentase" placeholder="Persentase Penyelesaian" data-error="Persentase tidak boleh kosong" value="{{ sarDetails.PERSENTASE }}" required>
 									<span class="input-group-addon">%</span>
 								</div>
 								<div class="help-block with-errors"></div>

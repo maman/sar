@@ -16,12 +16,10 @@
     "flynsarmy/slim-monolog": "1.*",
     "twig/twig": "1.*",
     "alfmel/pdo-via-oci8": "dev-bugfix",
-    "respect/validation": "0.7.*@dev",
     "lstrojny/functional-php": "dev-master",
     "tecnick.com/tcpdf": "6.*",
     "slim/extras": "~2.0",
     "solarium/solarium": "~3.3",
-    "mpdf/mpdf": "5.7.4",
     "tedivm/stash": "0.12.*"
   },
   "require-dev": {

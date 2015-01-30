@@ -90,7 +90,8 @@ class SelfAssest
                 TO_CHAR("TGL_PELAKSANA", \'YYYY-MM-DD HH24:MI:SS\') as "TGL_PELAKSANA",
                 REVIEW,
                 HAMBATAN,
-                PERSENTASE
+                PERSENTASE,
+                AKTIVITAS
             FROM
                 SAR'
         );
@@ -130,8 +131,9 @@ class SelfAssest
      * @param  string $persentase
      * @return boolean
      */
-    public function saveOrEdit($idSAR, $idAgenda, $nama, $tgl, $review, $hambatan, $persentase)
+    public function saveOrEdit($idSAR, $idAgenda, $nama, $tgl, $aktivitas, $review, $hambatan, $persentase)
     {
+        $currAct = join(',', $aktivitas);
         if ($idSAR == '') {
             try {
                 $query = $this->core->db->prepare(
@@ -143,7 +145,8 @@ class SelfAssest
                         TGL_PELAKSANA,
                         REVIEW,
                         HAMBATAN,
-                        PERSENTASE
+                        PERSENTASE,
+                        AKTIVITAS
                     )
                     VALUES
                     (
@@ -152,7 +155,8 @@ class SelfAssest
                         to_date(:tgl, \'YYYY-MM-DD HH24:MI:SS\'),
                         :review,
                         :hambatan,
-                        :persentase
+                        :persentase,
+                        :currAct
                     )'
                 );
                 $query->bindParam(':idAgenda', $idAgenda);
@@ -161,7 +165,11 @@ class SelfAssest
                 $query->bindParam(':review', $review);
                 $query->bindParam(':hambatan', $hambatan);
                 $query->bindParam(':persentase', $persentase);
+                $query->bindParam(':currAct', $currAct);
                 $query->execute();
+                foreach ($aktivitas as $act) {
+                    $this->saveAktivitas($idSAR, $act);
+                }
                 return true;
             } catch (PDOException $e) {
                 return false;
@@ -176,7 +184,8 @@ class SelfAssest
                         TGL_PELAKSANA = to_date(:tgl, \'YYYY-MM-DD HH24:MI:SS\'),
                         REVIEW = :review,
                         HAMBATAN = :hambatan,
-                        PERSENTASE = :persentase
+                        PERSENTASE = :persentase,
+                        AKTIVITAS = :currAct
                     WHERE
                         ID_SAR = :idSAR'
                 );
@@ -186,6 +195,7 @@ class SelfAssest
                 $query->bindParam(':review', $review);
                 $query->bindParam(':hambatan', $hambatan);
                 $query->bindParam(':persentase', $persentase);
+                $query->bindParam(':currAct', $currAct);
                 $query->execute();
                 return true;
             } catch (PDOException $e) {

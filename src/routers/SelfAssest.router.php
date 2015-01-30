@@ -127,13 +127,26 @@ $app->get('/sar/:idMatkul/details(/:year)', $accessar, function ($idMatkul, $yea
     } else {
         $agendas = $agenda->getAgendaByMatkul($idMatkul, $year, null);
     }
+    $aktivitas = $agendas[0]['AKTIVITAS'];
     $sarDetails = $sar->getSARByAgenda($agendas[0]['ID_SUB_KOMPETENSI']);
+    $realAct = explode(',', $sarDetails['AKTIVITAS']);
+    foreach ($aktivitas as $keyAct => $valAct) {
+        foreach ($realAct as $keyReal => $valReal) {
+            if ($aktivitas[$keyAct]['ID_AKTIVITAS_AGENDA'] == $valReal) {
+                $aktivitas[$keyAct]['SELECTED'] = true;
+                break;
+            } else {
+                $aktivitas[$keyAct]['SELECTED'] = false;
+            }
+        }
+    }
     $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
+        'aktivitas' => $aktivitas,
         'sarDetails' => $sarDetails,
         'penanggungJawab' => $dosenName,
         'currList' => true
@@ -147,6 +160,7 @@ $app->get('/sar/:idMatkul/details/agenda', $accessar, function ($idMatkul) use (
 
 $app->get('/sar/:idMatkul/details/agenda/:idAgenda', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $currPath = $app->request->getPath();
+    $aktivitas = array();
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
@@ -155,7 +169,24 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda', $accessar, function ($idMat
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    $currAktivitas = F\select($agendas, function($agenda, $key, $col) use ($idAgenda) {
+        return $agenda['ID_SUB_KOMPETENSI'] == $idAgenda;
+    });
+    foreach ($currAktivitas as $keyAct => $valAct) {
+        $aktivitas = $currAktivitas[$keyAct]['AKTIVITAS'];
+    }
     $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $realAct = explode(',', $sarDetails['AKTIVITAS']);
+    foreach ($aktivitas as $keyAct => $valAct) {
+        foreach ($realAct as $keyReal => $valReal) {
+            if ($aktivitas[$keyAct]['ID_AKTIVITAS_AGENDA'] == $valReal) {
+                $aktivitas[$keyAct]['SELECTED'] = true;
+                break;
+            } else {
+                $aktivitas[$keyAct]['SELECTED'] = false;
+            }
+        }
+    }
     $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
@@ -163,6 +194,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda', $accessar, function ($idMat
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
+        'aktivitas' => $aktivitas,
         'sarDetails' => $sarDetails,
         'penanggungJawab' => $dosenName,
         'currAgenda' => $idAgenda
@@ -171,6 +203,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda', $accessar, function ($idMat
 
 $app->get('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $currPath = $app->request->getPath();
+    $aktivitas = array();
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
@@ -179,7 +212,24 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($i
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    $currAktivitas = F\select($agendas, function($agenda, $key, $col) use ($idAgenda) {
+        return $agenda['ID_SUB_KOMPETENSI'] == $idAgenda;
+    });
+    foreach ($currAktivitas as $keyAct => $valAct) {
+        $aktivitas = $currAktivitas[$keyAct]['AKTIVITAS'];
+    }
     $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $realAct = explode(',', $sarDetails['AKTIVITAS']);
+    foreach ($aktivitas as $keyAct => $valAct) {
+        foreach ($realAct as $keyReal => $valReal) {
+            if ($aktivitas[$keyAct]['ID_AKTIVITAS_AGENDA'] == $valReal) {
+                $aktivitas[$keyAct]['SELECTED'] = true;
+                break;
+            } else {
+                $aktivitas[$keyAct]['SELECTED'] = false;
+            }
+        }
+    }
     $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
@@ -187,6 +237,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($i
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
+        'aktivitas' => $aktivitas,
         'penanggungJawab' => $dosenName,
         'currAgenda' => $idAgenda,
         'isNew' => true
@@ -195,7 +246,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($i
 
 $app->post('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $sar = new SelfAssest();
-    $result = $sar->saveOrEdit('', $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
+    $result = $sar->saveOrEdit('', $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['aktivitas'], $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
     if ($result) {
         $app->redirect('/sar/' . $idMatkul . '/details/agenda/' . $idAgenda);
     } else {
@@ -205,6 +256,7 @@ $app->post('/sar/:idMatkul/details/agenda/:idAgenda/new', $accessar, function ($
 
 $app->get('/sar/:idMatkul/details/agenda/:idAgenda/edit', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $currPath = $app->request->getPath();
+    $aktivitas = array();
     $matkul = new Matkul();
     $agenda = new Agenda();
     $sar = new SelfAssest();
@@ -213,7 +265,24 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/edit', $accessar, function ($
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $agendas = $agenda->getAgendaByMatkul($idMatkul);
+    $currAktivitas = F\select($agendas, function($agenda, $key, $col) use ($idAgenda) {
+        return $agenda['ID_SUB_KOMPETENSI'] == $idAgenda;
+    });
+    foreach ($currAktivitas as $keyAct => $valAct) {
+        $aktivitas = $currAktivitas[$keyAct]['AKTIVITAS'];
+    }
     $sarDetails = $sar->getSARByAgenda($idAgenda);
+    $realAct = explode(',', $sarDetails['AKTIVITAS']);
+    foreach ($aktivitas as $keyAct => $valAct) {
+        foreach ($realAct as $keyReal => $valReal) {
+            if ($aktivitas[$keyAct]['ID_AKTIVITAS_AGENDA'] == $valReal) {
+                $aktivitas[$keyAct]['SELECTED'] = true;
+                break;
+            } else {
+                $aktivitas[$keyAct]['SELECTED'] = false;
+            }
+        }
+    }
     $dosenName = $user->getUserName($plotting->getDosenByMatkul($idMatkul, $_SESSION['prodi']));
     $app->render('pages/_self-assest.twig', array(
         'currPath' => $currPath,
@@ -221,6 +290,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/edit', $accessar, function ($
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'agendas' => $agendas,
+        'aktivitas' => $aktivitas,
         'penanggungJawab' => $dosenName,
         'currAgenda' => $idAgenda,
         'sarDetails' => $sarDetails,
@@ -230,7 +300,7 @@ $app->get('/sar/:idMatkul/details/agenda/:idAgenda/edit', $accessar, function ($
 
 $app->post('/sar/:idMatkul/details/agenda/:idAgenda/edit', $accessar, function ($idMatkul, $idAgenda) use ($app) {
     $sar = new SelfAssest();
-    $result = $sar->saveOrEdit($_POST['idSAR'], $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
+    $result = $sar->saveOrEdit($_POST['idSAR'], $_POST['idAgenda'], $_POST['nama'], date("Y-m-d", strtotime($_POST['tanggal'])), $_POST['aktivitas'], $_POST['review'], $_POST['hambatan'], $_POST['persentase']);
     if ($result) {
         $app->redirect('/sar/' . $idMatkul . '/details/agenda/' . $idAgenda);
     } else {
