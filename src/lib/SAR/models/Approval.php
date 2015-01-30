@@ -114,7 +114,7 @@ class Approval
                 AND
                     "ID_PLOTTING" = :currPlot
                 ORDER BY
-                    "TglDisahkan" DESC
+                    "TglDisahkan" ASC
             )
             WHERE
                 ROWNUM = 1'
