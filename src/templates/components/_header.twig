@@ -45,7 +45,7 @@
 					{% endif %}
 				{% endfor %}
 				<li>
-					<a href="/matakuliah?filter=active" data-pjax class="center-block text-center">
+					<a href="/matakuliah?filter=active" data-pjax-full class="center-block text-center">
 						<strong>All Matakuliah</strong>
 					</a>
 				</li>
@@ -55,7 +55,7 @@
 			{% elseif matkuls is not empty and matkuls['0'].approved != 'approved' %}
 		<li>
 			<div class="progress-navbar">
-				<a href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}" data-pjax>
+				<a data-pjax-full href="/matakuliah/{{ matkuls['0'].KDMataKuliah }}" data-pjax>
 					<span class="progress-caption text-muted text-allcaps"><strong>{{ matkuls['0'].NamaMK }}</strong></span>
 					<div class="progress" style="width: 120px">
 						<div class="progress-bar {% if matkuls['0'].percentage == '0' %}progress-bar-danger{% else %}progress-bar-success{% endif %}" role="progressbar" aria-valuenow="{% if matkuls['0'].percentage == '0' %}100{% else %}{{ matkuls['0'].percentage }}{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width:{% if matkuls['0'].percentage == '0' %}100%{% else %}{{ [matkuls['0'].percentage, '%']|join }}{% endif %}">

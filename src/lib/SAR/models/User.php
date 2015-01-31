@@ -147,6 +147,11 @@ class User
         return true;
     }
 
+    /**
+     * Get User By MatkulID
+     * @param  string $idMatkul
+     * @return array
+     */
     public function getUserFromMatkul($idMatkul)
     {
         $query = $this->core->db->prepare(
@@ -163,5 +168,34 @@ class User
         $query->execute();
         $results = $query->fetchAll(OCI8::FETCH_ASSOC);
         return $results;
+    }
+
+    /**
+     * Get Kaprodi by Prodi
+     * @param  string $idProdi
+     * @return array
+     */
+    public function getKaprodi($idProdi)
+    {
+        $query = $this->core->db->prepare('
+            SELECT
+                NIP,
+                NAMA
+            FROM
+                PEGAWAI
+            WHERE
+                ID_JABATAN_AKAD = 1
+            AND
+                ID_JABATAN_STRUK = 1
+            AND
+                IDPRODI = :idProdi
+        ');
+        $query->bindParam(':idProdi', $idProdi);
+        $query->execute();
+        $results = $query->fetchAll(OCI8::FETCH_ASSOC);
+        return array(
+            'NIP' => $results[0]['NIP'],
+            'NAMA' => $results[0]['NAMA']
+        );
     }
 }

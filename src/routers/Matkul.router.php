@@ -18,11 +18,14 @@
  */
 use SAR\models\Matkul;
 use SAR\models\Rps;
+use SAR\models\User;
 use Functional as F;
 
 $app->get('/matakuliah', $authenticate($app), function () use ($app) {
     $currPath = $app->request()->getPath();
     $rps = new Rps();
+    $user = new User();
+    $boss = $user->getKaprodi($_SESSION['prodi']);
     if (isset($_GET['filter'])) {
         if ($_GET['filter'] == 'active') {
             $results = F\select($_SESSION['matkul'], function ($item, $key, $col) {
@@ -43,10 +46,12 @@ $app->get('/matakuliah', $authenticate($app), function () use ($app) {
             'filtered' => true,
             'selected' => $_GET['filter'],
             'currPath' => $currPath,
+            'boss' => $boss,
             'results' => $results
         ));
     } else {
         $app->render('pages/_matakuliah.twig', array(
+            'boss' => $boss,
             'currPath' => $currPath
         ));
     }
@@ -57,16 +62,19 @@ $app->get('/matakuliah/:idMatkul', $authenticate($app), $accessmatkul, function 
     $currPath = $app->request()->getPath();
     $matkul = new Matkul();
     $rps = new Rps();
+    $user = new User();
     $rps->getRpsByIdMatkul($idMatkul);
     $details = $matkul->getMatkulDetails($idMatkul)[0];
     $namaMatkul = $details['NamaMK'];
     $semesterMatkul = $details['SemesterMK'];
+    $boss = $user->getKaprodi($_SESSION['prodi']);
     // $tahunMatkul = $details['TahunAjaranMK'];
     $progress = $rps->getRpsProgress($idMatkul);
     $app->render('pages/_matakuliah.twig', array(
         'idMatkul' => $idMatkul,
         'namaMatkul' => $namaMatkul,
         'semesterMatkul' => $semesterMatkul,
+        'boss' => $boss,
         // 'tahunMatkul' => $tahunMatkul,
         'progress' => $progress,
         'currPath' => $currPath
