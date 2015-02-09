@@ -158,7 +158,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
             $pdf->SetFont('helvetica', '', 10, '', false);
             $pdf->writeHTMLCell(0, 8, '', '', '<h2>Silabus Kurikulum</h2>', 0, 1, 0, true, '', true);
             $pdf->SetFont('helvetica', '', 14, '', false);
-            $pdf->writeHTMLCell(0, 15, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+            $pdf->writeHTMLCell(0, 15, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', ' . $matkuls[0]['SKS'] . 'SKS</h3>', 0, 1, 0, true, '', true);
             $pdf->setCellHeightRatio(2.5);
             $sill =
             '<table width="100%">
@@ -219,7 +219,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
                 '   </ol></td>
                 </tr>
                 <tr>
-                    <td width="20%"><strong><u>Team Teaching</u></strong></td>
+                    <td width="20%"><strong><u>Dosen Penanggung Jawab</u></strong></td>
                     <td width="3%">:</td>
                     <td width="77%"></td>
                 </tr>
@@ -336,7 +336,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
             $pdf->SetFont('helvetica', '', 10, '', false);
             $pdf->writeHTMLCell(0, 8, '', '', '<h2>Agenda Pembelajaran</h2>', 0, 1, 0, true, '', true);
             $pdf->SetFont('helvetica', '', 14, '', false);
-            $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+            $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', ' . $matkuls[0]['SKS'] . 'SKS</h3>', 0, 1, 0, true, '', true);
             $pdf->SetFont('dejavusans', '', 7, '', false);
             $pdf->setListIndentWidth(3.15);
             $pdf->writeHTMLCell(0, 0, '', '', $agenda, 0, 1, 0, true, '', true);
@@ -435,7 +435,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
             $pdf->SetFont('helvetica', '', 10, '', false);
             $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Evaluasi Pembelajaran</h2>', 0, 1, 0, true, '', true);
             $pdf->SetFont('helvetica', '', 14, '', false);
-            $pdf->writeHTMLCell(0, 10, '', '', '<h3>Kertakes, 6SKS</h3>', 0, 1, 0, true, '', true);
+            $pdf->writeHTMLCell(0, 10, '', '', '<h3>Kertakes, ' . $matkuls[0]['SKS'] . 'SKS</h3>', 0, 1, 0, true, '', true);
             $pdf->SetFont('dejavusans', '', 7, '', false);
             $pdf->setListIndentWidth(3.15);
             $pdf->writeHTMLCell(0, 0, '', '', $evaluasi, 0, 1, 0, true, '', true);
@@ -515,7 +515,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
             $pdf->SetFont('helvetica', '', 10, '', false);
             $pdf->writeHTMLCell(0, 8, '', '', '<h2>Rencana Task/Project Pembelajaran</h2>', 0, 1, 0, true, '', true);
             $pdf->SetFont('helvetica', '', 14, '', false);
-            $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+            $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', ' . $matkuls[0]['SKS'] . 'SKS</h3>', 0, 1, 0, true, '', true);
             $pdf->SetFont('dejavusans', '', 7, '', false);
             $pdf->setListIndentWidth(3.15);
             $pdf->writeHTMLCell(0, 0, '', '', $taskpro, 0, 1, 0, true, '', true);
@@ -531,7 +531,7 @@ Seluruh informasinya adalah hak milik Program Studi ' . $namaProdi . ' Universit
                     $pdf->SetFont('helvetica', '', 10, '', false);
                     $pdf->writeHTMLCell(0, 8, '', '', '<h2>Uraian Task/Project</h2>', 0, 1, 0, true, '', true);
                     $pdf->SetFont('helvetica', '', 14, '', false);
-                    $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', 6SKS</h3>', 0, 1, 0, true, '', true);
+                    $pdf->writeHTMLCell(0, 10, '', '', '<h3>' . $matkuls[0]['NamaMK'] . ', ' . $matkuls[0]['SKS'] . 'SKS</h3>', 0, 1, 0, true, '', true);
                     $uraian =
                     '<table width="100%">
                         <tr>

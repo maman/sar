@@ -24,7 +24,8 @@
   },
   "require-dev": {
     "yusukezzz/slim-debugbar": "1.*",
-    "zeuxisoo/slim-whoops": "0.3.0"
+    "zeuxisoo/slim-whoops": "0.3.0",
+    "phpunit/phpunit": "4.4.5"
   },
   "autoload": {
     "psr-0": {

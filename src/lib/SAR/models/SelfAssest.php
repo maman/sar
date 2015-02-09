@@ -167,9 +167,6 @@ class SelfAssest
                 $query->bindParam(':persentase', $persentase);
                 $query->bindParam(':currAct', $currAct);
                 $query->execute();
-                foreach ($aktivitas as $act) {
-                    $this->saveAktivitas($idSAR, $act);
-                }
                 return true;
             } catch (PDOException $e) {
                 return false;

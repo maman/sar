@@ -34,4 +34,10 @@ require('./components/multitags');
 require('./components/momentRender');
 require('./components/selfAssestCheck');
 
+window.onpageshow = function(event) {
+    if (event.persisted) {
+        window.location.reload()
+    }
+};
+
 console.log('ready to dispatch.');

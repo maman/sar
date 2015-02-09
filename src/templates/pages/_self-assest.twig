@@ -57,6 +57,7 @@
 				<h2>Hambatan</h2>
 				<p>{{ sarDetails.HAMBATAN|raw }}</p>
 			</section>
+				{% if role == 'dosen' or not isReview %}
 			<section class="journal-toolbar bottom-toolbar">
 				<div class="row">
 					<div class="col-sm-7 col-sm-offset-2">
@@ -67,6 +68,7 @@
 					</div>
 				</div>
 			</section>
+				{% endif %}
 			{% else %}
 				{% if isNew %}
 			<section class="journal-form">

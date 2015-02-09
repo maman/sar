@@ -111,6 +111,11 @@ $app->get('/sar/:idMatkul', function ($idMatkul) use ($app) {
     ));
 });
 
+$app->get('/sar/:idMatkul/details/agenda', $accessar, function ($idMatkul) use ($app) {
+    $app->flash('noHighlight', true);
+    $app->redirect('/sar/' . $idMatkul . '/details');
+});
+
 $app->get('/sar/:idMatkul/details(/:year)', $accessar, function ($idMatkul, $year = null) use ($app) {
     // $app->render('pages/_self-assest-main.twig');
     $currPath = $app->request->getPath();
@@ -151,11 +156,6 @@ $app->get('/sar/:idMatkul/details(/:year)', $accessar, function ($idMatkul, $yea
         'penanggungJawab' => $dosenName,
         'currList' => true
     ));
-});
-
-$app->get('/sar/:idMatkul/details/agenda', $accessar, function ($idMatkul) use ($app) {
-    $app->flash('noHighlight', true);
-    $app->redirect('/sar/' . $idMatkul . '/details');
 });
 
 $app->get('/sar/:idMatkul/details/agenda/:idAgenda', $accessar, function ($idMatkul, $idAgenda) use ($app) {

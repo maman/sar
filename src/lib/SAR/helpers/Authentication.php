@@ -47,7 +47,8 @@ class Authentication extends Middleware
         $app = $this->app;
         $config = $this->config;
         $this->app->hook('slim.before.dispatch', function () use ($app, $req, $config) {
-            $secured_urls = isset($config['security.urls']) && is_array($config['security.urls']) ? $config['security.urls'] : array();
+            // $secured_urls = isset($config['security.urls']) && is_array($config['security.urls']) ? $config['security.urls'] : array();
+            $secured_urls = $config['security.urls'];
             foreach ($secured_urls as $url) {
                 $patternAsRegex = $url['path'];
                 if (substr($url['path'], -1) === '/') {
@@ -58,7 +59,6 @@ class Authentication extends Middleware
                     if (!isset($_SESSION['nip']) && !isset($_SESSION['username']) && !isset($_SESSION['role']) && !isset($_SESSION['matkul'])) {
                         if ($req->getPath() !== $config['login.url']) {
                             $app->flash('error', 'Login Required');
-                            $app->redirect('/?r=' . $req->getPath());
                             $app->redirect($config['login.url']);
                         }
                     }

@@ -17,7 +17,7 @@
  * @license GNU General Public License v2
  * @link https://github.com/maman/sar
  */
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Pimple\Container;
 

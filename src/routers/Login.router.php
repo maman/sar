@@ -77,6 +77,7 @@ $app->get('/logout', $authenticate($app), function () use ($app) {
     unset($_SESSION['matkul']);
     unset($_SESSION['sar']);
     unset($_SESSION['prodi']);
+    session_destroy();
     $app->view()->setData(array(
         'nip' => null,
         'username' => null,

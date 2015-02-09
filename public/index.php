@@ -18,4 +18,4 @@
  * @link https://github.com/maman/sar
  */
 
-require '../bootstrap/bootstrap.php';
+require __DIR__ . '/../bootstrap/bootstrap.php';

@@ -96,7 +96,8 @@ class Matkul
                 "MATAKULIAH"."IDSyaratMK",
                 "MATAKULIAH"."NamaMK",
                 "MATAKULIAH"."SemesterMK",
-                "MATAKULIAH"."IDPRODI"
+                "MATAKULIAH"."IDPRODI",
+                "MATAKULIAH"."SKS"
             FROM
                 "MATAKULIAH"
             WHERE

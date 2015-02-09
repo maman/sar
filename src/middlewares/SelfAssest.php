@@ -35,7 +35,6 @@ $accessar = function ($route) use ($app) {
         array_push($truth, F\contains($sar, $idMatkul['idMatkul']));
     }
     if (!F\contains($truth, true) && $_SESSION['role'] != 'kaprodi') {
-        // if ($_SESSION['role'] != 'kaprodi') {
         $app->flash('Tidak Diijinkan', 'Anda tidak diijinkan untuk mengakses Self Assesmen ini');
         $app->render('pages/_403.twig', array(
             'url' => $req->getUrl() . $req->getPath()
@@ -44,7 +43,9 @@ $accessar = function ($route) use ($app) {
             "403: " . $req->getUrl() . $req->getPath() ." - User " . $_SESSION['username'] . " Not Authorized to accessing SAR with ID " . $idMatkul['idMatkul']
         );
         $app->stop();
-            // $app->redirect('/', 403);
-        // }
+    } elseif (!F\contains($truth, true) && $_SESSION['role'] == 'kaprodi') {
+        $app->view()->appendData(array(
+            'isReview' => true
+        ));
     }
 };

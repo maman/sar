@@ -18,6 +18,12 @@
 
 'use strict';
 
+/**
+ * foo does some multiplication magic
+ * @param  {Number} width
+ * @param  {Number} topOffset
+ * @return {Number}     this equals bar*baz
+ */
 var sidebarCollapse = function (width, topOffset) {
   if (width < 768) {
         $('div.navbar-collapse').addClass('collapse');
