@@ -16,9 +16,11 @@
  * @copyright 2014 Achmad Mahardi
  * @license GNU General Public License v2
  */
+use SAR\models\Prodi;
 use SAR\models\Matkul;
 use SAR\models\Rps;
 use SAR\models\User;
+use SAR\models\Plotting;
 use Functional as F;
 
 $app->get('/matakuliah', $authenticate($app), function () use ($app) {
@@ -55,6 +57,31 @@ $app->get('/matakuliah', $authenticate($app), function () use ($app) {
             'currPath' => $currPath
         ));
     }
+});
+
+$app->get('/matakuliah/all', $authenticate($app), $kaprodi, function () use ($app) {
+    $plotting = new Plotting();
+    $prodi = new Prodi();
+    $user = new User();
+    $matkul = new Matkul();
+    $rps = new Rps();
+    $idProdi = $_SESSION['prodi'];
+    $namaProdi = $prodi->getNamaProdi($idProdi);
+    $plottings = $plotting->getAllPlotting($idProdi);
+    if ($plottings) {
+        foreach ($plottings as $plotKey => $plotVal) {
+            $plottings[$plotKey]['Nama'] = $user->getUserName($plottings[$plotKey]['NIP']);
+            $plottings[$plotKey]['Matakuliah'] = $matkul->getMatkulName($plottings[$plotKey]['KDMataKuliah']);
+            $plottings[$plotKey]['Progress'] = $rps->getRpsProgress($plottings[$plotKey]['KDMataKuliah'])['percentage'];
+        }
+        $groupPlots = F\group($plottings, function ($plot) {
+            return $plot['Nama'];
+        });
+    }
+    $app->render('pages/_matakuliah-all.twig', array(
+        'namaProdi' => $namaProdi,
+        'dosens' => $groupPlots
+    ));
 });
 
 /** GET request on `/matakuliah/:idmatakuliah` */

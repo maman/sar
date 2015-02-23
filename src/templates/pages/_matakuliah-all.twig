@@ -1,13 +1,13 @@
 {% extends 'base.twig' %}
 
-{% block pagetitle %}SAR Report - {{ namaProdi }}{% endblock %}
+{% block pagetitle %}Progress RPS Mata Kuliah - {{ namaProdi }}{% endblock %}
 
 {% block content %}
 {% include 'components/_header.twig'%}
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Self Assesment Report untuk {{ namaProdi }}</h1>
+			<h1 class="page-header">Progress RPS Mata Kuliah {{ namaProdi }}</h1>
 			{% include 'components/widgets/_breadcrumb.twig' %}
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 					<h3>{{ key }}</h3>
 					<div class="row">
 						{% for item in value %}
-						<a href="/sar/{{ item.KDMataKuliah }}" class="col-xs-12 col-sm-6 col-md-4" data-card>
+						<a href="#" class="col-xs-12 col-sm-6 col-md-4" data-card>
 							<div class="panel panel-default card">
 								<div class="panel-body card-body">
 									<div class="row row-eq-height">
@@ -27,7 +27,7 @@
 											<span class="card-title">{{ item.Matakuliah|length > 30 ? item.Matakuliah|slice(0, 30) ~ ' ...' : item.Matakuliah }}</span>
 										</div>
 										<div class="col-md-4">
-											<span class="card-percentage text-muted" data-render-circle data-percent="{{ item.SARScore }}" data-size="40"><span>{{ item.SARScore }}%</span></span>
+											<span class="card-percentage text-muted" data-render-circle data-percent="{% if item.Progress %}{{ item.Progress }}{% else %}0{% endif %}" data-size="40"><span>{% if item.Progress %}{{ item.Progress }}{% else %}0{% endif %}%</span></span>
 										</div>
 									</div>
 								</div>

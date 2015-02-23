@@ -205,6 +205,7 @@ module.exports = (grunt) ->
             'public/css/app.min.css'
             'public/js/*.js'
             'public/js/*.js.map'
+            '!public/js/embed.js'
             '!public/js/main.js'
             '!public/js/.git*'
           ]
