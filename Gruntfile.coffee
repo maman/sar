@@ -161,6 +161,15 @@ module.exports = (grunt) ->
         devtool: 'sourcemap'
         debug: true
 
+    # Uglify
+    # ======
+    uglify:
+      options:
+        mangle: true
+      dist:
+        files:
+          'public/js/embed.min.js': 'public/js/embed.js'
+
     # Concat
     # ======
     concat:
@@ -272,6 +281,7 @@ module.exports = (grunt) ->
     'less:dev'
     'concat:dev'
     'webpack:dev'
+    'uglify:dist'
     'watch'
   ]
   grunt.registerTask 'build', [
@@ -281,6 +291,7 @@ module.exports = (grunt) ->
     'cssmin:dist'
     'jshint:all'
     'webpack:dist'
+    'uglify:dist'
     'bump:patch'
     'notify:build'
   ]
