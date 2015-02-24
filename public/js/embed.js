@@ -37,25 +37,27 @@
     z-index:9999999999;\
   }\
   .embed-popup.transparent {\
-    -webkit-transform: translateY(-20px);\
-    -moz-transform: translateY(-20px);\
-    -o-transform: translateY(-20px);\
-    -ms-transform: translateY(-20px);\
-    transform: translateY(-20px);\
-    -webkit-transition: all .5s ease-in-out;\
-    -o-transition: all .5s ease-in-out;\
-    transition: all .5s ease-in-out;\
+    -webkit-transform-origin: 50% 50%;\
+    -webkit-transform: translateY(-20px) scale(0);\
+    -moz-transform: translateY(-20px) scale(0);\
+    -o-transform: translateY(-20px) scale(0);\
+    -ms-transform: translateY(-20px) scale(0);\
+    transform: translateY(-20px) scale(0);\
+    -webkit-transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
+    -o-transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
+    transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
     opacity: 0;\
   }\
   .embed-popup {\
-    -webkit-transform: translateY(0px);\
-    -moz-transform: translateY(0px);\
-    -o-transform: translateY(0px);\
-    -ms-transform: translateY(0px);\
-    transform: translateY(0px);\
-    -webkit-transition: all .5s ease-in-out;\
-    -o-transition: all .5s ease-in-out;\
-    transition: all .5s ease-in-out;\
+    -webkit-transform-origin: 50% 0;\
+    -webkit-transform: translateY(0px) scale(1);\
+    -moz-transform: translateY(0px) scale(1);\
+    -o-transform: translateY(0px) scale(1);\
+    -ms-transform: translateY(0px) scale(1);\
+    transform: translateY(0px) scale(1);\
+    -webkit-transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
+    -o-transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
+    transition: all .55s cubic-bezier(0.40, 1.34, 0.51, 1.01);\
     opacity: 1;\
   }\
   .popup-panel\
