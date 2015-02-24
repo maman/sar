@@ -51,7 +51,7 @@ module.exports = (grunt) ->
           'public/js/**/*.js'
           '!public/js/bundle.js'
         ]
-        tasks: ['jshint', 'webpack:dev']
+        tasks: ['jshint', 'webpack:dev', 'uglify:dist']
         options:
           livereload: true
           spawn: false
